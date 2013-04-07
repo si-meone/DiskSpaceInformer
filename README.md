@@ -39,3 +39,10 @@ Jar signing because it accesses the hdd resources
 =================================================
 
 see email folder under cafe....
+
+TODO
+====
+-Think about block sizes on different Operating systems 4kb seems standard maybe I should check.
+-graphics or colors
+-progress while loading 
+-folders take space as well 
