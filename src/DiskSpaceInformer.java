@@ -78,9 +78,9 @@ public class DiskSpaceInformer extends JPanel
             int returnVal = fc.showOpenDialog(DiskSpaceInformer.this);
 
             if (returnVal == JFileChooser.APPROVE_OPTION) {
-                File file = fc.getSelectedFile();
-                Map<String,Long> sortedFileFolderSizes = findFileAndFolderSizes(file);
-                PrettyPrint(file, sortedFileFolderSizes);
+                File dir = fc.getSelectedFile();
+                Map<String,Long> sortedFileFolderSizes = findFileAndFolderSizes(dir);
+                PrettyPrint(dir, sortedFileFolderSizes);
             } else {
                 log.append("Open command cancelled by user." + newline);
             }
@@ -92,10 +92,10 @@ public class DiskSpaceInformer extends JPanel
         }
     }
 
-    private Map<String,Long> findFileAndFolderSizes(File file) {
+    private Map<String,Long> findFileAndFolderSizes(File dir) {
         File[] files = null ;
         try{
-            files = file.listFiles();
+            files = dir.listFiles();
         }catch (SecurityException se){
             throw new SecurityException("Security problem: " + se);
         }
@@ -104,11 +104,11 @@ public class DiskSpaceInformer extends JPanel
             return new HashMap<String, Long>();
         }
         Map<String,Long> dirListing = new HashMap<String, Long>();
-        for (File dir : files){
+        for (File file : files){
             DiskUsage diskUsage = new DiskUsage();
-            diskUsage.accept(dir);
+            diskUsage.accept(file);
             long size = diskUsage.getSize();
-            dirListing.put(dir.getName(), size);
+            dirListing.put(file.getName(), size);
         }
 
         ValueComparator bvc =  new ValueComparator(dirListing);
