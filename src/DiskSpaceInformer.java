@@ -1,3 +1,5 @@
+import com.sun.xml.internal.ws.util.StringUtils;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -25,7 +27,7 @@ public class DiskSpaceInformer extends JPanel
  
         //Create the log first, because the action listeners
         //need to refer to it.
-        log = new JTextArea(50,100);
+        log = new JTextArea(50,30);
         log.setMargin(new Insets(5,5,5,5));
         log.setEditable(false);
         JScrollPane logScrollPane = new JScrollPane(log);
@@ -122,12 +124,17 @@ public class DiskSpaceInformer extends JPanel
         for (Long value : sortedFileFolderSizes.values()) {
             total = total + value; // Can also be done by total += value;
         }
-
-        log.append(file.getName() + ": " + readableFileSize(total) + "\n\n");
+        String title = file.getName() + ": [" + readableFileSize(total) + "]";
+        String underline = String.format(String.format("%%0%dd", title.length()), 0).replace("0","=");
+        log.append(underline +newline);
+        log.append(title + newline);
+        log.append(underline + newline );
         for (Map.Entry<String, Long> entry : sortedFileFolderSizes.entrySet()) {
             log.append("[ " + readableFileSize(entry.getValue()) + " ]" );
             log.append(" --> " + entry.getKey() +  "\n");
         }
+//        log.append(underline);
+        log.append(newline + newline);
     }
 
     public static String readableFileSize(long size) {
@@ -155,7 +162,7 @@ public class DiskSpaceInformer extends JPanel
      */
     private static void createAndShowGUI() {
         //Create and set up the window.
-        JFrame frame = new JFrame("Directory Sizer");
+        JFrame frame = new JFrame("Directory Sizer v0.1a");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
  
         //Add content to the window.
