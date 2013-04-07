@@ -1,4 +1,3 @@
-
 /*
  * Copyright (c) 1995, 2008, Oracle and/or its affiliates. All rights reserved.
  *
@@ -48,7 +47,7 @@ import java.util.TreeMap;
 public class DiskSpaceInformer extends JPanel
                              implements ActionListener {
     static private final String newline = "\n";
-    JButton openButton, saveButton;
+    JButton openButton, clearButton;
     JTextArea log;
     JFileChooser fc;
  
@@ -91,13 +90,13 @@ public class DiskSpaceInformer extends JPanel
  
         //Create the save button.  We use the image from the JLF
         //Graphics Repository (but we extracted it from the jar).
-        saveButton = new JButton("Clear Log...");
-        saveButton.addActionListener(this);
+        clearButton = new JButton("Clear Log...");
+        clearButton.addActionListener(this);
  
         //For layout purposes, put the buttons in a separate panel
         JPanel buttonPanel = new JPanel(); //use FlowLayout
         buttonPanel.add(openButton);
-        buttonPanel.add(saveButton);
+        buttonPanel.add(clearButton);
  
         //Add the buttons and the log to this panel.
         add(buttonPanel, BorderLayout.PAGE_START);
@@ -119,8 +118,8 @@ public class DiskSpaceInformer extends JPanel
             }
             log.setCaretPosition(log.getDocument().getLength());
 
-        //Handle save button action.
-        } else if (e.getSource() == saveButton) {
+        //Handle clear button action.
+        } else if (e.getSource() == clearButton) {
                 log.setText("");  //reset
         }
     }
@@ -164,7 +163,6 @@ public class DiskSpaceInformer extends JPanel
             log.append("[ " + readableFileSize(entry.getValue()) + " ]" );
             log.append(" --> " + entry.getKey() +  "\n");
         }
-//        log.append(underline);
         log.append(newline + newline);
     }
 
@@ -217,6 +215,7 @@ public class DiskSpaceInformer extends JPanel
     }
 }
 
+
 class DiskUsage implements FileFilter
 {
     public DiskUsage(){};
@@ -234,6 +233,7 @@ class DiskUsage implements FileFilter
         return size;
     }
 }
+
 
 class ValueComparator implements Comparator<String> {
 
