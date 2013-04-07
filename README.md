@@ -1,4 +1,4 @@
-DiskSpaceInformer
+Disk Space Informer
 ================
 
 Find where all your disk space has gone - works on mac, linux and windows 
