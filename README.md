@@ -1,14 +1,21 @@
-DiskSpaceManager
+DiskSpaceInformer
 ================
 
-Find where all your disk space has gone - works on mac, linux and windows just double click on jnlp/DirectorySizer.jnlp
+Find where all your disk space has gone - works on mac, linux and windows 
 
-locally
+Written in Java/Swing using JNLP to deliver it.
 
-http://
+To run it and continually get the latest versions
+just double click on 
+
+https://github.com/snasrallah/DiskSpaceInformer/raw/master/jar/DiskSpaceInformer.jnlp
+
+or get the jar and run it
 
 via
 java -jar jar/DiskSpaceInformer.jar
+
+or download the source and jar it up yourself
 
 To jar up
 =========
