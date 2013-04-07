@@ -1,0 +1,23 @@
+<jnlp spec="1.0+" codebase="https://github.com/snasrallah/DiskSpaceInformer/raw/master/jar" href="DiskSpaceInformer.jnlp">
+    <information>
+        <title>DiskSpaceInformer</title>
+        <vendor>simon</vendor>
+        <offline-allowed />
+        <update check="always" policy="always" />
+    </information>
+
+    <resources>
+        <!-- Application Resources -->
+        <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
+        <jar href="DiskSpaceInformer.jar" main="true" />
+    </resources>
+    <application-desc
+            name=">DiskSpaceInformer"
+            main-class="DiskSpaceInformer"
+            width="600"
+            height="800">
+    </application-desc>
+    <security>
+        <all-permissions/>
+    </security>
+</jnlp>
