@@ -42,7 +42,7 @@ see email folder under cafe....
 
 TODO
 ====
-- Think about block sizes on different Operating systems 4kb seems standard maybe I should check.
+- think about block sizes on different Operating systems 4kb seems standard maybe I should check.
 
 - graphics or colors
 
@@ -53,3 +53,4 @@ TODO
 - Add some threading or callbacks possibly, the user interface hangs on large folders 
 e.g. c:\ on a resonably spec'd XP machine with 32gb of space used took 4 mins (the interface hung till it completed)
 
+- tests 
