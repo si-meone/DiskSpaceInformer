@@ -50,3 +50,6 @@ TODO
 
 -folders take space as well 
 
+- Add some threading or callbacks possibly, the user interface hangs on large folders 
+e.g. c:\ on a resonably spec'd XP machine with 32gb of space used took 4 mins (the interface hung till it completed)
+
