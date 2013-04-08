@@ -131,11 +131,6 @@ public class DiskSpaceInformer extends JPanel
         buttonPanel.add(openButton);
         buttonPanel.add(clearButton);
 
-        taskOutput = new JTextArea(1,10);
-        taskOutput.setMargin(new Insets(5, 5, 5, 5));
-        taskOutput.setEditable(false);
-        buttonPanel.add(new JScrollPane(taskOutput));
-
         //Add the buttons and the log to this panel.
         add(buttonPanel, BorderLayout.PAGE_START);
         add(logScrollPane, BorderLayout.CENTER);
@@ -150,13 +145,13 @@ public class DiskSpaceInformer extends JPanel
             if (returnVal == JFileChooser.APPROVE_OPTION) {
                 File dir = fc.getSelectedFile();
 
-                progressMonitor = new ProgressMonitor(DiskSpaceInformer.this,
-                        "Running a Long Task",
-                        "", 0, 100);
-                progressMonitor.setProgress(0);
-                task = new Task();
-                task.addPropertyChangeListener(this);
-                task.execute();
+//                progressMonitor = new ProgressMonitor(DiskSpaceInformer.this,
+//                        "Running a Long Task",
+//                        "", 0, 100);
+//                progressMonitor.setProgress(0);
+//                task = new Task();
+//                task.addPropertyChangeListener(this);
+//                task.execute();
 
                 Map<String,Long> sortedFileFolderSizes = findFileAndFolderSizes(dir);
                 PrettyPrint(dir, sortedFileFolderSizes);
