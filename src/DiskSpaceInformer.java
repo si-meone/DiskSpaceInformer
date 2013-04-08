@@ -30,30 +30,62 @@
  */
 
 import javax.swing.*;
+import javax.swing.event.AncestorListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.FileFilter;
 import java.text.DecimalFormat;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 
 /*
  * DiskSpaceInformer.java
  */
 public class DiskSpaceInformer extends JPanel
-                             implements ActionListener {
+                             implements ActionListener, PropertyChangeListener {
     static private final String newline = "\n";
     JButton openButton, clearButton;
     JTextArea log;
+    JTextArea taskOutput;
     JFileChooser fc;
- 
+    private Task task;
+    private ProgressMonitor progressMonitor;
+
+    class Task extends SwingWorker<Void, Void> {
+        @Override
+        public Void doInBackground() {
+            Random random = new Random();
+            int progress = 0;
+            setProgress(0);
+            try {
+                Thread.sleep(1000);
+                while (progress < 100 && !isCancelled()) {
+                    //Sleep for up to one second.
+                    Thread.sleep(random.nextInt(1000));
+                    //Make random progress.
+                    progress += random.nextInt(10);
+                    setProgress(Math.min(progress, 100));
+                }
+            } catch (InterruptedException ignore) {}
+            return null;
+        }
+
+        @Override
+        public void done() {
+            Toolkit.getDefaultToolkit().beep();
+//        startButton.setEnabled(true);
+            progressMonitor.setProgress(0);
+        }
+    }
+
+
     public DiskSpaceInformer() {
         super(new BorderLayout());
- 
+
+        JFrame f = new JFrame();
         //Create the log first, because the action listeners
         //need to refer to it.
         log = new JTextArea(30,30);
@@ -71,7 +103,7 @@ public class DiskSpaceInformer extends JPanel
 
         //Create a file chooser
         fc = new JFileChooser();
- 
+
         //Uncomment one of the following lines to try a different
         //file selection mode.  The first allows just directories
         //to be selected (and, at least in the Java look and feel,
@@ -81,28 +113,34 @@ public class DiskSpaceInformer extends JPanel
         //
         fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         //fc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
- 
+
         //Create the open button.  We use the image from the JLF
         //Graphics Repository (but we extracted it from the jar).
         //  createImageIcon("images/Open16.gif")
         openButton = new JButton("Choose Folder...");
         openButton.addActionListener(this);
- 
+
         //Create the save button.  We use the image from the JLF
         //Graphics Repository (but we extracted it from the jar).
         clearButton = new JButton("Clear Log...");
+
         clearButton.addActionListener(this);
- 
+
         //For layout purposes, put the buttons in a separate panel
         JPanel buttonPanel = new JPanel(); //use FlowLayout
         buttonPanel.add(openButton);
         buttonPanel.add(clearButton);
- 
+
+        taskOutput = new JTextArea(1,10);
+        taskOutput.setMargin(new Insets(5, 5, 5, 5));
+        taskOutput.setEditable(false);
+        buttonPanel.add(new JScrollPane(taskOutput));
+
         //Add the buttons and the log to this panel.
         add(buttonPanel, BorderLayout.PAGE_START);
         add(logScrollPane, BorderLayout.CENTER);
     }
- 
+
     public void actionPerformed(ActionEvent e) {
 
         //Handle open button action.
@@ -111,6 +149,15 @@ public class DiskSpaceInformer extends JPanel
 
             if (returnVal == JFileChooser.APPROVE_OPTION) {
                 File dir = fc.getSelectedFile();
+
+                progressMonitor = new ProgressMonitor(DiskSpaceInformer.this,
+                        "Running a Long Task",
+                        "", 0, 100);
+                progressMonitor.setProgress(0);
+                task = new Task();
+                task.addPropertyChangeListener(this);
+                task.execute();
+
                 Map<String,Long> sortedFileFolderSizes = findFileAndFolderSizes(dir);
                 PrettyPrint(dir, sortedFileFolderSizes);
             } else {
@@ -149,6 +196,28 @@ public class DiskSpaceInformer extends JPanel
         return sortedMap;
     }
 
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        if ("progress" == evt.getPropertyName() ) {
+            int progress = (Integer) evt.getNewValue();
+            progressMonitor.setProgress(progress);
+            String message =
+                    String.format("Completed %d%%.\n", progress);
+            progressMonitor.setNote(message);
+            log.append(message);
+//            if (progressMonitor.isCanceled() || task.isDone()) {
+                Toolkit.getDefaultToolkit().beep();
+//                if (progressMonitor.isCanceled()) {
+//                    task.cancel(true);
+//                    taskOutput.append("Task canceled.\n");
+//                } else {
+//                    taskOutput.append("Task completed.\n");
+//                }
+//                startButton.setEnabled(true);
+//            }
+        }
+    }
+
     private void PrettyPrint(File file, Map<String, Long> sortedFileFolderSizes) {
         Long total = 0L;
         for (Long value : sortedFileFolderSizes.values()) {
@@ -183,7 +252,7 @@ public class DiskSpaceInformer extends JPanel
             return null;
         }
     }
- 
+
     /**
      * Create the GUI and show it.  For thread safety,
      * this method should be invoked from the
@@ -193,27 +262,28 @@ public class DiskSpaceInformer extends JPanel
         //Create and set up the window.
         JFrame frame = new JFrame("Directory Sizer v0.1a");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
- 
+
         //Add content to the window.
         frame.add(new DiskSpaceInformer());
- 
+
         //Display the window.
         frame.pack();
         frame.setVisible(true);
     }
- 
+
     public static void main(String[] args) {
         //Schedule a job for the event dispatch thread:
         //creating and showing this application's GUI.
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
                 //Turn off metal's use of bold fonts
-                UIManager.put("swing.boldMetal", Boolean.FALSE); 
+                UIManager.put("swing.boldMetal", Boolean.FALSE);
                 createAndShowGUI();
             }
         });
     }
 }
+
 
 
 class DiskUsage implements FileFilter
@@ -251,4 +321,7 @@ class ValueComparator implements Comparator<String> {
             return 1;
         } // returning 0 would merge keys
     }
+
+
+
 }
