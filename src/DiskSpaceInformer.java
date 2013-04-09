@@ -80,9 +80,10 @@ public class DiskSpaceInformer extends JPanel
             int filesFolderCount = dir.listFiles().length;
             //System.out.println("dir.listFiles()"  + filesFolderCount);
             float increment = 0.0f ;
-            increment  = 100.0f / filesFolderCount;
+            if (filesFolderCount != 0){
+                increment  = 100.0f / filesFolderCount;
+            }
 
-            Random random = new Random();
             float progress = 0.0f;
             setProgress(0);
             //System.out.println("increment will be: " + increment);
