@@ -51,33 +51,63 @@ public class DiskSpaceInformer extends JPanel
     JTextArea log;
     JTextArea taskOutput;
     JFileChooser fc;
-    private Task task;
+    private FindFileAndFolderSizes task;
     private ProgressMonitor progressMonitor;
 
-    class Task extends SwingWorker<Void, Void> {
+    class FindFileAndFolderSizes extends SwingWorker<Void, Void> {
+
+        private File dir;
+
+        FindFileAndFolderSizes(File dir){
+            this.dir = dir;
+        }
+
         @Override
         public Void doInBackground() {
+
+            File[] files = null;
+            Map<String,Long> dirListing = new HashMap<String, Long>();
+            try{
+                files = dir.listFiles();
+            }catch (SecurityException se){
+                throw new SecurityException("Security problem: " + se);
+            }
+            if (null == files){
+                log.append("Unable to retrieve folder information check permissions" + newline);
+                dirListing = new HashMap<String, Long>();
+            }
+
+            int filesFolderCount = dir.listFiles().length;
+            //System.out.println("dir.listFiles()"  + filesFolderCount);
+            float increment = 0.0f ;
+            increment  = 100.0f / filesFolderCount;
+
             Random random = new Random();
-            int progress = 0;
+            float progress = 0.0f;
             setProgress(0);
-            try {
-                Thread.sleep(1000);
-                while (progress < 100 && !isCancelled()) {
-                    //Sleep for up to one second.
-                    Thread.sleep(random.nextInt(1000));
-                    //Make random progress.
-                    progress += random.nextInt(10);
-                    setProgress(Math.min(progress, 100));
-                }
-            } catch (InterruptedException ignore) {}
+            //System.out.println("increment will be: " + increment);
+            for (File file : files){
+                //System.out.println("Processing: " + file);
+                DiskUsage diskUsage = new DiskUsage();
+                diskUsage.accept(file);
+                long size = diskUsage.getSize();
+                dirListing.put(file.getName(), size);
+
+                progress += increment;
+                //System.out.println("progress: " + progress);
+                setProgress(Math.min((int)Math.round(progress), 100));
+            }
+            ValueComparator bvc =  new ValueComparator(dirListing);
+            Map<String,Long> sortedMap = new TreeMap<String,Long>(bvc);
+            sortedMap.putAll(dirListing);
+            PrettyPrint(dir, sortedMap);
             return null;
         }
 
         @Override
         public void done() {
             Toolkit.getDefaultToolkit().beep();
-//        startButton.setEnabled(true);
-            progressMonitor.setProgress(0);
+            progressMonitor.close();
         }
     }
 
@@ -94,12 +124,6 @@ public class DiskSpaceInformer extends JPanel
         JScrollPane logScrollPane = new JScrollPane(log);
         logScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         logScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
-
-        /* to create jtextpane for colors
-        String markup ="";
-        JTextPane tp = new JTextPane();
-        tp.setText(markup);
-        */
 
         //Create a file chooser
         fc = new JFileChooser();
@@ -145,16 +169,14 @@ public class DiskSpaceInformer extends JPanel
             if (returnVal == JFileChooser.APPROVE_OPTION) {
                 File dir = fc.getSelectedFile();
 
-//                progressMonitor = new ProgressMonitor(DiskSpaceInformer.this,
-//                        "Running a Long Task",
-//                        "", 0, 100);
-//                progressMonitor.setProgress(0);
-//                task = new Task();
-//                task.addPropertyChangeListener(this);
-//                task.execute();
-
-                Map<String,Long> sortedFileFolderSizes = findFileAndFolderSizes(dir);
-                PrettyPrint(dir, sortedFileFolderSizes);
+                progressMonitor = new ProgressMonitor(DiskSpaceInformer.this,
+                        "Getting Folder sizes",
+                        "", 0, 100);
+                progressMonitor.setProgress(0);
+                task = new FindFileAndFolderSizes(dir);
+                task.addPropertyChangeListener(this);
+                //openButton.setEnabled(false);
+                task.execute();
             } else {
                 log.append("Open command cancelled by user." + newline);
             }
@@ -166,31 +188,6 @@ public class DiskSpaceInformer extends JPanel
         }
     }
 
-    private Map<String,Long> findFileAndFolderSizes(File dir) {
-        File[] files = null ;
-        try{
-            files = dir.listFiles();
-        }catch (SecurityException se){
-            throw new SecurityException("Security problem: " + se);
-        }
-        if (null == files){
-            log.append("Unable to retrieve folder information check permissions" + newline);
-            return new HashMap<String, Long>();
-        }
-        Map<String,Long> dirListing = new HashMap<String, Long>();
-        for (File file : files){
-            DiskUsage diskUsage = new DiskUsage();
-            diskUsage.accept(file);
-            long size = diskUsage.getSize();
-            dirListing.put(file.getName(), size);
-        }
-
-        ValueComparator bvc =  new ValueComparator(dirListing);
-        Map<String,Long> sortedMap = new TreeMap<String,Long>(bvc);
-        sortedMap.putAll(dirListing);
-        return sortedMap;
-    }
-
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         if ("progress" == evt.getPropertyName() ) {
@@ -199,17 +196,16 @@ public class DiskSpaceInformer extends JPanel
             String message =
                     String.format("Completed %d%%.\n", progress);
             progressMonitor.setNote(message);
-            log.append(message);
-//            if (progressMonitor.isCanceled() || task.isDone()) {
+            //log.append(message); // see it print increments
+            if (progressMonitor.isCanceled() || task.isDone()) {
                 Toolkit.getDefaultToolkit().beep();
-//                if (progressMonitor.isCanceled()) {
-//                    task.cancel(true);
-//                    taskOutput.append("Task canceled.\n");
-//                } else {
-//                    taskOutput.append("Task completed.\n");
-//                }
-//                startButton.setEnabled(true);
-//            }
+                if (progressMonitor.isCanceled()) {
+                    log.append("Task canceled.\n");
+                    task.cancel(true);
+                } else {
+                    log.append("Task completed.\n");
+                }
+            }
         }
     }
 
@@ -279,8 +275,6 @@ public class DiskSpaceInformer extends JPanel
     }
 }
 
-
-
 class DiskUsage implements FileFilter
 {
     public DiskUsage(){};
@@ -299,7 +293,6 @@ class DiskUsage implements FileFilter
     }
 }
 
-
 class ValueComparator implements Comparator<String> {
 
     Map<String, Long> base;
@@ -316,7 +309,5 @@ class ValueComparator implements Comparator<String> {
             return 1;
         } // returning 0 would merge keys
     }
-
-
 
 }
