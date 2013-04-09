@@ -54,3 +54,7 @@ TODO
 e.g. c:\ on a resonably spec'd XP machine with 32gb of space used took 4 mins (the interface hung till it completed)
 
 - tests 
+- 
+- Cancel folder sizing needs a bit more investigation , notice CPU stays at 100 % if there is a problem e.g. processing /sys on inux
+
+
