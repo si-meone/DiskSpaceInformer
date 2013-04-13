@@ -50,6 +50,7 @@ public class DiskSpaceInformer extends JPanel
     JButton openButton, clearButton;
     JTextArea log;
     JFileChooser fc;
+    JProgressBar jProgressBar;
     private FindFileAndFolderSizes task;
 
     private ProgressMonitor progressMonitor;
@@ -70,17 +71,26 @@ public class DiskSpaceInformer extends JPanel
 
             File[] files = null;
             Map<String, Long> dirListing = new HashMap<String, Long>();
+
+            jProgressBar.setStringPainted(true);
+            jProgressBar.setString("Determining files to scan");
+            jProgressBar.setVisible(true);
+            jProgressBar.setIndeterminate(true);
+
             try {
                 files = dir.listFiles();
             } catch (SecurityException se) {
+                jProgressBar.setIndeterminate(false);
+                jProgressBar.setString("Security problem: " + se);
                 throw new SecurityException("Security problem: " + se);
             }
             if (null == files) {
-                log.append("Unable to retrieve folder information check permissions" + newline);
+                jProgressBar.setString("Unable to retrieve folder information check permissions");
                 dirListing = new HashMap<String, Long>();
             }
 
             for (File file : files) {
+                jProgressBar.setString(file.toString());
                 //System.out.println("Processing: " + file);
                 boolean onlyCount = true;
                 DiskUsage diskUsage = new DiskUsage(onlyCount);
@@ -92,6 +102,7 @@ public class DiskSpaceInformer extends JPanel
             if (filesFolderCount != 0) {
                 increment = 100.0f / filesFolderCount;
             }
+            jProgressBar.setVisible(false);
 
             setProgress(0);
             //System.out.println("increment will be: " + increment);
@@ -165,7 +176,7 @@ public class DiskSpaceInformer extends JPanel
         JFrame f = new JFrame();
         //Create the log first, because the action listeners
         //need to refer to it.
-        log = new JTextArea(30, 30);
+        log = new JTextArea(30,35);
         log.setMargin(new Insets(5, 5, 5, 5));
         log.setEditable(false);
         JScrollPane logScrollPane = new JScrollPane(log);
@@ -197,14 +208,21 @@ public class DiskSpaceInformer extends JPanel
 
         clearButton.addActionListener(this);
 
+
         //For layout purposes, put the buttons in a separate panel
         JPanel buttonPanel = new JPanel(); //use FlowLayout
         buttonPanel.add(openButton);
         buttonPanel.add(clearButton);
 
+        jProgressBar = new JProgressBar(0,100);
+        JPanel progressPanel = new JPanel();
+        progressPanel.setSize(35,5);
+        progressPanel.add(jProgressBar);
+
         //Add the buttons and the log to this panel.
         add(buttonPanel, BorderLayout.PAGE_START);
-        add(logScrollPane, BorderLayout.CENTER);
+        add(progressPanel, BorderLayout.CENTER);
+        add(logScrollPane, BorderLayout.PAGE_END);
     }
 
     public void actionPerformed(ActionEvent e) {
