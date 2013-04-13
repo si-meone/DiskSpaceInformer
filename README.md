@@ -40,13 +40,20 @@ Jar signing because it accesses the hdd resources
 
 see email folder under cafe....
 
+
+New In Versions
+===============
+
+1a - Intial commit a start
+
+1b - Added progress which is more accurate based on amount of files in total 
+
 TODO
 ====
 - think about block sizes on different Operating systems 4kb seems standard maybe I should check.
 
 - graphics or colors
 
-- progress while loading 
 
 - folders take space as well 
 
