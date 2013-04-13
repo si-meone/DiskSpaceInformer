@@ -40,13 +40,22 @@ Jar signing because it accesses the hdd resources
 
 see email folder under cafe....
 
+
+New In Versions
+===============
+
+1a - Intial commit a start
+
+1b - Added progress which is more accurate based on amount of files in total 
+
 TODO
 ====
 - think about block sizes on different Operating systems 4kb seems standard maybe I should check.
 
 - graphics or colors
 
-- progress while loading 
+- should work on java 1.6 and maybe 1.5 but the jarsigning in 1.7 is only allowing it to work on 1.6
+  tried mac 1.6 and it didn't work on windows 1.6 , haven't tried linux or windows yet.
 
 - folders take space as well 
 
