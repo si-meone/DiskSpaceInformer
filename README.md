@@ -54,6 +54,8 @@ TODO
 
 - graphics or colors
 
+- should work on java 1.6 and maybe 1.5 but the jarsigning in 1.7 is only allowing it to work on 1.6
+  tried mac 1.6 and it didn't work on windows 1.6 , haven't tried linux or windows yet.
 
 - folders take space as well 
 
