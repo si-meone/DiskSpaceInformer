@@ -30,7 +30,6 @@
  */
 
 import javax.swing.*;
-import javax.swing.event.AncestorListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -45,20 +44,23 @@ import java.util.*;
  * DiskSpaceInformer.java
  */
 public class DiskSpaceInformer extends JPanel
-                             implements ActionListener, PropertyChangeListener {
+        implements ActionListener, PropertyChangeListener {
     static private final String newline = "\n";
     JButton openButton, clearButton;
     JTextArea log;
-    JTextArea taskOutput;
     JFileChooser fc;
     private FindFileAndFolderSizes task;
+
     private ProgressMonitor progressMonitor;
+    private long filesFolderCount = 0;
+    private static float increment = 0.0f;
+    private static float progress = 0.0f;
 
     class FindFileAndFolderSizes extends SwingWorker<Void, Void> {
 
         private File dir;
 
-        FindFileAndFolderSizes(File dir){
+        FindFileAndFolderSizes(File dir) {
             this.dir = dir;
         }
 
@@ -66,40 +68,41 @@ public class DiskSpaceInformer extends JPanel
         public Void doInBackground() {
 
             File[] files = null;
-            Map<String,Long> dirListing = new HashMap<String, Long>();
-            try{
+            Map<String, Long> dirListing = new HashMap<String, Long>();
+            try {
                 files = dir.listFiles();
-            }catch (SecurityException se){
+            } catch (SecurityException se) {
                 throw new SecurityException("Security problem: " + se);
             }
-            if (null == files){
+            if (null == files) {
                 log.append("Unable to retrieve folder information check permissions" + newline);
                 dirListing = new HashMap<String, Long>();
             }
 
-            int filesFolderCount = dir.listFiles().length;
-            //System.out.println("dir.listFiles()"  + filesFolderCount);
-            float increment = 0.0f ;
-            if (filesFolderCount != 0){
-                increment  = 100.0f / filesFolderCount;
+            for (File file : files) {
+                //System.out.println("Processing: " + file);
+                boolean onlyCount = true;
+                DiskUsage diskUsage = new DiskUsage(onlyCount);
+                diskUsage.accept(file);
+                filesFolderCount += diskUsage.getCount();
+            }
+            //System.out.println("count: " + filesFolderCount);
+
+            if (filesFolderCount != 0) {
+                increment = 100.0f / filesFolderCount;
             }
 
-            float progress = 0.0f;
             setProgress(0);
             //System.out.println("increment will be: " + increment);
-            for (File file : files){
+            for (File file : files) {
                 //System.out.println("Processing: " + file);
                 DiskUsage diskUsage = new DiskUsage();
                 diskUsage.accept(file);
                 long size = diskUsage.getSize();
                 dirListing.put(file.getName(), size);
-
-                progress += increment;
-                //System.out.println("progress: " + progress);
-                setProgress(Math.min((int)Math.round(progress), 100));
             }
-            ValueComparator bvc =  new ValueComparator(dirListing);
-            Map<String,Long> sortedMap = new TreeMap<String,Long>(bvc);
+            ValueComparator bvc = new ValueComparator(dirListing);
+            Map<String, Long> sortedMap = new TreeMap<String, Long>(bvc);
             sortedMap.putAll(dirListing);
             PrettyPrint(dir, sortedMap);
             return null;
@@ -110,6 +113,48 @@ public class DiskSpaceInformer extends JPanel
             Toolkit.getDefaultToolkit().beep();
             progressMonitor.close();
         }
+
+        class DiskUsage implements FileFilter {
+
+            public DiskUsage() {
+            }
+
+            ;
+
+            public DiskUsage(boolean count) {
+                this.count = count;
+            }
+
+            ;
+            private long fileCount = 0;
+            private long size = 0;
+            private boolean count = false;
+
+            public boolean accept(File file) {
+                if (file.isFile()) {
+                    if (count) {
+                        fileCount++;
+                    } else {
+                        size += file.length();
+                        progress += increment;
+                        //System.out.println("progress: " + progress);
+                        setProgress(Math.min((int) Math.round(progress), 100));
+                    }
+                } else if (file.isDirectory()) {
+                    file.listFiles(this);
+                }
+                return false;
+            }
+
+            public long getSize() {
+                return size;
+            }
+
+            public long getCount() {
+                return fileCount;
+            }
+        }
+
     }
 
 
@@ -119,8 +164,8 @@ public class DiskSpaceInformer extends JPanel
         JFrame f = new JFrame();
         //Create the log first, because the action listeners
         //need to refer to it.
-        log = new JTextArea(30,30);
-        log.setMargin(new Insets(5,5,5,5));
+        log = new JTextArea(30, 30);
+        log.setMargin(new Insets(5, 5, 5, 5));
         log.setEditable(false);
         JScrollPane logScrollPane = new JScrollPane(log);
         logScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
@@ -183,15 +228,15 @@ public class DiskSpaceInformer extends JPanel
             }
             log.setCaretPosition(log.getDocument().getLength());
 
-        //Handle clear button action.
+            //Handle clear button action.
         } else if (e.getSource() == clearButton) {
-                log.setText("");  //reset
+            log.setText("");  //reset
         }
     }
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        if ("progress" == evt.getPropertyName() ) {
+        if ("progress" == evt.getPropertyName()) {
             int progress = (Integer) evt.getNewValue();
             progressMonitor.setProgress(progress);
             String message =
@@ -216,25 +261,27 @@ public class DiskSpaceInformer extends JPanel
             total = total + value; // Can also be done by total += value;
         }
         String title = file.getName() + ": [" + readableFileSize(total) + "]";
-        String underline = String.format(String.format("%%0%dd", title.length()), 0).replace("0","=");
-        log.append(underline +newline);
+        String underline = String.format(String.format("%%0%dd", title.length()), 0).replace("0", "=");
+        log.append(underline + newline);
         log.append(title + newline);
-        log.append(underline + newline );
+        log.append(underline + newline);
         for (Map.Entry<String, Long> entry : sortedFileFolderSizes.entrySet()) {
-            log.append("[ " + readableFileSize(entry.getValue()) + " ]" );
-            log.append(" --> " + entry.getKey() +  "\n");
+            log.append("[ " + readableFileSize(entry.getValue()) + " ]");
+            log.append(" --> " + entry.getKey() + "\n");
         }
         log.append(newline + newline);
     }
 
     public static String readableFileSize(long size) {
-        if(size <= 0) return "0";
-        final String[] units = new String[] { "B", "KB", "MB", "GB", "TB" };
-        int digitGroups = (int) (Math.log10(size)/Math.log10(1024));
-        return new DecimalFormat("#,##0.#").format(size/Math.pow(1024, digitGroups)) + " " + units[digitGroups];
+        if (size <= 0) return "0";
+        final String[] units = new String[]{"B", "KB", "MB", "GB", "TB"};
+        int digitGroups = (int) (Math.log10(size) / Math.log10(1024));
+        return new DecimalFormat("#,##0.#").format(size / Math.pow(1024, digitGroups)) + " " + units[digitGroups];
     }
 
-    /** Returns an ImageIcon, or null if the path was invalid. */
+    /**
+     * Returns an ImageIcon, or null if the path was invalid.
+     */
     protected static ImageIcon createImageIcon(String path) {
         java.net.URL imgURL = DiskSpaceInformer.class.getResource(path);
         if (imgURL != null) {
@@ -276,23 +323,6 @@ public class DiskSpaceInformer extends JPanel
     }
 }
 
-class DiskUsage implements FileFilter
-{
-    public DiskUsage(){};
-    private long size = 0;
-    public boolean accept(File file)
-    {
-        if ( file.isFile())
-            size += file.length();
-        else
-            file.listFiles(this);
-        return false;
-    }
-    public long getSize()
-    {
-        return size;
-    }
-}
 
 class ValueComparator implements Comparator<String> {
 
