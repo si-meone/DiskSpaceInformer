@@ -16,7 +16,7 @@ import java.util.*;
 public class DiskSpaceInformer extends JPanel
         implements ActionListener, PropertyChangeListener {
     static private final String newline = "\n";
-    private static String version;
+    private static String version = "Directory Sizer v0.1c";;
     private final JButton checkButton;
     JButton openButton, clearButton;
     JTextArea log;
@@ -319,7 +319,6 @@ public class DiskSpaceInformer extends JPanel
     }
 
     private static void setupAndShowUI() {
-        version = "Directory Sizer v0.1b";
         JFrame frame = new JFrame(version);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
