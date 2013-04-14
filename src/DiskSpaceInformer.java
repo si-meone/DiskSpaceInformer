@@ -37,6 +37,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.FileFilter;
+import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.*;
 
@@ -148,16 +149,41 @@ public class DiskSpaceInformer extends JPanel
                         fileCount++;
                     } else {
                         size += file.length();
-                        progress += increment;
+                        progress = (int) Math.round(progress += increment);
                         //System.out.println("progress: " + progress);
-                        setProgress(Math.min((int) Math.round(progress), 100));
+                        if(progress % 10 == 0){
+                            setProgress(Math.min((int) Math.round(progress), 100));
+                        }
                     }
-                } else if (file.isDirectory()) {
-                    file.listFiles(this);
+                } else if (file.isDirectory() && !isSymlink(file)) {
+                    String[] contents = file.list();
+                    if (contents != null){  //possibly a symlink
+                        file.listFiles(this);
+                    }
+                } else{
+                    size += 0;
                 }
+
                 return false;
             }
 
+            private  boolean isSymlink(File file) {
+               File canon = null;
+               boolean isLink = false;
+               try{
+                if (file.getParent() == null) {
+                    canon = file;
+                } else {
+                    File canonDir = file.getParentFile().getCanonicalFile();
+                    canon = new File(canonDir, file.getName());
+                    isLink = !canon.getCanonicalFile().equals(canon.getAbsoluteFile());
+                }
+               }catch (IOException e){
+                   log.append(e.toString());
+               }
+
+                return isLink;
+            }
             public long getSize() {
                 return size;
             }
@@ -216,7 +242,8 @@ public class DiskSpaceInformer extends JPanel
 
         jProgressBar = new JProgressBar(0,100);
         JPanel progressPanel = new JPanel();
-        progressPanel.setSize(35,5);
+        progressPanel.setSize(100,100);
+        progressPanel.setMinimumSize(new Dimension(200,200));
         progressPanel.add(jProgressBar);
 
         //Add the buttons and the log to this panel.
