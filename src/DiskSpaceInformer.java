@@ -1,34 +1,3 @@
-/*
- * Copyright (c) 1995, 2008, Oracle and/or its affiliates. All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions
- * are met:
- *
- *   - Redistributions of source code must retain the above copyright
- *     notice, this list of conditions and the following disclaimer.
- *
- *   - Redistributions in binary form must reproduce the above copyright
- *     notice, this list of conditions and the following disclaimer in the
- *     documentation and/or other materials provided with the distribution.
- *
- *   - Neither the name of Oracle or the names of its
- *     contributors may be used to endorse or promote products derived
- *     from this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS
- * IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
- * THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
- * PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE COPYRIGHT OWNER OR
- * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
- * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
- * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
- * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
- * LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
- * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -48,9 +17,10 @@ public class DiskSpaceInformer extends JPanel
         implements ActionListener, PropertyChangeListener {
     static private final String newline = "\n";
     private static String version;
+    private final JButton checkButton;
     JButton openButton, clearButton;
     JTextArea log;
-    JFileChooser fc;
+    JFileChooser fileChooser;
     JProgressBar jProgressBar;
     private FindFileAndFolderSizes task;
 
@@ -92,13 +62,13 @@ public class DiskSpaceInformer extends JPanel
 
             for (File file : files) {
                 jProgressBar.setString(file.toString());
-                //System.out.println("Processing: " + file);
+                //log.append("Processing: " + file);
                 boolean onlyCount = true;
                 DiskUsage diskUsage = new DiskUsage(onlyCount);
                 diskUsage.accept(file);
                 filesFolderCount += diskUsage.getCount();
             }
-            //System.out.println("count: " + filesFolderCount);
+            //log.append("count: " + filesFolderCount);
 
             if (filesFolderCount != 0) {
                 increment = 100.0f / filesFolderCount;
@@ -106,9 +76,9 @@ public class DiskSpaceInformer extends JPanel
             jProgressBar.setVisible(false);
 
             setProgress(0);
-            //System.out.println("increment will be: " + increment);
+            //log.append("increment will be: " + increment);
             for (File file : files) {
-                //System.out.println("Processing: " + file);
+                //log.append("Processing: " + file);
                 DiskUsage diskUsage = new DiskUsage();
                 diskUsage.accept(file);
                 long size = diskUsage.getSize();
@@ -150,17 +120,17 @@ public class DiskSpaceInformer extends JPanel
                     } else {
                         size += file.length();
                         progress += increment;
-                        //System.out.println("progress: " + progress);
-                        if((int) Math.round(progress) % 10 == 0){
+                        //log.append("progress: " + progress);
+                        if ((int) Math.round(progress) % 10 == 0) {
                             setProgress(Math.min((int) Math.round(progress), 100));
                         }
                     }
                 } else if (file.isDirectory() && !isSymlink(file) && !isVirtualFileSystem(file)) {
                     String[] contents = file.list();
-                    if (contents != null){  //possibly a symlink
+                    if (contents != null) {  //take care of empty folders
                         file.listFiles(this);
                     }
-                } else{
+                } else {
                     size += 0;
                 }
 
@@ -174,29 +144,30 @@ public class DiskSpaceInformer extends JPanel
                 boolean isVfs = false;
                 String absPath = file.getAbsolutePath();
                 if (absPath.equalsIgnoreCase("/proc")
-                    || absPath.equalsIgnoreCase("/dev")){
+                        || absPath.equalsIgnoreCase("/dev")) {
                     isVfs = true;
                 }
                 return isVfs;  //To change body of created methods use File | Settings | File Templates.
             }
 
-            private  boolean isSymlink(File file) {
-               File canon = null;
-               boolean isLink = false;
-               try{
-                if (file.getParent() == null) {
-                    canon = file;
-                } else {
-                    File canonDir = file.getParentFile().getCanonicalFile();
-                    canon = new File(canonDir, file.getName());
-                    isLink = !canon.getCanonicalFile().equals(canon.getAbsoluteFile());
+            private boolean isSymlink(File file) {
+                File canon = null;
+                boolean isLink = false;
+                try {
+                    if (file.getParent() == null) {
+                        canon = file;
+                    } else {
+                        File canonDir = file.getParentFile().getCanonicalFile();
+                        canon = new File(canonDir, file.getName());
+                        isLink = !canon.getCanonicalFile().equals(canon.getAbsoluteFile());
+                    }
+                } catch (IOException e) {
+                    log.append(e.toString());
                 }
-               }catch (IOException e){
-                   log.append(e.toString());
-               }
 
                 return isLink;
             }
+
             public long getSize() {
                 return size;
             }
@@ -211,11 +182,8 @@ public class DiskSpaceInformer extends JPanel
 
     public DiskSpaceInformer() {
         super(new BorderLayout());
-
         JFrame f = new JFrame();
-        //Create the log first, because the action listeners
-        //need to refer to it.
-        log = new JTextArea(30,35);
+        log = new JTextArea(30, 35);
         log.setMargin(new Insets(5, 5, 5, 5));
         log.setEditable(false);
         JScrollPane logScrollPane = new JScrollPane(log);
@@ -224,56 +192,44 @@ public class DiskSpaceInformer extends JPanel
 
         //Create a file chooser
         String os = System.getProperty("os.name");
-        fc = new JFileChooser();
+        fileChooser = new JFileChooser();
 
-        //Uncomment one of the following lines to try a different
-        //file selection mode.  The first allows just directories
-        //to be selected (and, at least in the Java look and feel,
-        //shown).  The second allows both files and directories
-        //to be selected.  If you leave these lines commented out,
-        //then the default mode (FILES_ONLY) will be used.
-        //
-        fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-        //fc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+        fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        //fileChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
 
-        //Create the open button.  We use the image from the JLF
-        //Graphics Repository (but we extracted it from the jar).
-        //  createImageIcon("images/Open16.gif")
         openButton = new JButton("Choose Folder...");
         openButton.addActionListener(this);
 
-        //Create the save button.  We use the image from the JLF
-        //Graphics Repository (but we extracted it from the jar).
-        clearButton = new JButton("Clear Log...");
+        checkButton = new JButton("Check Space...");
+        checkButton.addActionListener(this);
 
+        clearButton = new JButton("Clear Log...");
         clearButton.addActionListener(this);
 
-
-        //For layout purposes, put the buttons in a separate panel
-        JPanel buttonPanel = new JPanel(); //use FlowLayout
+        //flow layout
+        JPanel buttonPanel = new JPanel();
         buttonPanel.add(openButton);
         buttonPanel.add(clearButton);
+        buttonPanel.add(checkButton);
 
-        jProgressBar = new JProgressBar(0,100);
+        jProgressBar = new JProgressBar(0, 100);
         JPanel progressPanel = new JPanel();
-        progressPanel.setSize(100,100);
-        progressPanel.setMinimumSize(new Dimension(200,200));
+        progressPanel.setSize(100, 100);
+        progressPanel.setMinimumSize(new Dimension(200, 200));
         progressPanel.add(jProgressBar);
 
-        //Add the buttons and the log to this panel.
+        //Add bits to the panel.
         add(buttonPanel, BorderLayout.PAGE_START);
         add(progressPanel, BorderLayout.CENTER);
         add(logScrollPane, BorderLayout.PAGE_END);
     }
 
     public void actionPerformed(ActionEvent e) {
-
-        //Handle open button action.
-        if (e.getSource() == openButton) {
-            int returnVal = fc.showOpenDialog(DiskSpaceInformer.this);
+        if (e.getSource() == openButton) { //open
+            int returnVal = fileChooser.showOpenDialog(DiskSpaceInformer.this);
 
             if (returnVal == JFileChooser.APPROVE_OPTION) {
-                File dir = fc.getSelectedFile();
+                File dir = fileChooser.getSelectedFile();
 
                 progressMonitor = new ProgressMonitor(DiskSpaceInformer.this,
                         "Getting Folder sizes",
@@ -281,18 +237,36 @@ public class DiskSpaceInformer extends JPanel
                 progressMonitor.setProgress(0);
                 task = new FindFileAndFolderSizes(dir);
                 task.addPropertyChangeListener(this);
-                //openButton.setEnabled(false);
                 task.execute();
             } else {
                 log.append("Open command cancelled by user." + newline);
             }
             log.setCaretPosition(log.getDocument().getLength());
 
-            //Handle clear button action.
         } else if (e.getSource() == clearButton) {
             log.setText("");  //reset
+        } else if (e.getSource() == checkButton) {
+            log.setText(checkSpaceAvailable());  //clear
         }
     }
+
+    private String checkSpaceAvailable() {
+        StringBuffer sb = new StringBuffer();
+        File[] roots = File.listRoots();
+        for(File root : roots){
+            long totalSpace = root.getTotalSpace();
+            long freeSpace = root.getFreeSpace();
+            long usedSpace = totalSpace - freeSpace;
+            sb.append(String.format("Checking: [%s]\nTotal Space is: [%s]\nUsed space is: [%s] \nFree space is: [%s] \n\n",
+                    root,
+                    readableFileSize(totalSpace),
+                    readableFileSize(usedSpace),
+                    readableFileSize(freeSpace))
+            );
+        }
+        return sb.toString();
+    }
+
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
@@ -339,26 +313,7 @@ public class DiskSpaceInformer extends JPanel
         return new DecimalFormat("#,##0.#").format(size / Math.pow(1024, digitGroups)) + " " + units[digitGroups];
     }
 
-    /**
-     * Returns an ImageIcon, or null if the path was invalid.
-     */
-    protected static ImageIcon createImageIcon(String path) {
-        java.net.URL imgURL = DiskSpaceInformer.class.getResource(path);
-        if (imgURL != null) {
-            return new ImageIcon(imgURL);
-        } else {
-            System.err.println("Couldn't find file: " + path);
-            return null;
-        }
-    }
-
-    /**
-     * Create the GUI and show it.  For thread safety,
-     * this method should be invoked from the
-     * event dispatch thread.
-     */
-    private static void createAndShowGUI() {
-        //Create and set up the window.
+    private static void setupAndShowUI() {
         version = "Directory Sizer v0.1b";
         JFrame frame = new JFrame(version);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -372,18 +327,14 @@ public class DiskSpaceInformer extends JPanel
     }
 
     public static void main(String[] args) {
-        //Schedule a job for the event dispatch thread:
-        //creating and showing this application's GUI.
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
-                //Turn off metal's use of bold fonts
                 UIManager.put("swing.boldMetal", Boolean.FALSE);
-                createAndShowGUI();
+                setupAndShowUI();
             }
         });
     }
 }
-
 
 class ValueComparator implements Comparator<String> {
 
@@ -393,13 +344,12 @@ class ValueComparator implements Comparator<String> {
         this.base = base;
     }
 
-    // Note: this comparator imposes orderings that are inconsistent with equals.
     public int compare(String a, String b) {
         if (base.get(a) >= base.get(b)) {
             return -1;
         } else {
             return 1;
-        } // returning 0 would merge keys
+        } // take care of 0  merge keys ?
     }
 
 }
