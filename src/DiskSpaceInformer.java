@@ -149,9 +149,9 @@ public class DiskSpaceInformer extends JPanel
                         fileCount++;
                     } else {
                         size += file.length();
-                        progress = (int) Math.round(progress += increment);
+                        progress += increment;
                         //System.out.println("progress: " + progress);
-                        if(progress % 10 == 0){
+                        if((int) Math.round(progress) % 10 == 0){
                             setProgress(Math.min((int) Math.round(progress), 100));
                         }
                     }
