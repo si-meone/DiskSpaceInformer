@@ -1,14 +1,15 @@
 Disk Space Informer
 ================
 
-Find where all your disk space has gone - works on mac, linux and windows 
+Find where all your disk space has gone - works on mac, linux and windows  
 
-Written in Java/Swing using JNLP to deliver it. 
-
-To run it and continually get the latest versions
-just double click on 
+To run it click on the link below which will download the file link below and then double click on the file.
 
 https://github.com/snasrallah/DiskSpaceInformer/raw/master/jar/DiskSpaceInformer.jnlp
+
+prequisite is Java 1.6 or above.
+
+Written in Java/Swing using JNLP to deliver it, upgrades are delivered on the fly by relaunching the jnlp file
 
 (sometimes it will download and you run the jnlp file it may complain about java so you'll need to fetch that
 plugin for your browser and operating system type)
