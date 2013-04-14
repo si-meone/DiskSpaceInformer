@@ -49,18 +49,20 @@ New In Versions
 1b - Added progress which is more accurate based on amount of files in total  
    - Added extra progress bar whilst scanning
    - Avoid symlinks
+
+1c - added root drive checking.
  
 
 TODO
 ====
 
-- bad problem with sys folders on linux like /sys , /dev reporting as being huge.
+- bad problem with sys folders on linux like /sys , /dev reporting as being huge - may have to do more.
 - think about block sizes on different Operating systems 4kb seems standard maybe I should check.
 - graphics or colors
-- should work on java 1.6 need to verify with a system that only has 1.6
-- folders take space as well
+- more work on accuracy of file checking.
+- folders take space as well ?
 - add some threading or callbacks possibly, the user interface hangs on large folders 
-  e.g. c:\ on a resonably spec'd XP machine with 32gb of space used took 4 mins (the interface hung till it completed)
+  e.g. c:\ on a resonably spec'd XP machine with 32gb of space used took 2 mins (the interface hung till it completed)
 - tests 
 - cancel folder sizing needs a bit more investigation , notice CPU stays at 100 % if there is a problem e.g. processing /sys on inux
 
