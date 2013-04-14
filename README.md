@@ -3,11 +3,11 @@ Disk Space Informer
 
 Find where all your disk space has gone - works on mac, linux and windows  
 
+prequisite is Java 1.6 or above.
+
 To run it click on the link below which will download the file link below and then double click on the file.
 
 https://github.com/snasrallah/DiskSpaceInformer/raw/master/jar/DiskSpaceInformer.jnlp
-
-prequisite is Java 1.6 or above.
 
 Written in Java/Swing using JNLP to deliver it, upgrades are delivered on the fly by relaunching the jnlp file
 
@@ -19,7 +19,8 @@ or get the jar and run it
 via
 java -jar jar/DiskSpaceInformer.jar
 
-or download the source and jar it up yourself
+or download the source and compile it up yourself using javac in the src folder
+
 
 To jar up
 =========
