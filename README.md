@@ -58,6 +58,7 @@ TODO
 
 - bad problem with sys folders on linux like /sys , /dev reporting as being huge - may have to do more.
 - think about block sizes on different Operating systems 4kb seems standard maybe I should check.
+- mac swing chooser doesn't let you choose root drive, only folders below.
 - graphics or colors
 - more work on accuracy of file checking.
 - folders take space as well ?
