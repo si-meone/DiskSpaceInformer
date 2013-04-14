@@ -244,9 +244,10 @@ public class DiskSpaceInformer extends JPanel
             log.setCaretPosition(log.getDocument().getLength());
 
         } else if (e.getSource() == clearButton) {
-            log.setText("");  //reset
+            log.setText("");  //clear
         } else if (e.getSource() == checkButton) {
-            log.setText(checkSpaceAvailable());  //clear
+            log.append(checkSpaceAvailable());  //check
+            log.setCaretPosition(log.getDocument().getLength());
         }
     }
 
@@ -257,8 +258,12 @@ public class DiskSpaceInformer extends JPanel
             long totalSpace = root.getTotalSpace();
             long freeSpace = root.getFreeSpace();
             long usedSpace = totalSpace - freeSpace;
-            sb.append(String.format("Checking: [%s]\nTotal Space is: [%s]\nUsed space is: [%s] \nFree space is: [%s] \n\n",
-                    root,
+
+            String title =  "Checking: [ " + root + " ]";
+            String underline = String.format(String.format("%%0%dd", title.length()), 0).replace("0", "=");
+
+            sb.append(underline + "\n" + title + "\n" + underline);
+            sb.append(String.format("\nTotal Space is: [%s]\nUsed space is: [%s] \nFree space is: [%s] \n\n",
                     readableFileSize(totalSpace),
                     readableFileSize(usedSpace),
                     readableFileSize(freeSpace))
