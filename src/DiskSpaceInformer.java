@@ -155,7 +155,7 @@ public class DiskSpaceInformer extends JPanel
                             setProgress(Math.min((int) Math.round(progress), 100));
                         }
                     }
-                } else if (file.isDirectory() && !isSymlink(file)) {
+                } else if (file.isDirectory() && !isSymlink(file) && !isVirtualFileSystem(file)) {
                     String[] contents = file.list();
                     if (contents != null){  //possibly a symlink
                         file.listFiles(this);
@@ -165,6 +165,19 @@ public class DiskSpaceInformer extends JPanel
                 }
 
                 return false;
+            }
+
+            /*
+                Folders to avoid they give strange readings
+             */
+            private boolean isVirtualFileSystem(File file) {
+                boolean isVfs = false;
+                String absPath = file.getAbsolutePath();
+                if (absPath.equalsIgnoreCase("/proc")
+                    || absPath.equalsIgnoreCase("/dev")){
+                    isVfs = true;
+                }
+                return isVfs;  //To change body of created methods use File | Settings | File Templates.
             }
 
             private  boolean isSymlink(File file) {
@@ -210,6 +223,7 @@ public class DiskSpaceInformer extends JPanel
         logScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
 
         //Create a file chooser
+        String os = System.getProperty("os.name");
         fc = new JFileChooser();
 
         //Uncomment one of the following lines to try a different
