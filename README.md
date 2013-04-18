@@ -46,8 +46,8 @@ New In Versions
 
 1a - Intial commit a start
 
-1b - Added progress which is more accurate based on amount of files in total  
-   - Added extra progress bar whilst scanning
+1b - Added ProgressLevel which is more accurate based on amount of files in total
+   - Added extra ProgressLevel bar whilst scanning
    - Avoid symlinks
  
 

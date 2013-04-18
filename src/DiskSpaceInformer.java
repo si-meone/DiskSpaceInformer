@@ -6,7 +6,6 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.FileFilter;
-import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.*;
 
@@ -16,18 +15,19 @@ import java.util.*;
 public class DiskSpaceInformer extends JPanel
         implements ActionListener, PropertyChangeListener {
     static private final String newline = "\n";
-    private static String version = "Directory Sizer v0.1c";;
+    private static String version = "Directory Sizer v0.1c";
     private final JButton checkButton;
     JButton openButton, clearButton;
     JTextArea log;
     JFileChooser fileChooser;
     JProgressBar jProgressBar;
-    private FindFileAndFolderSizes task;
 
+    private FindFileAndFolderSizes task;
     private ProgressMonitor progressMonitor;
-    private long filesFolderCount = 0;
-    private static float increment = 0.0f;
-    private static float progress = 0.0f;
+
+    private int fileCount = 0;
+    private long folderSize = 0;
+
 
     class FindFileAndFolderSizes extends SwingWorker<Void, Void> {
 
@@ -39,142 +39,67 @@ public class DiskSpaceInformer extends JPanel
 
         @Override
         public Void doInBackground() {
-
-            File[] files = null;
-            Map<String, Long> dirListing = new HashMap<String, Long>();
+            Map<String, Long> listing = new HashMap<String, Long>();
 
             jProgressBar.setStringPainted(true);
             jProgressBar.setString("Determining files to scan");
             jProgressBar.setVisible(true);
             jProgressBar.setIndeterminate(true);
 
-            try {
-                files = dir.listFiles();
-            } catch (SecurityException se) {
-                jProgressBar.setIndeterminate(false);
-                jProgressBar.setString("Security problem: " + se);
-                throw new SecurityException("Security problem: " + se);
-            }
-            if (null == files) {
-                jProgressBar.setString("Unable to retrieve folder information check permissions");
-                dirListing = new HashMap<String, Long>();
-            }
-
-            for (File file : files) {
-                jProgressBar.setString(file.toString());
-                //log.append("Processing: " + file);
-                boolean onlyCount = true;
-                DiskUsage diskUsage = new DiskUsage(onlyCount);
-                diskUsage.accept(file);
-                filesFolderCount += diskUsage.getCount();
-            }
-            //log.append("count: " + filesFolderCount);
-
-            if (filesFolderCount != 0) {
-                increment = 100.0f / filesFolderCount;
-            }
-            jProgressBar.setVisible(false);
+            fileCount = 0;
 
             setProgress(0);
-            //log.append("increment will be: " + increment);
-            for (File file : files) {
-                //log.append("Processing: " + file);
-                DiskUsage diskUsage = new DiskUsage();
-                diskUsage.accept(file);
-                long size = diskUsage.getSize();
-                dirListing.put(file.getName(), size);
+            long totalSize = 0L;
+
+            for (File file : dir.listFiles(new IgnoreFilter())) {
+                if (file.isFile()) {
+                    long size = file.length();
+                    totalSize += size;
+                    listing.put(file.getName(), size);
+                } else {
+                    folderSize = 0;
+                    getFolderSize(file);
+                    totalSize += folderSize;
+                    listing.put(file.getName(), folderSize);
+                }
             }
-            ValueComparator bvc = new ValueComparator(dirListing);
-            Map<String, Long> sortedMap = new TreeMap<String, Long>(bvc);
-            sortedMap.putAll(dirListing);
-            PrettyPrint(dir, sortedMap);
+
+            jProgressBar.setString("Sorting Listing...");
+            ValueComparator vc = new ValueComparator(listing);
+            Map<String, Long> sortedMap = new TreeMap<String, Long>(vc);
+            sortedMap.putAll(listing);
+            jProgressBar.setIndeterminate(false);
+            jProgressBar.setVisible(false);
+            PrettyPrint(dir, totalSize, sortedMap);
+
             return null;
+        }
+
+        private long getFolderSize(File file) {
+            if (file.isFile()) {
+                folderSize += file.length();
+            } else {
+                //log.append("\nProcessing size: " + file);
+                String[] contents = file.list();
+                if (contents != null) {  //take care of empty folders
+                    for (File f : file.listFiles(new IgnoreFilter())) {
+                        jProgressBar.setString(file.toString());
+                        getFolderSize(f);
+                    }
+                }
+            }
+            return folderSize;
+        }
+
+        public void setProgressBar(int i) {
+            super.setProgress(i);
+
         }
 
         @Override
         public void done() {
             Toolkit.getDefaultToolkit().beep();
             progressMonitor.close();
-        }
-
-        class DiskUsage implements FileFilter {
-
-            public DiskUsage() {
-            }
-
-            ;
-
-            public DiskUsage(boolean count) {
-                this.count = count;
-            }
-
-            ;
-            private long fileCount = 0;
-            private long size = 0;
-            private boolean count = false;
-
-            public boolean accept(File file) {
-                if (file.isFile()) {
-                    if (count) {
-                        fileCount++;
-                    } else {
-                        size += file.length();
-                        progress += increment;
-                        //log.append("progress: " + progress);
-                        if ((int) Math.round(progress) % 10 == 0) {
-                            setProgress(Math.min((int) Math.round(progress), 100));
-                        }
-                    }
-                } else if (file.isDirectory() && !isSymlink(file) && !isVirtualFileSystem(file)) {
-                    String[] contents = file.list();
-                    if (contents != null) {  //take care of empty folders
-                        file.listFiles(this);
-                    }
-                } else {
-                    size += 0;
-                }
-
-                return false;
-            }
-
-            /*
-                Folders to avoid they give strange readings
-             */
-            private boolean isVirtualFileSystem(File file) {
-                boolean isVfs = false;
-                String absPath = file.getAbsolutePath();
-                if (absPath.equalsIgnoreCase("/proc")
-                        || absPath.equalsIgnoreCase("/dev")) {
-                    isVfs = true;
-                }
-                return isVfs;  //To change body of created methods use File | Settings | File Templates.
-            }
-
-            private boolean isSymlink(File file) {
-                File canon = null;
-                boolean isLink = false;
-                try {
-                    if (file.getParent() == null) {
-                        canon = file;
-                    } else {
-                        File canonDir = file.getParentFile().getCanonicalFile();
-                        canon = new File(canonDir, file.getName());
-                        isLink = !canon.getCanonicalFile().equals(canon.getAbsoluteFile());
-                    }
-                } catch (IOException e) {
-                    log.append(e.toString());
-                }
-
-                return isLink;
-            }
-
-            public long getSize() {
-                return size;
-            }
-
-            public long getCount() {
-                return fileCount;
-            }
         }
 
     }
@@ -254,12 +179,12 @@ public class DiskSpaceInformer extends JPanel
     private String checkSpaceAvailable() {
         StringBuffer sb = new StringBuffer();
         File[] roots = File.listRoots();
-        for(File root : roots){
+        for (File root : roots) {
             long totalSpace = root.getTotalSpace();
             long freeSpace = root.getFreeSpace();
             long usedSpace = totalSpace - freeSpace;
 
-            String title =  "Checking: [ " + root + " ]";
+            String title = "Checking: [ " + root + " ]";
             String underline = String.format(String.format("%%0%dd", title.length()), 0).replace("0", "=");
 
             sb.append(underline + "\n" + title + "\n" + underline);
@@ -275,7 +200,7 @@ public class DiskSpaceInformer extends JPanel
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        if ("progress" == evt.getPropertyName()) {
+        if ("ProgressLevel" == evt.getPropertyName()) {
             int progress = (Integer) evt.getNewValue();
             progressMonitor.setProgress(progress);
             String message =
@@ -294,11 +219,7 @@ public class DiskSpaceInformer extends JPanel
         }
     }
 
-    private void PrettyPrint(File file, Map<String, Long> sortedFileFolderSizes) {
-        Long total = 0L;
-        for (Long value : sortedFileFolderSizes.values()) {
-            total = total + value; // Can also be done by total += value;
-        }
+    private void PrettyPrint(File file, long total, Map<String, Long> sortedFileFolderSizes) {
         String title = file.getName() + ": [" + readableFileSize(total) + "]";
         String underline = String.format(String.format("%%0%dd", title.length()), 0).replace("0", "=");
         log.append(underline + newline);
@@ -338,22 +259,4 @@ public class DiskSpaceInformer extends JPanel
             }
         });
     }
-}
-
-class ValueComparator implements Comparator<String> {
-
-    Map<String, Long> base;
-
-    public ValueComparator(Map<String, Long> base) {
-        this.base = base;
-    }
-
-    public int compare(String a, String b) {
-        if (base.get(a) >= base.get(b)) {
-            return -1;
-        } else {
-            return 1;
-        } // take care of 0  merge keys ?
-    }
-
 }
