@@ -1,14 +1,15 @@
 Disk Space Informer
 ================
 
-Find where all your disk space has gone - works on mac, linux and windows 
+Find where all your disk space has gone - works on mac, linux and windows  
 
-Written in Java/Swing using JNLP to deliver it. 
+prequisite is Java 1.6 or above.
 
-To run it and continually get the latest versions
-just double click on 
+To run it click on the link below which will download the file link below and then double click on the file.
 
 https://github.com/snasrallah/DiskSpaceInformer/raw/master/jar/DiskSpaceInformer.jnlp
+
+Written in Java/Swing using JNLP to deliver it, upgrades are delivered on the fly by relaunching the jnlp file
 
 (sometimes it will download and you run the jnlp file it may complain about java so you'll need to fetch that
 plugin for your browser and operating system type)
@@ -18,7 +19,8 @@ or get the jar and run it
 via
 java -jar jar/DiskSpaceInformer.jar
 
-or download the source and jar it up yourself
+or download the source and compile it up yourself using javac in the src folder
+
 
 To jar up
 =========
@@ -49,19 +51,22 @@ New In Versions
 1b - Added ProgressLevel which is more accurate based on amount of files in total
    - Added extra ProgressLevel bar whilst scanning
    - Avoid symlinks
+
+1c - added root drive checking.
  
 
 TODO
 ====
 
-- bad problem with sys folders on linux like /sys , /dev reporting as being huge.
+- bad problem with sys folders on linux like /sys , /dev reporting as being huge - may have to do more.
 - think about block sizes on different Operating systems 4kb seems standard maybe I should check.
+- mac swing chooser doesn't let you choose root drive, only folders below.
 - graphics or colors
-- should work on java 1.6 need to verify with a system that only has 1.6
-- folders take space as well
+- more work on accuracy of file checking.
+- folders take space as well ?
 - add some threading or callbacks possibly, the user interface hangs on large folders 
-  e.g. c:\ on a resonably spec'd XP machine with 32gb of space used took 4 mins (the interface hung till it completed)
+  e.g. c:\ on a resonably spec'd XP machine with 32gb of space used took 2 mins (the interface hung till it completed)
 - tests 
 - cancel folder sizing needs a bit more investigation , notice CPU stays at 100 % if there is a problem e.g. processing /sys on inux
-
+- look at bringing in nio2 jar in java 7
 
