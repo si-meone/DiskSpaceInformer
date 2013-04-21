@@ -306,12 +306,12 @@ public class DiskSpaceInformer extends JPanel
         log = new JTextArea(30, 40);
         log.setMargin(new Insets(5, 5, 5, 5));
         log.setEditable(false);
-        log.append("- Select Drive or Folder: click [Choose Folder]\n\n");
-        log.append("- Folder space: right click in tree & [Check Space]\n\n");
-        log.append("- Folder space: select folder in tree & [Check Space]\n\n");
-        log.append("- Multiple items: select multiple items [Check Space]\n\n");
-        log.append("- All Drives: overview of system [Storage Info]\n\n");
-        log.append("- Clear screen: overview of system [Storage Info]");
+        log.append("- Select Drive or Folder: click [Choose Folder]"+newline);
+        log.append("- Folder space: right click in tree & [Check Space]"+newline);
+        log.append("- Folder space: select folder in tree & [Check Space]"+newline);
+        log.append("- Multiple items: select multiple items [Check Space]"+newline);
+        log.append("- All Drives: overview of system [Storage Info]"+newline);
+        log.append("- Clear screen: overview of system [Storage Info]"+newline);
         JScrollPane logScrollPane = new JScrollPane(log);
         logScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         logScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
@@ -402,7 +402,6 @@ public class DiskSpaceInformer extends JPanel
             } else {
                 log.append("Open command cancelled by user." + newline);
             }
-            log.setCaretPosition(log.getDocument().getLength());
 
         } else if (e.getSource() == checkButton) {
             //log.append(checkSpaceAvailable());  //check
@@ -421,7 +420,9 @@ public class DiskSpaceInformer extends JPanel
                 task.addPropertyChangeListener(this);
                 task.execute();
             }
+
             log.setCaretPosition(log.getDocument().getLength());
+
         } else if (e.getSource() == summaryButton) {
             log.append(checkSpaceAvailable());  //check
             log.setCaretPosition(log.getDocument().getLength());
@@ -486,7 +487,7 @@ public class DiskSpaceInformer extends JPanel
             log.append("[ " + readableFileSize(entry.getValue()) + " ]");
             log.append(" --> " + entry.getKey() + "\n");
         }
-        log.append(newline + newline);
+        log.append(newline);
     }
 
     private void prettyPrint(File file, long total) {
