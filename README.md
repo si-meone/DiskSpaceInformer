@@ -53,6 +53,8 @@ New In Versions
    - Avoid symlinks
 
 1c - added root drive checking.
+
+1d - added tree to browse and you can interact with it to find space usage
  
 
 TODO
@@ -65,8 +67,8 @@ TODO
 - more work on accuracy of file checking.
 - folders take space as well ?
 - add some threading or callbacks possibly, the user interface hangs on large folders 
-  e.g. c:\ on a resonably spec'd XP machine with 32gb of space used took 2 mins (the interface hung till it completed)
+  e.g. c:\ on a resonably spec'd XP machine with 32gb of space used took 1min (the interface hung till it completed)
 - tests 
-- cancel folder sizing needs a bit more investigation , notice CPU stays at 100 % if there is a problem e.g. processing /sys on inux
+- cancel folder sizing needs a bit more investigation , notice CPU stays at 100 % if there is a problem e.g. processing /sys on linux
 - look at bringing in nio2 jar in java 7
 
