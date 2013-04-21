@@ -311,8 +311,8 @@ public class DiskSpaceInformer extends JPanel
         log.append("- Select drive or folder: click [Choose Folder]"+newline +newline);
         log.append("- Space usage: right click tree item & Check Space"+newline);
         log.append("- Alternative: select tree item & click [Check Space]"+newline+newline);
-        log.append("- Multiple items: select multiple items [Check Space]"+newline);
-        log.append("- Alternative: select multiple items right click]"+newline+newline);
+        log.append("- Multiple items: select multiple items right click"+newline);
+        log.append("- Alternative: select multiple items [Check Space]"+newline+newline);
         log.append("- All drives: overview of system [Storage Info]"+newline+newline);
         log.append("- Clear screen: overview of system [Storage Info]"+newline);
         JScrollPane logScrollPane = new JScrollPane(log);
