@@ -19,7 +19,7 @@ import java.util.*;
 public class DiskSpaceInformer extends JPanel
         implements ActionListener, PropertyChangeListener {
     static private final String newline = "\n";
-    private static String version = "Directory Sizer v0.1d";
+    private static String version = "Disk Space Informer v0.1d";
     private final JButton checkButton;
     JButton openButton, summaryButton, clearButton;
     JTextArea log;
@@ -99,11 +99,14 @@ public class DiskSpaceInformer extends JPanel
             sortedMap.putAll(listing);
             jProgressBar.setIndeterminate(false);
             if (summary) {
+                int lastDoc = log.getDocument().getLength();
                 prettyPrint(file, totalSize);
+                log.setCaretPosition(lastDoc);
             } else {
+                int lastDoc = log.getDocument().getLength();
                 prettyPrint(file, totalSize, sortedMap);
+                log.setCaretPosition(lastDoc);
             }
-
             return null;
         }
 
@@ -272,9 +275,8 @@ public class DiskSpaceInformer extends JPanel
                 task.addPropertyChangeListener(DiskSpaceInformer.this);
                 task.execute();
             }
-            log.setCaretPosition(log.getDocument().getLength());
-            tree.repaint();
-
+            //log.setCaretPosition(log.getDocument().getLength());
+            //tree.repaint();
 
         }
     }
@@ -306,11 +308,12 @@ public class DiskSpaceInformer extends JPanel
         log = new JTextArea(30, 40);
         log.setMargin(new Insets(5, 5, 5, 5));
         log.setEditable(false);
-        log.append("- Select Drive or Folder: click [Choose Folder]"+newline);
-        log.append("- Folder space: right click in tree & [Check Space]"+newline);
-        log.append("- Folder space: select folder in tree & [Check Space]"+newline);
+        log.append("- Select drive or folder: click [Choose Folder]"+newline +newline);
+        log.append("- Space usage: right click tree item & Check Space"+newline);
+        log.append("- Alternative: select tree item & click [Check Space]"+newline+newline);
         log.append("- Multiple items: select multiple items [Check Space]"+newline);
-        log.append("- All Drives: overview of system [Storage Info]"+newline);
+        log.append("- Alternative: select multiple items right click]"+newline+newline);
+        log.append("- All drives: overview of system [Storage Info]"+newline+newline);
         log.append("- Clear screen: overview of system [Storage Info]"+newline);
         JScrollPane logScrollPane = new JScrollPane(log);
         logScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
@@ -410,8 +413,13 @@ public class DiskSpaceInformer extends JPanel
                     "", 0, 100);
             progressMonitor.setProgress(0);
             TreePath[] selectionPaths = tree.getSelectionPaths();
+
+            if (null == selectionPaths) {  //more than one thing
+                log.append(newline +"Error: Please select a file or folder in the tree"+ newline);
+            }
+
             for (TreePath path : selectionPaths) {
-                if (selectionPaths.length > 1) {  //more than one thing
+               if (selectionPaths.length > 1) {  //more than one thing
                     boolean summary = true;
                     task = new FindFileAndFolderSizes((File) path.getLastPathComponent(), summary);
                 } else {
@@ -421,7 +429,7 @@ public class DiskSpaceInformer extends JPanel
                 task.execute();
             }
 
-            log.setCaretPosition(log.getDocument().getLength());
+//            log.setCaretPosition(log.getDocument().getLength());
 
         } else if (e.getSource() == summaryButton) {
             log.append(checkSpaceAvailable());  //check
