@@ -60,7 +60,10 @@ New In Versions
 TODO
 ====
 
+- Tree structure for leafs don't need full path as you can see above what path you are in.
 - Better text alignment in jtext area for scrolling data.
+- Performance of getting file sizes - investigate nio2 or apache commons.
+- Break out listeners into separate classes for testing.
 - bad problem with sys folders on linux like /sys , /dev reporting as being huge - may have to do more.
 - think about block sizes on different Operating systems 4kb seems standard maybe I should check.
 - mac swing chooser doesn't let you choose root drive, only folders below.
