@@ -72,7 +72,8 @@ public class DiskSpaceInformer extends JPanel
         } else {
             root = new File("/");
         }
-        FileTreeModel model = new FileTreeModel(root);
+        //FileTreeModel model = new FileTreeModel(root);
+        DirectoryTreeModel model = new DirectoryTreeModel(root);
 
         // Create a JTree and tell it to display our model
         tree = new JTree();
@@ -104,7 +105,7 @@ public class DiskSpaceInformer extends JPanel
 
                 // Create a JTree and tell it to display our model
                 tree = new JTree();
-                tree.setModel(new FileTreeModel(dir));
+                tree.setModel(new DirectoryTreeModel(dir));
                 tree.addMouseListener(new RightClickMouseListener());
                 // The JTree can get big, so allow it to scroll
                 treeScrollPane.setViewportView(tree);
