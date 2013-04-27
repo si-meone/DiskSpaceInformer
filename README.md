@@ -60,19 +60,22 @@ New In Versions
 TODO
 ====
 
+Usability:
 - Tree structure for leafs don't need full path as you can see above what path you are in.
-- Better text alignment in jtext area for scrolling data.
-- Performance of getting file sizes - investigate nio2 or apache commons.
+- Better text alignment in text area for scrolling data.
+- Pie chart representation of space used
+- Add to right click menu , summary or break down of sub-folders.
+
+Performance:
+- Performance of getting file sizes - investigate nio2 or apache-commons-io.
+
+Refactoring and Testing:
 - Break out listeners into separate classes for testing.
-- bad problem with sys folders on linux like /sys , /dev reporting as being huge - may have to do more.
-- think about block sizes on different Operating systems 4kb seems standard maybe I should check.
-- mac swing chooser doesn't let you choose root drive, only folders below.
-- graphics or colors
-- more work on accuracy of file checking.
-- folders take space as well ?
-- add some threading or callbacks possibly, the user interface hangs on large folders 
-  e.g. c:\ on a resonably spec'd XP machine with 32gb of space used took 1min (the interface hung till it completed)
-- tests 
-- cancel folder sizing needs a bit more investigation , notice CPU stays at 100 % if there is a problem e.g. processing /sys on linux
-- look at bringing in nio2 jar in java 7
+
+Functionality:
+- Bad problem with sys folders on linux like /sys , /dev reporting as being huge - may have to do more.
+- Block sizes on different Operating systems 4kb seems standard maybe I should check.
+- Mac swing chooser doesn't let you choose root drive, only folders below.
+- More work on accuracy of file checking. Folders take space as well ?
+- Cancel folder sizing needs a bit more investigation , notice CPU stays at 100 % if there is a problem e.g. processing /sys on linux
 
