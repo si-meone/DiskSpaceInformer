@@ -19,11 +19,11 @@ public class DiskSpaceInformer extends JPanel
     JButton openButton, summaryButton, clearButton;
     JTextArea log;
     JFileChooser fileChooser;
-    JProgressBar jProgressBar;
     JTree tree;
     JScrollPane treeScrollPane;
     protected FindFileAndFolderSizes task;
     protected ProgressMonitor progressMonitor;
+    protected JProgressBar progressBar;
 
     public DiskSpaceInformer() {
         super(new BorderLayout());
@@ -61,9 +61,9 @@ public class DiskSpaceInformer extends JPanel
         buttonPanel.add(summaryButton);
         buttonPanel.add(clearButton);
 
-        jProgressBar = new JProgressBar();
+        progressBar = new JProgressBar();
         JPanel progressPanel = new JPanel();
-        progressPanel.add(jProgressBar);
+        progressPanel.add(progressBar);
 
         // Create a TreeModel object to represent our tree of files
         File root;
@@ -126,9 +126,9 @@ public class DiskSpaceInformer extends JPanel
             for (TreePath path : selectionPaths) {
                 if (selectionPaths.length > 1) {  //more than one thing
                     boolean summary = true;
-                    task = new FindFileAndFolderSizes((File) path.getLastPathComponent(), log, jProgressBar, progressMonitor, summary);
+                    task = new FindFileAndFolderSizes((File) path.getLastPathComponent(), log, progressBar, progressMonitor, summary);
                 } else {
-                    task = new FindFileAndFolderSizes((File) path.getLastPathComponent(), log, jProgressBar, progressMonitor);
+                    task = new FindFileAndFolderSizes((File) path.getLastPathComponent(), log, progressBar, progressMonitor);
                 }
                 task.addPropertyChangeListener(this);
                 task.execute();
@@ -155,11 +155,11 @@ public class DiskSpaceInformer extends JPanel
             if (progressMonitor.isCanceled() || task.isDone()) {
                 Toolkit.getDefaultToolkit().beep();
                 if (progressMonitor.isCanceled()) {
-                    jProgressBar.setString("Task cancelled");
+                    progressBar.setString("Task cancelled");
                     log.append("Task canceled.\n");
                     task.cancel(true);
                 } else {
-                    jProgressBar.setString("Task completed");
+                    progressBar.setString("Task completed");
                     // log.append("Task completed.\n");
                 }
             }
@@ -174,7 +174,7 @@ public class DiskSpaceInformer extends JPanel
                     int rowLocation = tree.getRowForLocation(e.getX(), e.getY());
                     File lastPathComponent = (File) tree.getPathForRow(rowLocation).getLastPathComponent();
                     if (lastPathComponent.isFile()) {
-                        task = new FindFileAndFolderSizes(lastPathComponent,log,jProgressBar,progressMonitor);
+                        task = new FindFileAndFolderSizes(lastPathComponent,log, progressBar,progressMonitor);
                         task.addPropertyChangeListener(DiskSpaceInformer.this);
                         task.execute();
                     }
@@ -222,9 +222,9 @@ public class DiskSpaceInformer extends JPanel
                 FindFileAndFolderSizes task;
                 if (selectionPaths.length > 1) {  //more than one thing
                     boolean summary = true;
-                    task = new FindFileAndFolderSizes((File) path.getLastPathComponent(), log, jProgressBar ,progressMonitor, summary);
+                    task = new FindFileAndFolderSizes((File) path.getLastPathComponent(), log, progressBar,progressMonitor, summary);
                 } else {
-                    task = new FindFileAndFolderSizes((File) path.getLastPathComponent(),log, jProgressBar ,progressMonitor);
+                    task = new FindFileAndFolderSizes((File) path.getLastPathComponent(),log, progressBar,progressMonitor);
                 }
                 task.addPropertyChangeListener(DiskSpaceInformer.this);
                 task.execute();
