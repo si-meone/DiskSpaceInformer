@@ -66,24 +66,20 @@ public class DiskSpaceInformer extends JPanel
         progressPanel.add(progressBar);
 
         // Create a TreeModel object to represent our tree of files
-        File root;
+        String root;
         if (Utils.isWindows()) {
-            root = new File("c:\\");
+            root = "c:\\";
         } else {
-            root = new File("/");
+            root = "/";
         }
-        //FileTreeModel model = new FileTreeModel(root);
-        DirectoryTreeModel model = new DirectoryTreeModel(root);
-
         // Create a JTree and tell it to display our model
         tree = new JTree();
-        tree.setModel(model);
+        tree.setModel(new DirectoryTreeModel(root));
         tree.addMouseListener(new LeftClickMouseListener());
         tree.addMouseListener(new RightClickMouseListener());
 
         // The JTree can get big, so allow it to scroll
         treeScrollPane = new JScrollPane(tree);
-
 
         JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
                 treeScrollPane, logScrollPane);
@@ -105,7 +101,7 @@ public class DiskSpaceInformer extends JPanel
 
                 // Create a JTree and tell it to display our model
                 tree = new JTree();
-                tree.setModel(new DirectoryTreeModel(dir));
+                tree.setModel(new DirectoryTreeModel(new TreeFile(dir)));
                 tree.addMouseListener(new RightClickMouseListener());
                 // The JTree can get big, so allow it to scroll
                 treeScrollPane.setViewportView(tree);
