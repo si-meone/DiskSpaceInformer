@@ -66,12 +66,7 @@ public class DiskSpaceInformer extends JPanel
         progressPanel.add(progressBar);
 
         // Create a TreeModel object to represent our tree of files
-        String root;
-        if (Utils.isWindows()) {
-            root = "c:\\";
-        } else {
-            root = "/";
-        }
+        String root =System.getProperty("user.home");
         // Create a JTree and tell it to display our model
         tree = new JTree();
         tree.setModel(new DirectoryTreeModel(root));

@@ -8,7 +8,7 @@
 
     <resources>
         <!-- Application Resources -->
-        <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
+        <j2se version="1.7+" href="http://java.sun.com/products/autodl/j2se"/>
         <jar href="DiskSpaceInformer.jar" main="true" />
     </resources>
     <application-desc

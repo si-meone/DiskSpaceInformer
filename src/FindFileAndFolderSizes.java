@@ -1,6 +1,9 @@
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.*;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
@@ -53,7 +56,6 @@ class FindFileAndFolderSizes extends SwingWorker<Void, Void> {
                 progress += increment;
                 //log.append("progress: " + progress);
                 setProgress(Math.min((int) Math.round(progress), 100));
-
                 long size = file.length();
                 totalSize += size;
                 listing.put(file.getName(), size);
@@ -62,9 +64,16 @@ class FindFileAndFolderSizes extends SwingWorker<Void, Void> {
                 progress += increment;
                 //log.append("progress: " + progress);
                 setProgress(Math.min((int) Math.round(progress), 100));
-                getFolderSize(file);
-                totalSize += folderSize;
-                listing.put(file.getName(), folderSize);
+                CalculateFileSizeVisitor visitor = new CalculateFileSizeVisitor();
+                Path root = Paths.get(String.valueOf(file));
+                try {
+                    Files.walkFileTree(root, visitor);
+                } catch (IOException e) {
+                    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                }
+                //getFolderSize2(file);
+                totalSize += visitor.getSizeSum();
+                listing.put(file.getName(), visitor.getSizeSum());
             }
         }
 
