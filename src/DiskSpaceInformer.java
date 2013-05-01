@@ -36,7 +36,6 @@ public class DiskSpaceInformer extends JPanel
         logScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
 
         //Create a file chooser
-        String os = System.getProperty("os.name");
         fileChooser = new JFileChooser();
 
         fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);

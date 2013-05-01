@@ -11,7 +11,6 @@ import java.util.TreeMap;
 class FindFileAndFolderSizes extends SwingWorker<Void, Void> {
 
     private File file;
-    private long folderSize = 0;
     private JTextArea log;
     private JProgressBar progressBar;
     private ProgressMonitor progressMonitor;
@@ -60,7 +59,6 @@ class FindFileAndFolderSizes extends SwingWorker<Void, Void> {
                 totalSize += size;
                 listing.put(file.getName(), size);
             } else {
-                folderSize = 0;
                 progress += increment;
                 //log.append("progress: " + progress);
                 setProgress(Math.min((int) Math.round(progress), 100));
@@ -69,9 +67,8 @@ class FindFileAndFolderSizes extends SwingWorker<Void, Void> {
                 try {
                     Files.walkFileTree(root, visitor);
                 } catch (IOException e) {
-                    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                    e.printStackTrace();
                 }
-                //getFolderSize2(file);
                 totalSize += visitor.getSizeSum();
                 listing.put(file.getName(), visitor.getSizeSum());
             }
@@ -92,22 +89,6 @@ class FindFileAndFolderSizes extends SwingWorker<Void, Void> {
             log.setCaretPosition(lastDoc);
         }
         return null;
-    }
-
-    private long getFolderSize(File file) {
-        if (file.isFile()) {
-            folderSize += file.length();
-        } else {
-            //log.append("\nProcessing size: " + file);
-            String[] contents = file.list();
-            if (contents != null) {  //take care of empty folders
-                for (File f : file.listFiles(new IgnoreFilter())) {
-                    progressBar.setString(file.toString());
-                    getFolderSize(f);
-                }
-            }
-        }
-        return folderSize;
     }
 
     @Override

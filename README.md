@@ -54,8 +54,21 @@ New In Versions
 
 1c - added root drive checking.
 
-1d - added tree to browse and you can interact with it to find space usage
- 
+1d - added tree to browse and you can interact with it to find space usage , switched to Nio2
+     much faster but only supports java 7 and above .
+
+
+
+BUGS
+====
+- Mac swing chooser doesn't let you choose root drive, only folders below.
+- Windows or Linux if you select a root drive it doesn't show the drive or root name in the root
+  node.
+- Cancel folder sizing needs a bit more investigation , notice CPU stays at 100 % if there is a problem e.g. processing /sys on linux
+- Bad problem with sys folders on linux like /sys , /dev reporting as being huge - may have to do more.
+- Block sizes on different Operating systems 4kb seems standard maybe I should check.
+- More work on accuracy of file checking. Folders take space as well ?
+
 
 TODO
 ====
@@ -71,11 +84,9 @@ Performance:
 
 Refactoring and Testing:
 - Break out listeners into separate classes for testing.
+- FindFileandFolderSizes constructor too long , maybe a progress
+- Look at virtual or mock or real file system test ,needs to work across all OS's
 
-Functionality:
-- Bad problem with sys folders on linux like /sys , /dev reporting as being huge - may have to do more.
-- Block sizes on different Operating systems 4kb seems standard maybe I should check.
-- Mac swing chooser doesn't let you choose root drive, only folders below.
-- More work on accuracy of file checking. Folders take space as well ?
-- Cancel folder sizing needs a bit more investigation , notice CPU stays at 100 % if there is a problem e.g. processing /sys on linux
 
+New Functionality:
+- Look at threading , maybe thread per folder ?

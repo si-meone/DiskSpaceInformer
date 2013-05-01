@@ -19,15 +19,10 @@ public class DirectoryTreeModel implements TreeModel {
     public DirectoryTreeModel(String dirName) {
         this (new TreeFile(dirName));
     }
-    public DirectoryTreeModel() {
-        this ("/");
-    }
 
     public Object getRoot() {
         return topDirectory;
     }
-
-
 
     public boolean isLeaf(Object node) {
         assert (node instanceof TreeFile);
@@ -56,7 +51,6 @@ public class DirectoryTreeModel implements TreeModel {
     }
 
     public void valueForPathChanged(TreePath path, Object newValue) {
-        // blank implementation, we do not allow and expect changes to data
     }
 
     public void addTreeModelListener(TreeModelListener listener) {
@@ -65,10 +59,6 @@ public class DirectoryTreeModel implements TreeModel {
 
     @Override
     public void removeTreeModelListener(TreeModelListener l) {
-        //To change body of implemented methods use TreeFile | Settings | TreeFile Templates.
     }
 
-
 }
-
-
