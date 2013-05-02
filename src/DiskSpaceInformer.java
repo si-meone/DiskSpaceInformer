@@ -11,7 +11,7 @@ import java.io.File;
 
 
 public class DiskSpaceInformer extends JPanel
-        implements ActionListener, PropertyChangeListener {
+        implements ActionListener {
 
     static private final String newline = "\n";
     private static String version = "Disk Space Informer v0.1d";
@@ -22,7 +22,6 @@ public class DiskSpaceInformer extends JPanel
     JTree tree;
     JScrollPane treeScrollPane;
     protected FindFileAndFolderSizes task;
-    protected ProgressMonitor progressMonitor;
     protected JProgressBar progressBar;
 
     public DiskSpaceInformer() {
@@ -104,10 +103,6 @@ public class DiskSpaceInformer extends JPanel
             }
 
         } else if (e.getSource() == checkButton) {
-            progressMonitor = new ProgressMonitor(DiskSpaceInformer.this,
-                    "Getting Folder sizes",
-                    "", 0, 100);
-            progressMonitor.setProgress(0);
             TreePath[] selectionPaths = tree.getSelectionPaths();
 
             if (null == selectionPaths) {  //more than one thing
@@ -117,11 +112,10 @@ public class DiskSpaceInformer extends JPanel
             for (TreePath path : selectionPaths) {
                 if (selectionPaths.length > 1) {  //more than one thing
                     boolean summary = true;
-                    task = new FindFileAndFolderSizes((File) path.getLastPathComponent(), log, progressBar, progressMonitor, summary);
+                    task = new FindFileAndFolderSizes((File) path.getLastPathComponent(), log, progressBar, summary);
                 } else {
-                    task = new FindFileAndFolderSizes((File) path.getLastPathComponent(), log, progressBar, progressMonitor);
+                    task = new FindFileAndFolderSizes((File) path.getLastPathComponent(), log, progressBar);
                 }
-                task.addPropertyChangeListener(this);
                 task.execute();
             }
 
@@ -134,29 +128,6 @@ public class DiskSpaceInformer extends JPanel
         }
     }
 
-    @Override
-    public void propertyChange(PropertyChangeEvent evt) {
-        if ("progress" == evt.getPropertyName()) {
-            int progress = (Integer) evt.getNewValue();
-            progressMonitor.setProgress(progress);
-            String message =
-                    String.format("Completed %d%%.\n", progress);
-            progressMonitor.setNote(message);
-            //log.append(message); // see it print increments
-            if (progressMonitor.isCanceled() || task.isDone()) {
-                Toolkit.getDefaultToolkit().beep();
-                if (progressMonitor.isCanceled()) {
-                    progressBar.setString("Task cancelled");
-                    log.append("Task canceled.\n");
-                    task.cancel(true);
-                } else {
-                    progressBar.setString("Task completed");
-                    // log.append("Task completed.\n");
-                }
-            }
-        }
-    }
-
     class LeftClickMouseListener extends MouseAdapter {
         @Override
         public void mouseClicked(MouseEvent e) {
@@ -165,8 +136,7 @@ public class DiskSpaceInformer extends JPanel
                     int rowLocation = tree.getRowForLocation(e.getX(), e.getY());
                     File lastPathComponent = (File) tree.getPathForRow(rowLocation).getLastPathComponent();
                     if (lastPathComponent.isFile()) {
-                        task = new FindFileAndFolderSizes(lastPathComponent,log, progressBar,progressMonitor);
-                        task.addPropertyChangeListener(DiskSpaceInformer.this);
+                        task = new FindFileAndFolderSizes(lastPathComponent,log, progressBar);
                         task.execute();
                     }
                 }
@@ -203,21 +173,15 @@ public class DiskSpaceInformer extends JPanel
         public void actionPerformed(ActionEvent e) {
             Object selection = tree.getLastSelectedPathComponent();
             if (selection.equals("listings:")) return;
-
-            progressMonitor = new ProgressMonitor(DiskSpaceInformer.this,
-                    "Getting Folder sizes",
-                    "", 0, 100);
-            progressMonitor.setProgress(0);
             TreePath[] selectionPaths = tree.getSelectionPaths();
             for (TreePath path : selectionPaths) {
                 FindFileAndFolderSizes task;
                 if (selectionPaths.length > 1) {  //more than one thing
                     boolean summary = true;
-                    task = new FindFileAndFolderSizes((File) path.getLastPathComponent(), log, progressBar,progressMonitor, summary);
+                    task = new FindFileAndFolderSizes((File) path.getLastPathComponent(), log, progressBar, summary);
                 } else {
-                    task = new FindFileAndFolderSizes((File) path.getLastPathComponent(),log, progressBar,progressMonitor);
+                    task = new FindFileAndFolderSizes((File) path.getLastPathComponent(),log, progressBar);
                 }
-                task.addPropertyChangeListener(DiskSpaceInformer.this);
                 task.execute();
             }
 
