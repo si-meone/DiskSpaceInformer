@@ -225,7 +225,6 @@ public class DiskSpaceInformer extends JPanel
         }
 
         FindFileAndFolderSizes() {
-            this.file = file;
         }
 
         @Override

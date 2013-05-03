@@ -9,15 +9,15 @@ public class FileSystemTreeModel implements TreeModel {
     protected TreeFile topDirectory;
     private EventListenerList listeners = new EventListenerList();
 
+    FileSystemTreeModel(String dirName) {
+        this(new TreeFile(dirName));
+    }
+
     FileSystemTreeModel(TreeFile directory) {
         if (!directory.isDirectory()) {
             throw new IllegalArgumentException("not a directory");
         }
         this.topDirectory = directory;
-    }
-
-    FileSystemTreeModel(String dirName) {
-        this(new TreeFile(dirName));
     }
 
     public Object getRoot() {

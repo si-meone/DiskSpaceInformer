@@ -1,15 +1,25 @@
+import java.io.File;
+import java.util.Arrays;
 
 public class TreeFile extends java.io.File {
-    public TreeFile(java.io.File f) {
-        super(f.getAbsolutePath());
+    private final File file;
+
+    public TreeFile(java.io.File file) {
+        super(file.getAbsolutePath());
+        this.file = file;
     }
 
-    public TreeFile(String s) {
-        super(s);
+    public TreeFile(String file) {
+        super(file);
+        this.file = new File(file);
     }
 
     @Override
     public String toString() {
-        return getName();
+        if(Arrays.asList(File.listRoots()).contains(file)){
+            return getAbsolutePath();
+        }else{
+            return getName();
+        }
     }
 }
