@@ -125,9 +125,10 @@ public class DiskSpaceInformer extends JPanel
             }
 
         } else if (e.getSource() == summaryButton) {
-            log.append(Utils.checkSpaceAvailable());  //check
-            log.setCaretPosition(log.getDocument().getLength());
-
+            String lastLog = log.getText();
+            String currentLog = new FindFileAndFolderSizes().checkSpaceAvailable();
+            log.setText("");
+            log.append(currentLog + lastLog);
         } else if (e.getSource() == clearButton) {
             log.setText("");  //clear
         }
@@ -223,10 +224,14 @@ public class DiskSpaceInformer extends JPanel
             this.file = file;
         }
 
+        FindFileAndFolderSizes() {
+            this.file = file;
+        }
+
         @Override
         public Void doInBackground() {
             if (file.isFile()) {
-                Utils.prettyPrint(file, log);
+                logTop(Utils.prettyPrint(file));
                 return null;
             }
 
@@ -247,20 +252,35 @@ public class DiskSpaceInformer extends JPanel
             sortedMap.putAll(foldersSizes);
             progressBar.setIndeterminate(false);
             if (summary) {
-                int lastDoc = log.getDocument().getLength();
-                Utils.prettyPrint(file, visitor.getGrandTotal(), log);
-                log.setCaretPosition(lastDoc);
+                logTop(Utils.prettyPrint(file, visitor.getGrandTotal()));
             } else {
-                int lastDoc = log.getDocument().getLength();
-                Utils.prettyPrint(file, visitor.getGrandTotal(), sortedMap, log);
-                log.setCaretPosition(lastDoc);
+                logTop(Utils.prettyPrint(file, visitor.getGrandTotal(), sortedMap));
             }
             return null;
+        }
+
+        public String checkSpaceAvailable() {
+            StringBuffer sb = new StringBuffer();
+            File[] roots = File.listRoots();
+            for (File root : roots) {
+                long totalSpace = root.getTotalSpace();
+                long freeSpace = root.getFreeSpace();
+                long usedSpace = totalSpace - freeSpace;
+                sb.append(Utils.prettyPrint(root.getPath(), totalSpace, freeSpace, usedSpace));
+            }
+            return sb.toString();
+        }
+
+        private void logTop(String currentLog) {
+            String lastLog = log.getText();
+            log.setText("");
+            log.append(currentLog + lastLog);
         }
 
         @Override
         public void done() {
             Toolkit.getDefaultToolkit().beep();
+            progressBar.setString("Task Complete...");
         }
 
     }

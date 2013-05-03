@@ -14,48 +14,41 @@ public final class Utils {
         return new DecimalFormat("#,##0.#").format(size / Math.pow(1024, digitGroups)) + " " + units[digitGroups];
     }
 
-    public static void prettyPrint(File file, long total, Map<String, Long> sortedFileFolderSizes, JTextArea log) {
+    public static String prettyPrint(String root, long totalSpace, long usedSpace, long freeSpace ) {
+        StringBuffer sb = new StringBuffer();
+        String title = "Checking: [ " + root + " ]";
+        String underline = String.format(String.format("%%0%dd", title.length()), 0).replace("0", "=");
+
+        sb.append(underline + "\n" + title + "\n" + underline);
+        sb.append(String.format("\nTotal Space is: [%s]\nUsed space is: [%s] \nFree space is: [%s] \n\n",
+                readableFileSize(totalSpace),
+                readableFileSize(usedSpace),
+                readableFileSize(freeSpace))
+        );
+        return sb.toString();
+    }
+
+    public static String prettyPrint(File file, long total, Map<String, Long> sortedFileFolderSizes) {
+        StringBuffer sb = new StringBuffer();
         String title = file.getName() + ": [" + readableFileSize(total) + "]";
         String underline = String.format(String.format("%%0%dd", title.length()), 0).replace("0", "=");
-        log.append(underline + newline);
-        log.append(title + newline);
-        log.append(underline + newline);
+        sb.append(underline + newline);
+        sb.append(title + newline);
+        sb.append(underline + newline);
         for (Map.Entry<String, Long> entry : sortedFileFolderSizes.entrySet()) {
-            log.append("[ " + readableFileSize(entry.getValue()) + " ]");
-            log.append(" --> " + entry.getKey() + "\n");
+            sb.append("[ " + readableFileSize(entry.getValue()) + " ]");
+            sb.append(" --> " + entry.getKey() + "\n");
         }
-        log.append(newline);
-    }
-
-    public static void prettyPrint(File file, long total, JTextArea log) {
-        String s = String.format("%s: [%s]\n", file.getName(), readableFileSize(total));
-        log.append(s);
-    }
-
-    public static void prettyPrint(File file, JTextArea log) {
-        String s = String.format("%s: [%s]\n", file.getName(), readableFileSize(file.length()));
-        log.append(s);
-    }
-
-    public static String checkSpaceAvailable() {
-        StringBuffer sb = new StringBuffer();
-        File[] roots = File.listRoots();
-        for (File root : roots) {
-            long totalSpace = root.getTotalSpace();
-            long freeSpace = root.getFreeSpace();
-            long usedSpace = totalSpace - freeSpace;
-
-            String title = "Checking: [ " + root + " ]";
-            String underline = String.format(String.format("%%0%dd", title.length()), 0).replace("0", "=");
-
-            sb.append(underline + "\n" + title + "\n" + underline);
-            sb.append(String.format("\nTotal Space is: [%s]\nUsed space is: [%s] \nFree space is: [%s] \n\n",
-                    Utils.readableFileSize(totalSpace),
-                    Utils.readableFileSize(usedSpace),
-                    Utils.readableFileSize(freeSpace))
-            );
-        }
+        sb.append(newline);
         return sb.toString();
+    }
+
+    public static String prettyPrint(File file, long total) {
+        return String.format("%s: [%s]\n", file.getName(), readableFileSize(total));
+    }
+
+    public static String prettyPrint(File file) {
+        return String.format("%s: [%s]\n", file.getName(), readableFileSize(file.length()));
     }
 
     public static String printInstructions() {
