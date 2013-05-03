@@ -69,7 +69,7 @@ public class DiskSpaceInformer extends JPanel
         progressPanel.add(progressBar);
 
         // Create a TreeModel object to represent our tree of files
-        String root =System.getProperty("user.home");
+        String root = System.getProperty("user.home");
         // Create a JTree and tell it to display our model
         tree = new JTree();
         tree.setModel(new DirectoryTreeModel(root));
@@ -145,8 +145,6 @@ public class DiskSpaceInformer extends JPanel
                         task.execute();
                     }
                 }
-
-
             }
         }
     };
@@ -167,8 +165,6 @@ public class DiskSpaceInformer extends JPanel
                     jMenuItem.addActionListener(new MenuActionListener());
                     menu.add(jMenuItem);
                     menu.show(tree, pathBounds.x, pathBounds.y + pathBounds.height);
-
-
                 }
             }
         }
@@ -189,7 +185,6 @@ public class DiskSpaceInformer extends JPanel
                 }
                 task.execute();
             }
-
         }
     };
 
@@ -238,7 +233,7 @@ public class DiskSpaceInformer extends JPanel
 
             Map<String, Long> foldersSizes = null;
             Path root = Paths.get(String.valueOf(file.getPath()));
-            CalculateDirectorySizeVisitor visitor = new CalculateDirectorySizeVisitor(root ,progressBar);
+            DirectorySizeVisitor visitor = new DirectorySizeVisitor(root, progressBar);
             try {
                 Files.walkFileTree(root, visitor);
                 foldersSizes = visitor.getFoldersSizes();
@@ -247,7 +242,7 @@ public class DiskSpaceInformer extends JPanel
             }
 
             progressBar.setString("Sorting Listing...");
-            ValueComparator vc = new ValueComparator(foldersSizes);
+            SizeComparator vc = new SizeComparator(foldersSizes);
             Map<String, Long> sortedMap = new TreeMap<String, Long>(vc);
             sortedMap.putAll(foldersSizes);
             progressBar.setIndeterminate(false);

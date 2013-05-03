@@ -5,19 +5,7 @@ import java.util.Map;
 
 public final class Utils {
 
-    private static String OS = null;
     static private final String newline = "\n";
-
-    public static String getOsName() {
-        if (OS == null) {
-            OS = System.getProperty("os.name");
-        }
-        return OS;
-    }
-
-    public static boolean isWindows() {
-        return getOsName().startsWith("Windows");
-    }
 
     public static String readableFileSize(long size) {
         if (size <= 0) return "0";
@@ -72,14 +60,8 @@ public final class Utils {
 
     public static String printInstructions() {
         StringBuilder builder = new StringBuilder();
-
-        //builder.append("- Select drive or folder: click [Choose Folder]" + newline + newline);
         builder.append("- Space usage: right click tree item(s) & Check Space" + newline);
         builder.append("- Alternative: select tree item(s) & click [Check Space]" + newline + newline);
-//        builder.append("- Multiple items: select multiple items right click" + newline);
-//        builder.append("- Alternative: select multiple items [Check Space]" + newline + newline);
-//        builder.append("- All drives: overview of system [Storage Info]" + newline + newline);
-//        builder.append("- Clear screen: overview of system [Storage Info]" + newline);
         return builder.toString();
     }
 

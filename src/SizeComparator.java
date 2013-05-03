@@ -1,11 +1,11 @@
 import java.util.Comparator;
 import java.util.Map;
 
-class ValueComparator implements Comparator<String> {
+class SizeComparator implements Comparator<String> {
 
     Map<String, Long> base;
 
-    public ValueComparator(Map<String, Long> base) {
+    public SizeComparator(Map<String, Long> base) {
         this.base = base;
     }
 

@@ -5,7 +5,7 @@ import java.nio.file.attribute.BasicFileAttributes;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class CalculateDirectorySizeVisitor implements FileVisitor<Path> {
+public class DirectorySizeVisitor implements FileVisitor<Path> {
 
     private JProgressBar progressBar;
     private long grandTotal = 0;
@@ -18,7 +18,7 @@ public class CalculateDirectorySizeVisitor implements FileVisitor<Path> {
         return foldersSizes;
     }
 
-    CalculateDirectorySizeVisitor(Path path, JProgressBar progressBar) {
+    DirectorySizeVisitor(Path path, JProgressBar progressBar) {
         this(path);
         this.progressBar = progressBar;
         this.progressBar.setString("Determining files to scan");
@@ -27,7 +27,7 @@ public class CalculateDirectorySizeVisitor implements FileVisitor<Path> {
         this.progressBar.setIndeterminate(true);
     }
 
-    CalculateDirectorySizeVisitor(Path path) {
+    DirectorySizeVisitor(Path path) {
         this.path = path;
     }
 
@@ -78,7 +78,7 @@ public class CalculateDirectorySizeVisitor implements FileVisitor<Path> {
             System.out.println("Use: java Size <directory>");
         }
         Path root = Paths.get(System.getProperty("user.home"));
-        CalculateDirectorySizeVisitor visitor = new CalculateDirectorySizeVisitor(root);
+        DirectorySizeVisitor visitor = new DirectorySizeVisitor(root);
         Files.walkFileTree(root, visitor);
     }
 }

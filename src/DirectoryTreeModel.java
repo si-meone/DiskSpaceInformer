@@ -17,7 +17,7 @@ public class DirectoryTreeModel implements TreeModel {
     }
 
     DirectoryTreeModel(String dirName) {
-        this (new TreeFile(dirName));
+        this(new TreeFile(dirName));
     }
 
     public Object getRoot() {
@@ -31,10 +31,10 @@ public class DirectoryTreeModel implements TreeModel {
 
     public int getChildCount(Object parent) {
         assert (parent instanceof File);
-        if (null == ((File) parent).list()){
-         return 0;
+        if (null == ((File) parent).list()) {
+            return 0;
         }
-        return ((File)parent).listFiles().length;
+        return ((File) parent).listFiles().length;
     }
 
     public Object getChild(Object parent, int index) {

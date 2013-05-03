@@ -1,5 +1,5 @@
 
-class TreeFile extends java.io.File {
+public class TreeFile extends java.io.File {
     public TreeFile(java.io.File f) {
         super(f.getAbsolutePath());
     }
