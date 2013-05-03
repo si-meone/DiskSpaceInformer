@@ -5,24 +5,29 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Map;
+import java.util.TreeMap;
 
 
 public class DiskSpaceInformer extends JPanel
         implements ActionListener {
 
-    static private final String newline = "\n";
-    private static String version = "Disk Space Informer v0.1e";
     private final JButton checkButton;
-    JButton openButton, summaryButton, clearButton;
-    JTextArea log;
-    JFileChooser fileChooser;
-    JTree tree;
-    JScrollPane treeScrollPane;
+    private JButton openButton, summaryButton, clearButton;
+    private JTextArea log;
+    private JFileChooser fileChooser;
+    private JTree tree;
+    private JScrollPane treeScrollPane;
     protected FindFileAndFolderSizes task;
     protected JProgressBar progressBar;
+
+    private static String version = "Disk Space Informer v0.1e";
+    private static final String newline = "\n";
 
     public DiskSpaceInformer() {
         super(new BorderLayout());
@@ -112,9 +117,9 @@ public class DiskSpaceInformer extends JPanel
             for (TreePath path : selectionPaths) {
                 if (selectionPaths.length > 1) {  //more than one thing
                     boolean summary = true;
-                    task = new FindFileAndFolderSizes((File) path.getLastPathComponent(), log, progressBar, summary);
+                    task = new FindFileAndFolderSizes((File) path.getLastPathComponent(), summary);
                 } else {
-                    task = new FindFileAndFolderSizes((File) path.getLastPathComponent(), log, progressBar);
+                    task = new FindFileAndFolderSizes((File) path.getLastPathComponent());
                 }
                 task.execute();
             }
@@ -136,7 +141,7 @@ public class DiskSpaceInformer extends JPanel
                     int rowLocation = tree.getRowForLocation(e.getX(), e.getY());
                     File lastPathComponent = (File) tree.getPathForRow(rowLocation).getLastPathComponent();
                     if (lastPathComponent.isFile()) {
-                        task = new FindFileAndFolderSizes(lastPathComponent,log, progressBar);
+                        task = new FindFileAndFolderSizes(lastPathComponent);
                         task.execute();
                     }
                 }
@@ -178,9 +183,9 @@ public class DiskSpaceInformer extends JPanel
                 FindFileAndFolderSizes task;
                 if (selectionPaths.length > 1) {  //more than one thing
                     boolean summary = true;
-                    task = new FindFileAndFolderSizes((File) path.getLastPathComponent(), log, progressBar, summary);
+                    task = new FindFileAndFolderSizes((File) path.getLastPathComponent(), summary);
                 } else {
-                    task = new FindFileAndFolderSizes((File) path.getLastPathComponent(),log, progressBar);
+                    task = new FindFileAndFolderSizes((File) path.getLastPathComponent());
                 }
                 task.execute();
             }
@@ -209,6 +214,61 @@ public class DiskSpaceInformer extends JPanel
     }
 
 
+    class FindFileAndFolderSizes extends SwingWorker<Void, Void> {
+
+        private boolean summary = false;
+        private File file;
+
+        FindFileAndFolderSizes(File file, boolean summary) {
+            this(file);
+            this.summary = summary;
+        }
+
+        FindFileAndFolderSizes(File file) {
+            this.file = file;
+        }
+
+        @Override
+        public Void doInBackground() {
+            if (file.isFile()) {
+                Utils.prettyPrint(file, log);
+                return null;
+            }
+
+
+            Map<String, Long> foldersSizes = null;
+            Path root = Paths.get(String.valueOf(file.getPath()));
+            CalculateDirectorySizeVisitor visitor = new CalculateDirectorySizeVisitor(root ,progressBar);
+            try {
+                Files.walkFileTree(root, visitor);
+                foldersSizes = visitor.getFoldersSizes();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            progressBar.setString("Sorting Listing...");
+            ValueComparator vc = new ValueComparator(foldersSizes);
+            Map<String, Long> sortedMap = new TreeMap<String, Long>(vc);
+            sortedMap.putAll(foldersSizes);
+            progressBar.setIndeterminate(false);
+            if (summary) {
+                int lastDoc = log.getDocument().getLength();
+                Utils.prettyPrint(file, visitor.getGrandTotal(), log);
+                log.setCaretPosition(lastDoc);
+            } else {
+                int lastDoc = log.getDocument().getLength();
+                Utils.prettyPrint(file, visitor.getGrandTotal(), sortedMap, log);
+                log.setCaretPosition(lastDoc);
+            }
+            return null;
+        }
+
+        @Override
+        public void done() {
+            Toolkit.getDefaultToolkit().beep();
+        }
+
+    }
 
 }
 

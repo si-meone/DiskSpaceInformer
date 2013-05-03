@@ -9,14 +9,14 @@ public class DirectoryTreeModel implements TreeModel {
     protected TreeFile topDirectory;
     private EventListenerList listeners = new EventListenerList();
 
-    public DirectoryTreeModel(TreeFile directory) {
+    DirectoryTreeModel(TreeFile directory) {
         if (!directory.isDirectory()) {
             throw new IllegalArgumentException("not a directory");
         }
         this.topDirectory = directory;
     }
 
-    public DirectoryTreeModel(String dirName) {
+    DirectoryTreeModel(String dirName) {
         this (new TreeFile(dirName));
     }
 
