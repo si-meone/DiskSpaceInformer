@@ -3,23 +3,24 @@ Disk Space Informer
 
 Find where all your disk space has gone - works on mac, linux and windows  
 
-prequisite is Java 1.6 or above.
+prequisite is Java 1.7 (web browser plugin is useful) or above (uses nio2).
 
-To run it click on the link below which will download the file link below and then double click on the file.
+To run it 3 ways 
+
+1. click on the link below which will download the file link below and then double click on the file.
 
 https://github.com/snasrallah/DiskSpaceInformer/raw/master/jar/DiskSpaceInformer.jnlp
-
-Written in Java/Swing using JNLP to deliver it, upgrades are delivered on the fly by relaunching the jnlp file
 
 (sometimes it will download and you run the jnlp file it may complain about java so you'll need to fetch that
 plugin for your browser and operating system type)
 
-or get the jar and run it
+2. download the jar from https://github.com/snasrallah/DiskSpaceInformer/raw/master/jar/DiskSpaceInformer.jar
 
-via
+and run:
 java -jar jar/DiskSpaceInformer.jar
 
-or download the source and compile it up yourself using javac in the src folder
+3. Download run sources in your IDE (I used itellij , should work in eclipse) and run 
+
 
 
 To jar up
@@ -56,6 +57,8 @@ New In Versions
 
 1d - added tree to browse and you can interact with it to find space usage , switched to Nio2
      much faster but only supports java 7 and above .
+
+1e - added file vistor pattern that has responsibilty for how the folder sizes are calculated, removed progress monitor
 
 
 
