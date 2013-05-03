@@ -57,7 +57,7 @@ public class FileSystemVisitor implements FileVisitor<Path> {
     @Override
     public FileVisitResult visitFileFailed(Path file, IOException exc) throws IOException {
         System.err.println("It was not possible to analyze the file: " + file + " caused by: " + exc);
-        return FileVisitResult.TERMINATE;
+        return FileVisitResult.SKIP_SUBTREE;
     }
 
     @Override

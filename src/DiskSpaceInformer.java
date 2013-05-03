@@ -18,24 +18,23 @@ import java.util.TreeMap;
 public class DiskSpaceInformer extends JPanel
         implements ActionListener {
 
-    private final JButton checkButton;
-    private JButton openButton, summaryButton, clearButton;
-    private JTextArea log;
+    private static JTextArea log;
     private JFileChooser fileChooser;
     private JTree tree;
     private JScrollPane treeScrollPane;
     protected FindFileAndFolderSizes task;
     protected JProgressBar progressBar;
 
-    private static String version = "Disk Space Informer v0.1e";
+    private static String version = "Disk Space Informer v0.1f";
     private static final String newline = "\n";
+    private final JComboBox drives;
 
     public DiskSpaceInformer() {
         super(new BorderLayout());
         log = new JTextArea(30, 40);
         log.setMargin(new Insets(5, 5, 5, 5));
-        log.setEditable(false);
-        log.append(Utils.printInstructions());
+        log.setEditable(true);
+        log.append(new FindFileAndFolderSizes().checkSpaceAvailable());
         JScrollPane logScrollPane = new JScrollPane(log);
         logScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         logScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
@@ -46,36 +45,24 @@ public class DiskSpaceInformer extends JPanel
         fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         //fileChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
 
-        openButton = new JButton("Choose Folder");
-        openButton.addActionListener(this);
-
-        checkButton = new JButton("Check Space");
-        checkButton.addActionListener(this);
-
-        summaryButton = new JButton("Storage Info");
-        summaryButton.addActionListener(this);
-
-        clearButton = new JButton("Clear Log...");
-        clearButton.addActionListener(this);
+        drives = new JComboBox(File.listRoots());
+        drives.setSelectedIndex(0);
+        drives.addActionListener(this);
 
         // flow layout
-        JPanel buttonPanel = new JPanel();
-        buttonPanel.add(openButton);
-        buttonPanel.add(checkButton);
-        buttonPanel.add(summaryButton);
-        buttonPanel.add(clearButton);
+        JPanel controlPanel = new JPanel();
+        controlPanel.add(drives);
 
         progressBar = new JProgressBar();
         JPanel progressPanel = new JPanel();
         progressPanel.add(progressBar);
 
         // Create a TreeModel object to represent our tree of files
-        String root = System.getProperty("user.home");
+        String root = drives.getSelectedItem().toString();
         // Create a JTree and tell it to display our model
         tree = new JTree();
         tree.setModel(new FileSystemTreeModel(root));
         tree.addMouseListener(new LeftClickMouseListener());
-        tree.addMouseListener(new RightClickMouseListener());
 
         // The JTree can get big, so allow it to scroll
         treeScrollPane = new JScrollPane(tree);
@@ -86,60 +73,44 @@ public class DiskSpaceInformer extends JPanel
         splitPane.setDividerLocation(250);
 
         //Add bits to the panel.
-        add(buttonPanel, BorderLayout.NORTH);
+        add(controlPanel, BorderLayout.NORTH);
         add(splitPane, BorderLayout.CENTER);
         add(progressPanel, BorderLayout.SOUTH);
     }
 
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == openButton) { //open
-            int returnVal = fileChooser.showOpenDialog(DiskSpaceInformer.this);
-
-            if (returnVal == JFileChooser.APPROVE_OPTION) {
-                File dir = fileChooser.getSelectedFile();
-
+        if (e.getSource() == drives) { //open
                 // Create a JTree and tell it to display our model
-                tree = new JTree();
-                tree.setModel(new FileSystemTreeModel(new TreeFile(dir)));
-                tree.addMouseListener(new RightClickMouseListener());
-                // The JTree can get big, so allow it to scroll
-                treeScrollPane.setViewportView(tree);
-            } else {
-                log.append("Open command cancelled by user." + newline);
-            }
+            tree = new JTree();
+            tree.setModel(new FileSystemTreeModel(new TreeFile(drives.getSelectedItem().toString())));
+            tree.addMouseListener(new LeftClickMouseListener());
 
-        } else if (e.getSource() == checkButton) {
-            TreePath[] selectionPaths = tree.getSelectionPaths();
-
-            if (null == selectionPaths) {  //more than one thing
-                log.append(newline + "Error: Please select a file or folder in the tree" + newline);
-            }
-
-            for (TreePath path : selectionPaths) {
-                if (selectionPaths.length > 1) {  //more than one thing
-                    boolean summary = true;
-                    task = new FindFileAndFolderSizes((File) path.getLastPathComponent(), summary);
-                } else {
-                     File lastPathComponent = (File) path.getLastPathComponent();
-                     if(Arrays.asList(File.listRoots()).contains(lastPathComponent)){
-                        return;
-                     }
-                     task = new FindFileAndFolderSizes(lastPathComponent);
-                }
-                task.execute();
-            }
-
-        } else if (e.getSource() == summaryButton) {
-            String lastLog = log.getText();
-            String currentLog = new FindFileAndFolderSizes().checkSpaceAvailable();
-            log.setText("");
-            log.append(currentLog + lastLog);
-        } else if (e.getSource() == clearButton) {
-            log.setText("");  //clear
+            // The JTree can get big, so allow it to scroll
+            treeScrollPane.setViewportView(tree);
         }
     }
 
-    class LeftClickMouseListener extends MouseAdapter {
+    private void showSpaceUsedByFolder() {
+        Object selection = tree.getLastSelectedPathComponent();
+        if (selection.equals("listings:")) return;
+        TreePath[] selectionPaths = tree.getSelectionPaths();
+        for (TreePath path : selectionPaths) {
+            FindFileAndFolderSizes task;
+            if (selectionPaths.length > 1) {  //more than one thing
+                boolean summary = true;
+                task = new FindFileAndFolderSizes((File) path.getLastPathComponent(), summary);
+            } else {
+                File lastPathComponent = (File) path.getLastPathComponent();
+                if(Arrays.asList(File.listRoots()).contains(lastPathComponent)){
+                    return;
+                }
+                task = new FindFileAndFolderSizes(lastPathComponent);
+            }
+            task.execute();
+        }
+    }
+
+    private class LeftClickMouseListener extends MouseAdapter {
         @Override
         public void mouseClicked(MouseEvent e) {
             if (SwingUtilities.isLeftMouseButton(e)) {
@@ -150,50 +121,9 @@ public class DiskSpaceInformer extends JPanel
                         task = new FindFileAndFolderSizes(lastPathComponent);
                         task.execute();
                     }
+                } else if (e.getClickCount() == 1) {
+                    showSpaceUsedByFolder();
                 }
-            }
-        }
-    };
-
-    class RightClickMouseListener extends MouseAdapter {
-        @Override
-        public void mouseClicked(MouseEvent e) {
-
-            JTree tree;
-
-            if (SwingUtilities.isRightMouseButton(e)) {
-                tree = (JTree) e.getSource();
-                TreePath path = tree.getPathForLocation(e.getX(), e.getY());
-                Rectangle pathBounds = tree.getUI().getPathBounds(tree, path);
-                if (pathBounds != null && pathBounds.contains(e.getX(), e.getY())) {
-                    JPopupMenu menu = new JPopupMenu();
-                    JMenuItem jMenuItem = new JMenuItem("check space");
-                    jMenuItem.addActionListener(new MenuActionListener());
-                    menu.add(jMenuItem);
-                    menu.show(tree, pathBounds.x, pathBounds.y + pathBounds.height);
-                }
-            }
-        }
-    };
-
-    class MenuActionListener implements ActionListener {
-        public void actionPerformed(ActionEvent e) {
-            Object selection = tree.getLastSelectedPathComponent();
-            if (selection.equals("listings:")) return;
-            TreePath[] selectionPaths = tree.getSelectionPaths();
-            for (TreePath path : selectionPaths) {
-                FindFileAndFolderSizes task;
-                if (selectionPaths.length > 1) {  //more than one thing
-                    boolean summary = true;
-                    task = new FindFileAndFolderSizes((File) path.getLastPathComponent(), summary);
-                } else {
-                    File lastPathComponent = (File) path.getLastPathComponent();
-                    if(Arrays.asList(File.listRoots()).contains(lastPathComponent)){
-                        return;
-                    }
-                    task = new FindFileAndFolderSizes(lastPathComponent);
-                }
-                task.execute();
             }
         }
     };
@@ -208,6 +138,13 @@ public class DiskSpaceInformer extends JPanel
         frame.pack();
         frame.setVisible(true);
     }
+
+    protected static void logTop(String currentLog) {
+        String lastLog = log.getText();
+        log.setText("");
+        log.append(currentLog + lastLog);
+    }
+
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable() {
@@ -274,20 +211,14 @@ public class DiskSpaceInformer extends JPanel
                 long totalSpace = root.getTotalSpace();
                 long freeSpace = root.getFreeSpace();
                 long usedSpace = totalSpace - freeSpace;
-                sb.append(Utils.prettyPrint(root.getPath(), totalSpace, freeSpace, usedSpace));
+                sb.append(Utils.prettyPrint(root.getPath(), totalSpace, usedSpace, freeSpace));
             }
             return sb.toString();
         }
 
-        private void logTop(String currentLog) {
-            String lastLog = log.getText();
-            log.setText("");
-            log.append(currentLog + lastLog);
-        }
 
         @Override
         public void done() {
-            Toolkit.getDefaultToolkit().beep();
             progressBar.setString("Task Complete...");
         }
 
