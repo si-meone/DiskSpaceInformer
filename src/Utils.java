@@ -73,13 +73,13 @@ public final class Utils {
     public static String printInstructions() {
         StringBuilder builder = new StringBuilder();
 
-        builder.append("- Select drive or folder: click [Choose Folder]" + newline + newline);
-        builder.append("- Space usage: right click tree item & Check Space" + newline);
-        builder.append("- Alternative: select tree item & click [Check Space]" + newline + newline);
-        builder.append("- Multiple items: select multiple items right click" + newline);
-        builder.append("- Alternative: select multiple items [Check Space]" + newline + newline);
-        builder.append("- All drives: overview of system [Storage Info]" + newline + newline);
-        builder.append("- Clear screen: overview of system [Storage Info]" + newline);
+        //builder.append("- Select drive or folder: click [Choose Folder]" + newline + newline);
+        builder.append("- Space usage: right click tree item(s) & Check Space" + newline);
+        builder.append("- Alternative: select tree item(s) & click [Check Space]" + newline + newline);
+//        builder.append("- Multiple items: select multiple items right click" + newline);
+//        builder.append("- Alternative: select multiple items [Check Space]" + newline + newline);
+//        builder.append("- All drives: overview of system [Storage Info]" + newline + newline);
+//        builder.append("- Clear screen: overview of system [Storage Info]" + newline);
         return builder.toString();
     }
 

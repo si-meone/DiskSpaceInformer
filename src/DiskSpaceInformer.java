@@ -14,7 +14,7 @@ public class DiskSpaceInformer extends JPanel
         implements ActionListener {
 
     static private final String newline = "\n";
-    private static String version = "Disk Space Informer v0.1d";
+    private static String version = "Disk Space Informer v0.1e";
     private final JButton checkButton;
     JButton openButton, summaryButton, clearButton;
     JTextArea log;
