@@ -72,7 +72,7 @@ public class DiskSpaceInformer extends JPanel
         String root = System.getProperty("user.home");
         // Create a JTree and tell it to display our model
         tree = new JTree();
-        tree.setModel(new DirectoryTreeModel(root));
+        tree.setModel(new FileSystemTreeModel(root));
         tree.addMouseListener(new LeftClickMouseListener());
         tree.addMouseListener(new RightClickMouseListener());
 
@@ -99,7 +99,7 @@ public class DiskSpaceInformer extends JPanel
 
                 // Create a JTree and tell it to display our model
                 tree = new JTree();
-                tree.setModel(new DirectoryTreeModel(new TreeFile(dir)));
+                tree.setModel(new FileSystemTreeModel(new TreeFile(dir)));
                 tree.addMouseListener(new RightClickMouseListener());
                 // The JTree can get big, so allow it to scroll
                 treeScrollPane.setViewportView(tree);
@@ -233,7 +233,7 @@ public class DiskSpaceInformer extends JPanel
 
             Map<String, Long> foldersSizes = null;
             Path root = Paths.get(String.valueOf(file.getPath()));
-            DirectorySizeVisitor visitor = new DirectorySizeVisitor(root, progressBar);
+            FileSystemVisitor visitor = new FileSystemVisitor(root, progressBar);
             try {
                 Files.walkFileTree(root, visitor);
                 foldersSizes = visitor.getFoldersSizes();

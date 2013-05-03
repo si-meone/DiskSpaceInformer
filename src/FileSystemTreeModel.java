@@ -5,18 +5,18 @@ import javax.swing.tree.TreePath;
 import java.io.File;
 import java.util.Arrays;
 
-public class DirectoryTreeModel implements TreeModel {
+public class FileSystemTreeModel implements TreeModel {
     protected TreeFile topDirectory;
     private EventListenerList listeners = new EventListenerList();
 
-    DirectoryTreeModel(TreeFile directory) {
+    FileSystemTreeModel(TreeFile directory) {
         if (!directory.isDirectory()) {
             throw new IllegalArgumentException("not a directory");
         }
         this.topDirectory = directory;
     }
 
-    DirectoryTreeModel(String dirName) {
+    FileSystemTreeModel(String dirName) {
         this(new TreeFile(dirName));
     }
 
