@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -119,7 +120,11 @@ public class DiskSpaceInformer extends JPanel
                     boolean summary = true;
                     task = new FindFileAndFolderSizes((File) path.getLastPathComponent(), summary);
                 } else {
-                    task = new FindFileAndFolderSizes((File) path.getLastPathComponent());
+                     File lastPathComponent = (File) path.getLastPathComponent();
+                     if(Arrays.asList(File.listRoots()).contains(lastPathComponent)){
+                        return;
+                     }
+                     task = new FindFileAndFolderSizes(lastPathComponent);
                 }
                 task.execute();
             }
@@ -182,7 +187,11 @@ public class DiskSpaceInformer extends JPanel
                     boolean summary = true;
                     task = new FindFileAndFolderSizes((File) path.getLastPathComponent(), summary);
                 } else {
-                    task = new FindFileAndFolderSizes((File) path.getLastPathComponent());
+                    File lastPathComponent = (File) path.getLastPathComponent();
+                    if(Arrays.asList(File.listRoots()).contains(lastPathComponent)){
+                        return;
+                    }
+                    task = new FindFileAndFolderSizes(lastPathComponent);
                 }
                 task.execute();
             }
