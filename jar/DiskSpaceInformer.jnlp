@@ -4,7 +4,8 @@
         <vendor>simon</vendor>
         <offline-allowed />
         <update check="always" policy="always" />
-        <shortcut online="false">
+       <icon kind="shortcut" href="icon.png" width="64" height="64"/> 
+       <shortcut online="false">
           <desktop/>
           <menu submenu="Disk Space Inrfomer"/>
         </shortcut>
