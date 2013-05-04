@@ -4,6 +4,7 @@
         <vendor>simon</vendor>
         <offline-allowed />
         <update check="always" policy="always" />
+       <icon kind="shortcut" href="icon.png" width="32" height="32"/>
        <icon kind="shortcut" href="icon.png" width="64" height="64"/> 
        <shortcut online="false">
           <desktop/>
