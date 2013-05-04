@@ -8,6 +8,7 @@
        <icon kind="shortcut" href="icon.png" width="64" height="64"/> 
        <shortcut online="false" install="true">
           <desktop/>
+          <menu submenu="Disk Space Informer"/>
         </shortcut>
     </information>
 
