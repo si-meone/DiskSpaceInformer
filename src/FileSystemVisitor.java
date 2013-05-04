@@ -1,9 +1,9 @@
 import javax.swing.*;
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 
 public class FileSystemVisitor implements FileVisitor<Path> {
 
@@ -11,6 +11,13 @@ public class FileSystemVisitor implements FileVisitor<Path> {
     private long grandTotal = 0;
     private long dirTotal = 0;
     private Map<String, Long> foldersSizes = new LinkedHashMap<String, Long>();
+    private List<Path> paths = Arrays.asList(new File("/proc").toPath());
+
+    public String getErrors() {
+        return errors.toString();
+    }
+
+    private StringBuilder errors = new StringBuilder();
 
     private Path path;
 
@@ -24,7 +31,7 @@ public class FileSystemVisitor implements FileVisitor<Path> {
         this.progressBar.setString("Determining files to scan");
         this.progressBar.setStringPainted(true);
         this.progressBar.setVisible(true);
-        this.progressBar.setIndeterminate(true);
+        //this.progressBar.setIndeterminate(true);
     }
 
     FileSystemVisitor(Path path) {
@@ -37,7 +44,12 @@ public class FileSystemVisitor implements FileVisitor<Path> {
 
     public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) throws IOException {
         //System.out.println("[D]\t " + dir);
-        progressBar.setString(dir.getFileName().toString());
+        progressBar.setString(dir.toString());
+        if (paths.contains(dir)){
+            foldersSizes.put(dir.toString(), 0L);
+            errors.append("EXCLUDING: " + dir.toString() + "\n" );
+            return FileVisitResult.SKIP_SUBTREE;
+        }
         return FileVisitResult.CONTINUE;
     }
 
@@ -56,7 +68,9 @@ public class FileSystemVisitor implements FileVisitor<Path> {
 
     @Override
     public FileVisitResult visitFileFailed(Path file, IOException exc) throws IOException {
-        System.err.println("It was not possible to analyze the file: " + file + " caused by: " + exc);
+        String error = "ERROR: " + file + " : " + exc + "\n";
+        System.err.println(error);
+        errors.append(error);
         return FileVisitResult.SKIP_SUBTREE;
     }
 
@@ -78,7 +92,9 @@ public class FileSystemVisitor implements FileVisitor<Path> {
             System.out.println("Use: java Size <directory>");
         }
         Path root = Paths.get(System.getProperty("user.home"));
-        FileSystemVisitor visitor = new FileSystemVisitor(root);
+        //Path root = new File("/").toPath();
+        FileSystemVisitor visitor = new FileSystemVisitor(root, new JProgressBar());
         Files.walkFileTree(root, visitor);
+        System.out.println(visitor.getFoldersSizes());
     }
 }

@@ -1,16 +1,12 @@
 import javax.swing.*;
 import javax.swing.tree.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Arrays;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -19,15 +15,16 @@ public class DiskSpaceInformer extends JPanel
         implements ActionListener {
 
     private static JTextArea log;
-    private JFileChooser fileChooser;
     private JTree tree;
+    private final JButton checkButton;
     private JScrollPane treeScrollPane;
     protected FindFileAndFolderSizes task;
     protected JProgressBar progressBar;
 
-    private static String version = "Disk Space Informer v0.1f";
-    private static final String newline = "\n";
+    private static String version = "Disk Space Informer v0.1g";
     private final JComboBox drives;
+
+    public static boolean debug = false;
 
     public DiskSpaceInformer() {
         super(new BorderLayout());
@@ -39,40 +36,48 @@ public class DiskSpaceInformer extends JPanel
         logScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         logScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
 
-        //Create a file chooser
-        fileChooser = new JFileChooser();
+        checkButton = new JButton("Check Space");
+        checkButton.addActionListener(this);
 
-        fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-        //fileChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
-
+        String userHome = System.getProperty("user.home");
         drives = new JComboBox(File.listRoots());
-        drives.setSelectedIndex(0);
+        drives.addItem(userHome);
+        drives.setSelectedItem(userHome);
         drives.addActionListener(this);
 
-        // flow layout
+        JCheckBox debugToggle = new JCheckBox();
+        debugToggle.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                JCheckBox cb = (JCheckBox) e.getSource();
+                debug = cb.isSelected() ? true : false;
+            }
+        });
+        debugToggle.setToolTipText("Debugging");
+
         JPanel controlPanel = new JPanel();
         controlPanel.add(drives);
+        controlPanel.add(checkButton);
+        controlPanel.add(debugToggle);
 
         progressBar = new JProgressBar();
+        Dimension prefSize = progressBar.getPreferredSize();
+        prefSize.width = 700;
+        progressBar.setPreferredSize(prefSize);
         JPanel progressPanel = new JPanel();
         progressPanel.add(progressBar);
 
-        // Create a TreeModel object to represent our tree of files
         String root = drives.getSelectedItem().toString();
-        // Create a JTree and tell it to display our model
         tree = new JTree();
         tree.setModel(new FileSystemTreeModel(root));
         tree.addMouseListener(new LeftClickMouseListener());
 
-        // The JTree can get big, so allow it to scroll
         treeScrollPane = new JScrollPane(tree);
-
         JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
                 treeScrollPane, logScrollPane);
         splitPane.setOneTouchExpandable(true);
         splitPane.setDividerLocation(250);
 
-        //Add bits to the panel.
         add(controlPanel, BorderLayout.NORTH);
         add(splitPane, BorderLayout.CENTER);
         add(progressPanel, BorderLayout.SOUTH);
@@ -80,13 +85,13 @@ public class DiskSpaceInformer extends JPanel
 
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == drives) { //open
-                // Create a JTree and tell it to display our model
             tree = new JTree();
             tree.setModel(new FileSystemTreeModel(new TreeFile(drives.getSelectedItem().toString())));
             tree.addMouseListener(new LeftClickMouseListener());
-
-            // The JTree can get big, so allow it to scroll
             treeScrollPane.setViewportView(tree);
+        } else if (e.getSource() == checkButton) {
+            task = new FindFileAndFolderSizes(new TreeFile(drives.getSelectedItem().toString()));
+            task.execute();
         }
     }
 
@@ -101,9 +106,6 @@ public class DiskSpaceInformer extends JPanel
                 task = new FindFileAndFolderSizes((File) path.getLastPathComponent(), summary);
             } else {
                 File lastPathComponent = (File) path.getLastPathComponent();
-                if(Arrays.asList(File.listRoots()).contains(lastPathComponent)){
-                    return;
-                }
                 task = new FindFileAndFolderSizes(lastPathComponent);
             }
             task.execute();
@@ -131,10 +133,7 @@ public class DiskSpaceInformer extends JPanel
     private static void setupAndShowUI() {
         JFrame frame = new JFrame(version);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-        //Add content to the window.
         frame.add(new DiskSpaceInformer());
-        //Display the window.
         frame.pack();
         frame.setVisible(true);
     }
@@ -180,13 +179,15 @@ public class DiskSpaceInformer extends JPanel
                 return null;
             }
 
-
+            progressBar.setString("Processing Selection...");
             Map<String, Long> foldersSizes = null;
             Path root = Paths.get(String.valueOf(file.getPath()));
             FileSystemVisitor visitor = new FileSystemVisitor(root, progressBar);
+            String extraInfo = "";
             try {
                 Files.walkFileTree(root, visitor);
                 foldersSizes = visitor.getFoldersSizes();
+                extraInfo = visitor.getErrors();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -195,12 +196,9 @@ public class DiskSpaceInformer extends JPanel
             SizeComparator vc = new SizeComparator(foldersSizes);
             Map<String, Long> sortedMap = new TreeMap<String, Long>(vc);
             sortedMap.putAll(foldersSizes);
-            progressBar.setIndeterminate(false);
             if (summary) {
                 logTop(Utils.prettyPrint(file, visitor.getGrandTotal()));
-            } else {
-                logTop(Utils.prettyPrint(file, visitor.getGrandTotal(), sortedMap));
-            }
+            } else logTop(Utils.prettyPrint(file, visitor.getGrandTotal(), sortedMap, debug, extraInfo));
             return null;
         }
 
@@ -216,7 +214,6 @@ public class DiskSpaceInformer extends JPanel
             return sb.toString();
         }
 
-
         @Override
         public void done() {
             progressBar.setString("Task Complete...");
@@ -225,4 +222,3 @@ public class DiskSpaceInformer extends JPanel
     }
 
 }
-

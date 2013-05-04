@@ -16,9 +16,9 @@ public class TreeFile extends java.io.File {
 
     @Override
     public String toString() {
-        if(Arrays.asList(File.listRoots()).contains(file)){
+        if (Arrays.asList(File.listRoots()).contains(file)) {
             return getPath();
-        }else{
+        } else {
             return getName();
         }
     }
