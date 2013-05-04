@@ -7,7 +7,6 @@
        <icon kind="shortcut" href="icon.png" width="64" height="64"/> 
        <shortcut online="false">
           <desktop/>
-          <menu submenu="Disk Space Inrfomer"/>
         </shortcut>
     </information>
 
