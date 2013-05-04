@@ -7,19 +7,19 @@ prequisite is Java 1.7 (web browser plugin is useful) or above (uses nio2).
 
 To run it 3 ways 
 
-1. click on the link below which will download the file link below and then double click on the file.
+- Click on the link below which will download the file link below and then double click on the file.
 
 https://github.com/snasrallah/DiskSpaceInformer/raw/master/jar/DiskSpaceInformer.jnlp
 
 (sometimes it will download and you run the jnlp file it may complain about java so you'll need to fetch that
 plugin for your browser and operating system type)
 
-2. download the jar from https://github.com/snasrallah/DiskSpaceInformer/raw/master/jar/DiskSpaceInformer.jar
+- Download the jar from https://github.com/snasrallah/DiskSpaceInformer/raw/master/jar/DiskSpaceInformer.jar
 
 and run:
 java -jar jar/DiskSpaceInformer.jar
 
-3. Download run sources in your IDE (I used itellij , should work in eclipse) and run 
+- Download run sources in your IDE (I used itellij , should work in eclipse) and run 
 
 
 
