@@ -93,3 +93,14 @@ Refactoring and Testing:
 
 New Functionality:
 - Look at threading , maybe thread per folder ?
+
+TESTING
+=======
+
+on windows
+java -classpath lib/junit-4.10.jar;out/production/DiskSpaceInformer;out/test/DiskSpaceInformer org.junit.runner.JUnitCore TestFileOperations
+
+on mac unix
+java -classpath lib/junit-4.10.jar:out/production/DiskSpaceInformer:out/test/DiskSpaceInformer org.junit.runner.JUnitCore TestFileOperations
+
+

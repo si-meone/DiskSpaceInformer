@@ -1,7 +1,7 @@
 import java.io.File;
 import java.util.Arrays;
 
-public class TreeFile extends java.io.File {
+public class TreeFile extends File {
     private final File file;
 
     public TreeFile(java.io.File file) {

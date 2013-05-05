@@ -96,8 +96,6 @@ public class DiskSpaceInformer extends JPanel
     }
 
     private void showSpaceUsedByFolder() {
-        Object selection = tree.getLastSelectedPathComponent();
-        if (selection.equals("listings:")) return;
         TreePath[] selectionPaths = tree.getSelectionPaths();
         for (TreePath path : selectionPaths) {
             FindFileAndFolderSizes task;
@@ -130,12 +128,13 @@ public class DiskSpaceInformer extends JPanel
         }
     };
 
-    private static void setupAndShowUI() {
+    protected static JFrame setupAndShowUI() {
         JFrame frame = new JFrame(version);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.add(new DiskSpaceInformer());
         frame.pack();
         frame.setVisible(true);
+        return frame;
     }
 
     protected static void logTop(String currentLog) {

@@ -11,7 +11,7 @@ public class FileSystemVisitor implements FileVisitor<Path> {
     private long grandTotal = 0;
     private long dirTotal = 0;
     private Map<String, Long> foldersSizes = new LinkedHashMap<String, Long>();
-    private List<Path> paths = Arrays.asList(new File("/proc").toPath());
+    private List<Path> pathsToIgnore = Arrays.asList(new File("/proc").toPath());
 
     public String getErrors() {
         return errors.toString();
@@ -45,7 +45,7 @@ public class FileSystemVisitor implements FileVisitor<Path> {
     public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) throws IOException {
         //System.out.println("[D]\t " + dir);
         progressBar.setString(dir.toString());
-        if (paths.contains(dir)){
+        if (pathsToIgnore.contains(dir)){
             foldersSizes.put(dir.toString(), 0L);
             errors.append("EXCLUDING: " + dir.toString() + "\n" );
             return FileVisitResult.SKIP_SUBTREE;
@@ -92,7 +92,7 @@ public class FileSystemVisitor implements FileVisitor<Path> {
             System.out.println("Use: java Size <directory>");
         }
         Path root = Paths.get(System.getProperty("user.home"));
-        //Path root = new File("/").toPath();
+        //Path tempFolder = new File("/").toPath();
         FileSystemVisitor visitor = new FileSystemVisitor(root, new JProgressBar());
         Files.walkFileTree(root, visitor);
         System.out.println(visitor.getFoldersSizes());

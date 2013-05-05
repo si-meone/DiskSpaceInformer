@@ -63,13 +63,5 @@ public final class Utils {
         return String.format("%s: [%s]\n", file.getName(), readableFileSize(file.length()));
     }
 
-    public static String printInstructions() {
-        StringBuilder builder = new StringBuilder();
-        builder.append("- Space usage: right click tree item(s) & Check Space" + newline);
-        builder.append("- Alternative: select tree item(s) & click [Check Space]" + newline + newline);
-        return builder.toString();
-    }
-
-
 }
 
