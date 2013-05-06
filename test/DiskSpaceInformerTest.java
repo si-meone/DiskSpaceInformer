@@ -49,12 +49,14 @@ public class DiskSpaceInformerTest{
         fillFileToSize(new File(f1, "1Mb.txt"), 1024);
 
         File f2 = tempFolder.newFolder("f2");
-        new File(f2, "b.txt");
-        new File(f2, "c.txt");
+        fillFileToSize(new File(f2, "2Mb.txt"), 2048);
 
-        File f3 = new File(f2, "f3");
-        f3.mkdir();
+        File f3 = tempFolder.newFolder("f3");
+        fillFileToSize(new File(f3, "3Mb.txt"), 3072);
 
+        File f4 = new File(f3, "f4");
+        f4.mkdir();
+        fillFileToSize(new File(f4, "4Mb.txt"), 4096);
 
         app = ApplicationLauncher.application(DiskSpaceInformer.class);
         app.withArgs(tempPath);
@@ -87,7 +89,7 @@ public class DiskSpaceInformerTest{
 
 
     @Test
-    public void testCheckTreeHasFolders() {
+    public void testCheckTreeFolderWithOneMbFile() {
         JTreeFixture tree = new JTreeFixture(robot, "tree");
         JTextComponentFixture log = new JTextComponentFixture(robot, "log");
         assertFalse("error found 1 MB in log window", log.text().contains("1 MB"));
@@ -97,6 +99,17 @@ public class DiskSpaceInformerTest{
         pause(100);
         assertThat(jTreeFixture.valueAt(f1), is("f1"));
         assertTrue("error could not find 1 MB in log window", log.text().contains("1 MB"));
+    }
+
+  @Test
+    public void testCheckTreeFolderSizeWithANumberOfFiles() {
+        JTreeFixture tree = new JTreeFixture(robot, "tree");
+        JTextComponentFixture log = new JTextComponentFixture(robot, "log");
+        //tree.clickRow(2);
+        String root = tempFolder.getRoot().getName();
+        JTreeFixture jTreeFixture = tree.clickPath(root);
+        pause(100);
+        assertTrue("error could not find 10 MB in log window", log.text().contains("10 MB"));
     }
 
 
