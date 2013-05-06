@@ -26,9 +26,10 @@ public class DiskSpaceInformer extends JPanel
 
     public static boolean debug = false;
 
-    public DiskSpaceInformer() {
+    public DiskSpaceInformer(File[] files, String path) {
         super(new BorderLayout());
         log = new JTextArea(30, 40);
+        log.setName("log");
         log.setMargin(new Insets(5, 5, 5, 5));
         log.setEditable(true);
         log.append(new FindFileAndFolderSizes().checkSpaceAvailable());
@@ -37,12 +38,12 @@ public class DiskSpaceInformer extends JPanel
         logScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
 
         checkButton = new JButton("Check Space");
+        checkButton.setName("Check Space");
         checkButton.addActionListener(this);
 
-        String userHome = System.getProperty("user.home");
-        drives = new JComboBox(File.listRoots());
-        drives.addItem(userHome);
-        drives.setSelectedItem(userHome);
+        drives = new JComboBox(files);
+        if (path != "") drives.addItem(path);
+        drives.setSelectedItem(path);
         drives.addActionListener(this);
 
         JCheckBox debugToggle = new JCheckBox();
@@ -69,6 +70,7 @@ public class DiskSpaceInformer extends JPanel
 
         String root = drives.getSelectedItem().toString();
         tree = new JTree();
+        tree.setName("tree");
         tree.setModel(new FileSystemTreeModel(root));
         tree.addMouseListener(new LeftClickMouseListener());
 
@@ -110,7 +112,7 @@ public class DiskSpaceInformer extends JPanel
         }
     }
 
-    private class LeftClickMouseListener extends MouseAdapter {
+    protected class LeftClickMouseListener extends MouseAdapter {
         @Override
         public void mouseClicked(MouseEvent e) {
             if (SwingUtilities.isLeftMouseButton(e)) {
@@ -128,13 +130,13 @@ public class DiskSpaceInformer extends JPanel
         }
     };
 
-    protected static JFrame setupAndShowUI() {
+    private static void setupAndShowUI(File[] files, String path) {
         JFrame frame = new JFrame(version);
+        frame.setName("DiskSpaceInformer");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.add(new DiskSpaceInformer());
+        frame.add(new DiskSpaceInformer(files, path));
         frame.pack();
         frame.setVisible(true);
-        return frame;
     }
 
     protected static void logTop(String currentLog) {
@@ -144,17 +146,21 @@ public class DiskSpaceInformer extends JPanel
     }
 
 
-    public static void main(String[] args) {
+    public static void main(final String[] args) {
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
                 UIManager.put("swing.boldMetal", Boolean.FALSE);
-                setupAndShowUI();
+                if (args.length == 0){
+                    setupAndShowUI(File.listRoots(),System.getProperty("user.home"));
+                }else{
+                    setupAndShowUI(new File[]{new File("")}, args[0]);
+                }
             }
         });
     }
 
 
-    class FindFileAndFolderSizes extends SwingWorker<Void, Void> {
+    protected class FindFileAndFolderSizes extends SwingWorker<Void, Void> {
 
         private boolean summary = false;
         private File file;

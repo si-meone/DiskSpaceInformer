@@ -12,7 +12,7 @@ import java.util.Map;
 
 import static org.junit.Assert.*;
 
-public class TestFileSystemVisitor {
+public class FileSystemVisitorTest {
 
     @Rule
     public TemporaryFolder tempFolder = new TemporaryFolder();
@@ -21,7 +21,7 @@ public class TestFileSystemVisitor {
     @Before
     public void createTestData() throws IOException {
         String tempPath = tempFolder.getRoot().toString();
-        System.out.format("created temp folder: %s", tempPath);
+        //System.out.format("created temp folder: %s", tempPath);
         tempFolder.newFile("empty.txt");
 
         File f1 = tempFolder.newFolder("f1");
@@ -77,7 +77,7 @@ public class TestFileSystemVisitor {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
         Map<String,Long> foldersSizes = visitor.getFoldersSizes();
-        System.out.println(foldersSizes);
+        //System.out.println(foldersSizes);
         assertEquals((Object) 0L, foldersSizes.get("empty.txt"));
         assertEquals((Object) 1048576L, foldersSizes.get("f1"));
         assertEquals((Object) 2097152L, foldersSizes.get("f2"));

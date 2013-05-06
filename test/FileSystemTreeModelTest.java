@@ -17,7 +17,7 @@ public class FileSystemTreeModelTest {
     @Before
     public void createTestData() throws IOException {
         String tempPath = tempFolder.getRoot().toString();
-        System.out.format("created temp folder: %s", tempPath);
+        //System.out.format("created temp folder: %s", tempPath);
         tempFolder.newFile("empty.txt");
 
         File f1 = tempFolder.newFolder("f1");

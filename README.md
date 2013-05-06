@@ -96,11 +96,17 @@ New Functionality:
 
 TESTING
 =======
+Using JUnit 4 and Fest
+http://junit.org/
+
+http://fest.easytesting.org/
+http://docs.codehaus.org/display/FEST/Configuration
+run test via command line:
+
+run from the root of project:
 
 on windows
-java -classpath lib/junit-4.10.jar;out/production/DiskSpaceInformer;out/test/DiskSpaceInformer org.junit.runner.JUnitCore TestFileOperations
-
-on mac unix
-java -classpath lib/junit-4.10.jar:out/production/DiskSpaceInformer:out/test/DiskSpaceInformer org.junit.runner.JUnitCore TestFileOperations
-
+java -classpath test/lib/fest-assert-1.2.jar;test/lib/junit-4.10.jar;test/lib/fest-util-1.1.2.jar;test/lib/fest-reflect-1.2.jar;test/lib/fest-swing-1.2.jar;out/production/DiskSpaceInformer;out/test/DiskSpaceInformer org.junit.runner.JUnitCore TestSuite
+on mac unix:
+java -classpath test/lib/fest-assert-1.2.jar:test/lib/junit-4.10.jar:test/lib/fest-util-1.1.2.jar:test/lib/fest-reflect-1.2.jar:test/lib/fest-swing-1.2.jar:out/production/DiskSpaceInformer:out/test/DiskSpaceInformer org.junit.runner.JUnitCore TestSuite
 
