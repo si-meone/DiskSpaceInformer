@@ -34,7 +34,7 @@ public final class Utils {
         return sb.toString();
     }
 
-    public static String prettyPrint(File file, long total, Map<String, Long> sortedFileFolderSizes) {
+    public static StringBuffer prettyPrint(File file, long total, Map<String, Long> sortedFileFolderSizes) {
         StringBuffer sb = new StringBuffer();
         String title = file.getAbsolutePath() + " [ " + readableFileSize(total) + " ]"  + space;
         sb.append(space + title + newline + "│" + newline);
@@ -42,10 +42,10 @@ public final class Utils {
             sb.append("├─── " + entry.getKey());
             sb.append("    [ " + readableFileSize(entry.getValue()) + " ]\n");
         }
-        return sb.toString();
+        return sb;
     }
 
-    public static String prettyPrint(File file, long total, Map<String, Long> sortedFileFolderSizes, String extraInfo) {
+    public static StringBuffer prettyPrint(File file, long total, Map<String, Long> sortedFileFolderSizes, String extraInfo) {
         StringBuffer sb = new StringBuffer();
         String status = extraInfo.length() == 0 ? "" : "[Error(s) turn on debug checkbox]";
         String title = file.getAbsolutePath() + tab + readableFileSize(total)   + tab + status;
@@ -55,15 +55,15 @@ public final class Utils {
             sb.append(entry.getKey());
             sb.append(tab + readableFileSize(entry.getValue()) + "\n");
         }
-        return sb.toString();
+        return sb;
     }
 
-    public static String prettyPrint(File file, long total) {
-        return String.format("%s: [ %s ]\n", file.getName(), readableFileSize(total));
+    public static StringBuffer prettyPrint(File file, long total) {
+        return new StringBuffer(String.format("%s: [ %s ]\n", file.getName(), readableFileSize(total)));
     }
 
-    public static String prettyPrint(File file) {
-        return String.format("%s: [ %s ]\n", file.getName(), readableFileSize(file.length()));
+    public static StringBuffer prettyPrint(File file) {
+        return new StringBuffer(String.format("%s: [ %s ]\n", file.getName(), readableFileSize(file.length())));
     }
 
 }

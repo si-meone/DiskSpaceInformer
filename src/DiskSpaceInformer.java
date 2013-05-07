@@ -140,10 +140,11 @@ public class DiskSpaceInformer extends JPanel
         frame.setVisible(true);
     }
 
-    protected static void logTop(String currentLog) {
-        String lastLog = log.getText();
+    protected static void logTop(StringBuffer currentLog) {
+        StringBuffer sb = new StringBuffer();
+        sb.append(log.getText());
         log.setText("");
-        log.append(currentLog + newline +  lastLog);
+        log.append(currentLog + newline +  sb.toString());
     }
 
 
