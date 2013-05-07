@@ -60,6 +60,7 @@ New In Versions
 
 1e - added file vistor pattern that has responsibilty for how the folder sizes are calculated, removed progress monitor
 
+1f to 1g - Added tests and dos tree style format
 
 
 BUGS
@@ -77,21 +78,18 @@ TODO
 ====
 
 Usability:
-- Tree structure for leafs don't need full path as you can see above what path you are in.
-- Better text alignment in text area for scrolling data.
-- Pie chart representation of space used.
-- Add to right click menu , summary or break down of sub-folders.
+- Exportability for sysadmins would be useful, may be in debug mode everything is tab separated for easy excel export.
 
 Performance:
-- Performance of getting file sizes - investigate nio2 or apache-commons-io.
+- Performance of getting file sizes - using nio2 is there a better  way of scanning dir's
 
 Refactoring and Testing:
 - Break out listeners into separate classes for testing.
-- FindFileandFolderSizes constructor too long , maybe a progress
-- Look at virtual or mock or real file system test ,needs to work across all OS's
-
+- FindFileandFolderSizes constructor too long, builder pattern ?
+- More about testing below.
 
 New Functionality:
+- Pie chart
 - Look at threading , maybe thread per folder ?
 
 TESTING
