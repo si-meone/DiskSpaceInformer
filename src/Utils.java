@@ -23,10 +23,10 @@ public final class Utils {
         StringBuffer sb = new StringBuffer();
         long freeSpacePercent = Math.round(Float.valueOf(freeSpace) / Float.valueOf(totalSpace) * 100.0);
         String title = "Checked: [ " + root + " ]  " + "Free:" + " [ " + freeSpacePercent + "% ]";
-        String underline = String.format(String.format("%%0%dd", title.length()), 0).replace("0", "=");
+        String underline = String.format(String.format("%%0%dd", title.length()/2), 0).replace("0", "─");
 
-        sb.append(underline + newline + title + "\n" + underline);
-        sb.append(String.format("\nTotal Space is: [%s]\nUsed space is: [%s] \nFree space is: [%s]\n\n",
+        sb.append(underline + newline + title + newline + underline);
+        sb.append(String.format("\nTotal Space is: [ %s ]\nUsed space is: [ %s ] \nFree space is: [ %s ]\n\n",
                 readableFileSize(totalSpace),
                 readableFileSize(usedSpace),
                 readableFileSize(freeSpace))
@@ -37,30 +37,26 @@ public final class Utils {
     public static String prettyPrint(File file, long total, Map<String, Long> sortedFileFolderSizes, boolean debug, String extraInfo) {
         StringBuffer sb = new StringBuffer();
         String status = debug || extraInfo.length() == 0 ? "" : "[Error(s) turn on debug checkbox]";
-        String title = "[" + readableFileSize(total) + "] ==> " +  file.getAbsolutePath() + space + status;
-        String underline = String.format(String.format("%%0%dd", title.length()), 0).replace("0", "=");
-        sb.append(underline + newline);
-        sb.append(title + newline);
-        sb.append(underline + newline);
+        String title = file.getAbsolutePath() + " [ " + readableFileSize(total) + " ]"  + space + status;
+        sb.append(space + title + newline + "│" + newline);
         if(debug){
             sb.append(newline);
             sb.append(extraInfo);
             sb.append(newline);
         }
         for (Map.Entry<String, Long> entry : sortedFileFolderSizes.entrySet()) {
-            sb.append("[ " + readableFileSize(entry.getValue()) + " ]");
-            sb.append(" --> " + entry.getKey() + "\n");
+            sb.append("├─── " + entry.getKey());
+            sb.append("    [ " + readableFileSize(entry.getValue()) + " ]\n");
         }
-        sb.append(newline);
         return sb.toString();
     }
 
     public static String prettyPrint(File file, long total) {
-        return String.format("%s: [%s]\n", file.getName(), readableFileSize(total));
+        return String.format("%s: [ %s ]\n", file.getName(), readableFileSize(total));
     }
 
     public static String prettyPrint(File file) {
-        return String.format("%s: [%s]\n", file.getName(), readableFileSize(file.length()));
+        return String.format("%s: [ %s ]\n", file.getName(), readableFileSize(file.length()));
     }
 
 }

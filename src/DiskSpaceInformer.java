@@ -21,7 +21,8 @@ public class DiskSpaceInformer extends JPanel
     protected FindFileAndFolderSizes task;
     protected JProgressBar progressBar;
 
-    private static String version = "Disk Space Informer v0.1g";
+    private static String version = "Disk Space Informer v0.1h";
+    static private final String newline = "\n";
     private final JComboBox drives;
 
     public static boolean debug = false;
@@ -142,7 +143,7 @@ public class DiskSpaceInformer extends JPanel
     protected static void logTop(String currentLog) {
         String lastLog = log.getText();
         log.setText("");
-        log.append(currentLog + lastLog);
+        log.append(currentLog + newline +  lastLog);
     }
 
 
