@@ -204,7 +204,13 @@ public class DiskSpaceInformer extends JPanel
             sortedMap.putAll(foldersSizes);
             if (summary) {
                 logTop(Utils.prettyPrint(file, visitor.getGrandTotal()));
-            } else logTop(Utils.prettyPrint(file, visitor.getGrandTotal(), sortedMap, debug, extraInfo));
+            } else
+                if (debug){
+                    logTop(Utils.prettyPrint(file, visitor.getGrandTotal(), sortedMap, extraInfo));
+                }else{
+                    logTop(Utils.prettyPrint(file, visitor.getGrandTotal(), sortedMap));
+                }
+
             return null;
         }
 

@@ -34,19 +34,26 @@ public final class Utils {
         return sb.toString();
     }
 
-    public static String prettyPrint(File file, long total, Map<String, Long> sortedFileFolderSizes, boolean debug, String extraInfo) {
+    public static String prettyPrint(File file, long total, Map<String, Long> sortedFileFolderSizes) {
         StringBuffer sb = new StringBuffer();
-        String status = debug || extraInfo.length() == 0 ? "" : "[Error(s) turn on debug checkbox]";
-        String title = file.getAbsolutePath() + " [ " + readableFileSize(total) + " ]"  + space + status;
+        String title = file.getAbsolutePath() + " [ " + readableFileSize(total) + " ]"  + space;
         sb.append(space + title + newline + "│" + newline);
-        if(debug){
-            sb.append(newline);
-            sb.append(extraInfo);
-            sb.append(newline);
-        }
         for (Map.Entry<String, Long> entry : sortedFileFolderSizes.entrySet()) {
             sb.append("├─── " + entry.getKey());
             sb.append("    [ " + readableFileSize(entry.getValue()) + " ]\n");
+        }
+        return sb.toString();
+    }
+
+    public static String prettyPrint(File file, long total, Map<String, Long> sortedFileFolderSizes, String extraInfo) {
+        StringBuffer sb = new StringBuffer();
+        String status = extraInfo.length() == 0 ? "" : "[Error(s) turn on debug checkbox]";
+        String title = file.getAbsolutePath() + tab + readableFileSize(total)   + tab + status;
+        sb.append(title + newline );
+        sb.append(extraInfo);
+        for (Map.Entry<String, Long> entry : sortedFileFolderSizes.entrySet()) {
+            sb.append(entry.getKey());
+            sb.append(tab + readableFileSize(entry.getValue()) + "\n");
         }
         return sb.toString();
     }
