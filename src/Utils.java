@@ -34,9 +34,10 @@ public final class Utils {
         return sb.toString();
     }
 
-    public static StringBuffer prettyPrint(File file, long total, Map<String, Long> sortedFileFolderSizes) {
+    public static StringBuffer prettyPrint(File file, long total, Map<String, Long> sortedFileFolderSizes, boolean errors) {
         StringBuffer sb = new StringBuffer();
-        String title = file.getAbsolutePath() + " [ " + readableFileSize(total) + " ]"  + space;
+        String status = errors ?  "  Error(s): turn on debug checkbox" : "";
+        String title = file.getAbsolutePath() + " [ " + readableFileSize(total) + " ]"  + space + status;
         sb.append(space + title + newline + "│" + newline);
         for (Map.Entry<String, Long> entry : sortedFileFolderSizes.entrySet()) {
             sb.append("├─── " + entry.getKey());
@@ -47,8 +48,7 @@ public final class Utils {
 
     public static StringBuffer prettyPrint(File file, long total, Map<String, Long> sortedFileFolderSizes, String extraInfo) {
         StringBuffer sb = new StringBuffer();
-        String status = extraInfo.length() == 0 ? "" : "[Error(s) turn on debug checkbox]";
-        String title = file.getAbsolutePath() + tab + readableFileSize(total)   + tab + status;
+        String title = file.getAbsolutePath() + tab + readableFileSize(total)   + tab;
         sb.append(title + newline );
         sb.append(extraInfo);
         for (Map.Entry<String, Long> entry : sortedFileFolderSizes.entrySet()) {

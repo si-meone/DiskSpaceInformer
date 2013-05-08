@@ -209,7 +209,7 @@ public class DiskSpaceInformer extends JPanel
                 if (debug){
                     logTop(Utils.prettyPrint(file, visitor.getGrandTotal(), sortedMap, extraInfo));
                 }else{
-                    logTop(Utils.prettyPrint(file, visitor.getGrandTotal(), sortedMap));
+                    logTop(Utils.prettyPrint(file, visitor.getGrandTotal(), sortedMap,  !extraInfo.isEmpty()));
                 }
 
             return null;
