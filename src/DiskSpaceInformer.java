@@ -141,10 +141,10 @@ public class DiskSpaceInformer extends JPanel
     }
 
     protected static void logTop(StringBuffer currentLog) {
-        StringBuffer sb = new StringBuffer();
-        sb.append(log.getText());
+        StringBuffer oldLog = new StringBuffer();
+        oldLog.append(log.getText());
         log.setText("");
-        log.append(currentLog + newline +  sb.toString());
+        log.append(currentLog + newline +  oldLog);
     }
 
 
