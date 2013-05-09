@@ -88,7 +88,8 @@ Refactoring and Testing:
 - FindFileandFolderSizes constructor too long, builder pattern ?
 - More about testing below.
 
-New Functionality:
+New Functionality to be put in:
+- Add filtering of paths or directories e.g. properties 
 - Pie chart
 - Look at threading , maybe thread per folder ?
 
