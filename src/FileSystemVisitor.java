@@ -56,6 +56,11 @@ public class FileSystemVisitor implements FileVisitor<Path> {
     @Override
     public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
         //System.out.println("[F]\t " + file);
+        if (pathsToIgnore.contains(file)){
+            foldersSizes.put(file.toString(), 0L);
+            errors.append("EXCLUDING: " + file.toString() + "\n" );
+            return FileVisitResult.CONTINUE;
+        }
         if (file.equals(path) || !file.getParent().equals(path)) { //not on the 1 st level
             dirTotal += attrs.size();
             return FileVisitResult.CONTINUE;

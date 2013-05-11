@@ -28,13 +28,30 @@ public class DiskSpaceInformer extends JPanel
     private final JComboBox drives;
 
     public static boolean debug = false;
+    private String[] pathsToIgnore;
 
     public DiskSpaceInformer(File[] files, String path) {
         super(new BorderLayout());
+        pathsToIgnore = new String[0];
         log = new JTextArea(30, 40);
         log.setName("log");
         log.setMargin(new Insets(5, 5, 5, 5));
         log.setEditable(true);
+
+        try{
+            pathsToIgnore = new Config("config.properties").getItems("folders.to.ignore");
+            StringBuffer pathBuffer = new StringBuffer();
+            for(String pathToIgnore : pathsToIgnore) {
+                pathBuffer.append(String.format("path Ignored: %s\n", pathToIgnore));
+            }
+            logTop(pathBuffer);
+
+        }  catch (MissingResourceException e){
+            logTop(new StringBuffer(String.format("Error: %s File: %s Key Missing: %s", e.getMessage() , e.getClassName(),e.getKey())));
+
+        }
+
+
         log.append(new FindFileAndFolderSizes().checkSpaceAvailable());
         JScrollPane logScrollPane = new JScrollPane(log);
         logScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
@@ -145,7 +162,7 @@ public class DiskSpaceInformer extends JPanel
     }
 
 
-    protected static void   logTop(StringBuffer currentLog) {
+    protected static void logTop(StringBuffer currentLog) {
         StringBuffer oldLog = new StringBuffer();
         oldLog.append(log.getText());
         log.setText("");
@@ -194,15 +211,9 @@ public class DiskSpaceInformer extends JPanel
             progressBar.setString("Processing Selection...");
             Map<String, Long> foldersSizes = null;
             Path root = Paths.get(String.valueOf(file.getPath()));
-            String[] paths = new String[0];
-            try{
-             paths = new Config("config").getItems("folders.to.ignore");
-            }  catch (MissingResourceException e){
-                if(debug) logTop(new StringBuffer(String.format("Error: %s File: %s Key Missing: %s", e.getMessage() , e.getClassName(),e.getKey())));
 
-            }
             List<Path> foldersToIgnore =  new ArrayList<Path>();
-            for (String path : paths) {
+            for (String path : pathsToIgnore) {
                 foldersToIgnore.add(new File(path).toPath());
             }
 

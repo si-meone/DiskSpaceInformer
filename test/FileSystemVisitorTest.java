@@ -9,8 +9,12 @@ import java.io.*;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.nio.ByteBuffer;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 
 import static org.junit.Assert.*;
@@ -100,20 +104,32 @@ public class FileSystemVisitorTest {
     public void testVisitorWalkTreeIgnoresAPathFromConfig() throws Exception {
         Path root = tempFolder.getRoot().toPath();
         String propertyName = "config_test.properties";
-        File property = new File(root + File.separator + propertyName);
+        String replace = root.toString().replace("\\", "/");
+        System.out.println("replace: " +replace);
+        File property = new File(replace + "/" + propertyName);
 
-        Path path1 = new File(root + File.separator + "f3" + File.separator + "f3_2").toPath();
-        Path path2 = new File(root + File.separator + "f3" + File.separator + "f3_3").toPath();
+        String path1 = replace + "/" +  "f3" + "/" + "f3_2";
+        String path2 = replace + "/"  + "f3" + "/" + "f3_3";
+        System.out.println("path1: " + path1);
+        //System.out.println("path2: " + path2);
         PrintWriter out = new PrintWriter(property);
-        out.format("folders.to.ignore=%s,%s",path1, path2);
+        out.println("folders.to.ignore=" + path1 + ","+  path2);
         out.close();
 
+//        String content = readFile(property.getPath(), StandardCharsets.ISO_8859_1);
+//        System.out.println("content");
+//        System.out.println(content);
+//        System.out.println("content");
+
         addToClasspath(property.getParentFile());
-        String[] paths  = new Config("config_test").getItems("folders.to.ignore");
+        String[] paths  = new Config("config_test.properties").getItems("folders.to.ignore");
 
         List foldersToIgnore = new ArrayList<Path>();
         for (String path : paths){
-            foldersToIgnore.add(new File(path).toPath());
+            System.out.println("path: " + path);
+            File file = new File(path);
+            System.out.println("@@@file: " + file);
+            foldersToIgnore.add(file.toPath());
         }
         FileSystemVisitor visitor = new FileSystemVisitor(root, foldersToIgnore, new JProgressBar());
         try {
@@ -130,6 +146,13 @@ public class FileSystemVisitorTest {
         Method method = URLClassLoader.class.getDeclaredMethod("addURL", new Class[]{URL.class});
         method.setAccessible(true);
         method.invoke(ClassLoader.getSystemClassLoader(), new Object[]{file.toURI().toURL()});
+    }
+
+    static String readFile(String path, Charset encoding)
+            throws IOException
+    {
+        byte[] encoded = Files.readAllBytes(Paths.get(path));
+        return encoding.decode(ByteBuffer.wrap(encoded)).toString();
     }
 
 }
