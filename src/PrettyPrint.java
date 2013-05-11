@@ -34,36 +34,36 @@ public final class PrettyPrint {
         return sb.toString();
     }
 
-    public static String prettyPrint(File file, long total, Map<String, Long> sortedFileFolderSizes) {
+    public static StringBuffer prettyPrint(File file, long total, Map<String, Long> sortedFileFolderSizes, boolean errors) {
         StringBuffer sb = new StringBuffer();
-        String title = file.getAbsolutePath() + " [ " + readableFileSize(total) + " ]"  + space;
+        String status = errors ?  "  Error(s): turn on debug checkbox" : "";
+        String title = file.getAbsolutePath() + " [ " + readableFileSize(total) + " ]"  + space + status;
         sb.append(space + title + newline + "│" + newline);
         for (Map.Entry<String, Long> entry : sortedFileFolderSizes.entrySet()) {
             sb.append("├─── " + entry.getKey());
             sb.append("    [ " + readableFileSize(entry.getValue()) + " ]\n");
         }
-        return sb.toString();
+        return sb;
     }
 
-    public static String prettyPrint(File file, long total, Map<String, Long> sortedFileFolderSizes, String extraInfo) {
+    public static StringBuffer prettyPrint(File file, long total, Map<String, Long> sortedFileFolderSizes, String extraInfo) {
         StringBuffer sb = new StringBuffer();
-        String status = extraInfo.length() == 0 ? "" : "[Error(s) turn on debug checkbox]";
-        String title = file.getAbsolutePath() + tab + readableFileSize(total)   + tab + status;
+        String title = file.getAbsolutePath() + tab + readableFileSize(total)   + tab;
         sb.append(title + newline );
         sb.append(extraInfo);
         for (Map.Entry<String, Long> entry : sortedFileFolderSizes.entrySet()) {
             sb.append(entry.getKey());
             sb.append(tab + readableFileSize(entry.getValue()) + "\n");
         }
-        return sb.toString();
+        return sb;
     }
 
-    public static String prettyPrint(File file, long total) {
-        return String.format("%s: [ %s ]\n", file.getName(), readableFileSize(total));
+    public static StringBuffer prettyPrint(File file, long total) {
+        return new StringBuffer(String.format("%s: [ %s ]\n", file.getName(), readableFileSize(total)));
     }
 
-    public static String prettyPrint(File file) {
-        return String.format("%s: [ %s ]\n", file.getName(), readableFileSize(file.length()));
+    public static StringBuffer prettyPrint(File file) {
+        return new StringBuffer(String.format("%s: [ %s ]\n", file.getName(), readableFileSize(file.length())));
     }
 
 }

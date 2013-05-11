@@ -144,15 +144,12 @@ public class DiskSpaceInformer extends JPanel
         frame.setVisible(true);
     }
 
-    protected static void logTop(String... currentLogs) {
-        String lastLog = log.getText();
-        log.setText("");
-        StringBuilder sb = new StringBuilder();
-        for (String currentLog : currentLogs){
-             sb.append(currentLog);
-        }
 
-        log.append(sb + newline + lastLog);
+    protected static void   logTop(StringBuffer currentLog) {
+        StringBuffer oldLog = new StringBuffer();
+        oldLog.append(log.getText());
+        log.setText("");
+        log.append(currentLog + newline +  oldLog);
     }
 
 
@@ -201,9 +198,7 @@ public class DiskSpaceInformer extends JPanel
             try{
              paths = new Config("config").getItems("folders.to.ignore");
             }  catch (MissingResourceException e){
-                if(debug) logTop("Error: ", e.getMessage(),
-                        " File: ", e.getClassName(),
-                        " Key Missing: ", e.getKey());
+                if(debug) logTop(new StringBuffer(String.format("Error: %s File: %s Key Missing: %s", e.getMessage() , e.getClassName(),e.getKey())));
 
             }
             List<Path> foldersToIgnore =  new ArrayList<Path>();
@@ -230,9 +225,8 @@ public class DiskSpaceInformer extends JPanel
             } else if (debug) {
                 logTop(PrettyPrint.prettyPrint(file, visitor.getGrandTotal(), sortedMap, extraInfo));
             } else {
-                logTop(PrettyPrint.prettyPrint(file, visitor.getGrandTotal(), sortedMap));
+                logTop(PrettyPrint.prettyPrint(file, visitor.getGrandTotal(), sortedMap, !extraInfo.isEmpty() ));
             }
-
             return null;
         }
 
