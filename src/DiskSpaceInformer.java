@@ -23,7 +23,7 @@ public class DiskSpaceInformer extends JPanel
     protected FindFileAndFolderSizes task;
     protected JProgressBar progressBar;
 
-    private static String version = "Disk Space Informer v0.1h";
+    private static String version = "Disk Space Informer v0.1i";
     static private final String newline = "\n";
     private final JComboBox drives;
 
