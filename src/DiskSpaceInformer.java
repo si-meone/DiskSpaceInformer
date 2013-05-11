@@ -41,6 +41,7 @@ public class DiskSpaceInformer extends JPanel
         try{
             pathsToIgnore = new Config("config.properties").getItems("folders.to.ignore");
             StringBuffer pathBuffer = new StringBuffer();
+            pathBuffer.append(String.format("%s%sconfig.properties\n", new File("").getAbsolutePath(),File.separator));
             for(String pathToIgnore : pathsToIgnore) {
                 pathBuffer.append(String.format("path Ignored: %s\n", pathToIgnore));
             }
