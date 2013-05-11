@@ -1,5 +1,4 @@
 import javax.swing.*;
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
@@ -11,7 +10,7 @@ public class FileSystemVisitor implements FileVisitor<Path> {
     private long grandTotal = 0;
     private long dirTotal = 0;
     private Map<String, Long> foldersSizes = new LinkedHashMap<String, Long>();
-    private List<Path> pathsToIgnore = Arrays.asList(new File("/proc").toPath());
+    private List<Path> pathsToIgnore;
 
     public String getErrors() {
         return errors.toString();
@@ -25,8 +24,9 @@ public class FileSystemVisitor implements FileVisitor<Path> {
         return foldersSizes;
     }
 
-    FileSystemVisitor(Path path, JProgressBar progressBar) {
+    FileSystemVisitor(Path path, List pathsToIgnore,  JProgressBar progressBar) {
         this(path);
+        this.pathsToIgnore = pathsToIgnore;
         this.progressBar = progressBar;
         this.progressBar.setString("Determining files to scan");
         this.progressBar.setStringPainted(true);
@@ -93,7 +93,9 @@ public class FileSystemVisitor implements FileVisitor<Path> {
         }
         Path root = Paths.get(System.getProperty("user.home"));
         //Path tempFolder = new File("/").toPath();
-        FileSystemVisitor visitor = new FileSystemVisitor(root, new JProgressBar());
+        List<String> foldersToIgnore  = new ArrayList<String>();
+        foldersToIgnore.add("/proc");
+        FileSystemVisitor visitor = new FileSystemVisitor(root, foldersToIgnore, new JProgressBar());
         Files.walkFileTree(root, visitor);
         System.out.println(visitor.getFoldersSizes());
     }

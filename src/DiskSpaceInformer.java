@@ -7,8 +7,10 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
+import java.util.List;
+
+import static java.util.ResourceBundle.*;
 
 
 public class DiskSpaceInformer extends JPanel
@@ -129,7 +131,9 @@ public class DiskSpaceInformer extends JPanel
                 }
             }
         }
-    };
+    }
+
+    ;
 
     private static void setupAndShowUI(File[] files, String path) {
         JFrame frame = new JFrame(version);
@@ -140,10 +144,15 @@ public class DiskSpaceInformer extends JPanel
         frame.setVisible(true);
     }
 
-    protected static void logTop(String currentLog) {
+    protected static void logTop(String... currentLogs) {
         String lastLog = log.getText();
         log.setText("");
-        log.append(currentLog + newline +  lastLog);
+        StringBuilder sb = new StringBuilder();
+        for (String currentLog : currentLogs){
+             sb.append(currentLog);
+        }
+
+        log.append(sb + newline + lastLog);
     }
 
 
@@ -151,9 +160,9 @@ public class DiskSpaceInformer extends JPanel
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
                 UIManager.put("swing.boldMetal", Boolean.FALSE);
-                if (args.length == 0){
-                    setupAndShowUI(File.listRoots(),System.getProperty("user.home"));
-                }else{
+                if (args.length == 0) {
+                    setupAndShowUI(File.listRoots(), System.getProperty("user.home"));
+                } else {
                     setupAndShowUI(new File[]{new File("")}, args[0]);
                 }
             }
@@ -179,16 +188,30 @@ public class DiskSpaceInformer extends JPanel
         }
 
         @Override
-        public Void doInBackground() {
+        public Void doInBackground() throws Exception {
             if (file.isFile()) {
-                logTop(Utils.prettyPrint(file));
+                logTop(PrettyPrint.prettyPrint(file));
                 return null;
             }
 
             progressBar.setString("Processing Selection...");
             Map<String, Long> foldersSizes = null;
             Path root = Paths.get(String.valueOf(file.getPath()));
-            FileSystemVisitor visitor = new FileSystemVisitor(root, progressBar);
+            String[] paths = new String[0];
+            try{
+             paths = new Config("config").getItems("folders.to.ignore");
+            }  catch (MissingResourceException e){
+                if(debug) logTop("Error: ", e.getMessage(),
+                        " File: ", e.getClassName(),
+                        " Key Missing: ", e.getKey());
+
+            }
+            List<Path> foldersToIgnore =  new ArrayList<Path>();
+            for (String path : paths) {
+                foldersToIgnore.add(new File(path).toPath());
+            }
+
+            FileSystemVisitor visitor = new FileSystemVisitor(root, foldersToIgnore, progressBar);
             String extraInfo = "";
             try {
                 Files.walkFileTree(root, visitor);
@@ -203,13 +226,12 @@ public class DiskSpaceInformer extends JPanel
             Map<String, Long> sortedMap = new TreeMap<String, Long>(vc);
             sortedMap.putAll(foldersSizes);
             if (summary) {
-                logTop(Utils.prettyPrint(file, visitor.getGrandTotal()));
-            } else
-                if (debug){
-                    logTop(Utils.prettyPrint(file, visitor.getGrandTotal(), sortedMap, extraInfo));
-                }else{
-                    logTop(Utils.prettyPrint(file, visitor.getGrandTotal(), sortedMap));
-                }
+                logTop(PrettyPrint.prettyPrint(file, visitor.getGrandTotal()));
+            } else if (debug) {
+                logTop(PrettyPrint.prettyPrint(file, visitor.getGrandTotal(), sortedMap, extraInfo));
+            } else {
+                logTop(PrettyPrint.prettyPrint(file, visitor.getGrandTotal(), sortedMap));
+            }
 
             return null;
         }
@@ -221,7 +243,7 @@ public class DiskSpaceInformer extends JPanel
                 long totalSpace = root.getTotalSpace();
                 long freeSpace = root.getFreeSpace();
                 long usedSpace = totalSpace - freeSpace;
-                sb.append(Utils.prettyPrint(root.getPath(), totalSpace, usedSpace, freeSpace));
+                sb.append(PrettyPrint.prettyPrint(root.getPath(), totalSpace, usedSpace, freeSpace));
             }
             return sb.toString();
         }

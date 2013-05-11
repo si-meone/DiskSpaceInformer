@@ -7,7 +7,7 @@ import org.junit.runners.Suite.SuiteClasses;
         FileSystemTreeModelTest.class,
         FileSystemVisitorTest.class,
         SizeComparatorTest.class,
-        UtilsTest.class})
+        PrettyPrintTest.class})
 public class TestSuite {
 
 

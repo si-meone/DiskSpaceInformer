@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.Map;
 
-public final class Utils {
+public final class PrettyPrint {
 
     static private final String newline = "\n";
     static private final String tab = "\t";
