@@ -26,12 +26,13 @@ sometimes it will download and when you run the jnlp file it may complain about 
 
 - Download the jar from https://github.com/snasrallah/DiskSpaceInformer/raw/master/jar/DiskSpaceInformer.jar
 
-and run:
+and run from project home:
 java -jar jar/DiskSpaceInformer.jar
 
-- Download run sources in your IDE (I used intellij , should work in eclipse) and run 
+- Download run sources in your IDE (I used intellij , should work in eclipse) and from project home run 
+java -classpath out/production/DiskSpaceInformer/ dsi.DiskSpaceInformer
 
-
+* out/production/DiskSpaceInformer may be different if you compile with another IDE or command-line.
 
 To jar up
 =========
@@ -72,7 +73,9 @@ New In Versions
 
 1f to 1g - Added tests and dos tree style format
 
-1h to 1i - Added filtering paths e.g. /proc - you can put your own in
+1h to 1i - Added config.properties filtering paths e.g. /proc - you can put your own in
+
+1j to 1j - Added logging.properties for log levels and now we have a dsi package
 
 BUGS
 ====
