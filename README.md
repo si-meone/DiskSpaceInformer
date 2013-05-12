@@ -12,7 +12,7 @@ run instructions further down - you can run it in two clicks
 
 To run it 3 ways 
 
-- Click on the link below which will download the file link below and then double click on the file.
+1. Click on the link below which will download the file link below and then double click on the file.
 
 https://github.com/snasrallah/DiskSpaceInformer/raw/master/jar/DiskSpaceInformer.jnlp
 
@@ -24,15 +24,15 @@ sometimes it will download and when you run the jnlp file it may complain about 
 [http://java.com/en/download/index.jsp](Download Java7)
 
 
-- Download the jar from https://github.com/snasrallah/DiskSpaceInformer/raw/master/jar/DiskSpaceInformer.jar
+2. Download the jar from https://github.com/snasrallah/DiskSpaceInformer/raw/master/jar/DiskSpaceInformer.jar
 
 and run from project home:
 java -jar jar/DiskSpaceInformer.jar
 
-- Download run sources in your IDE (I used intellij , should work in eclipse) and from project home run 
+3. Download run sources in your IDE (I used intellij , should work in eclipse) and from project home run 
 java -classpath out/production/DiskSpaceInformer/ dsi.DiskSpaceInformer
 
-* out/production/DiskSpaceInformer may be different if you compile with another IDE or command-line.
+Note: out/production/DiskSpaceInformer may be different if you compile with another IDE or command-line.
 
 To jar up
 =========
