@@ -16,15 +16,20 @@ To run it 3 ways
 
 https://github.com/snasrallah/DiskSpaceInformer/raw/master/jar/DiskSpaceInformer.jnlp
 
-(sometimes it will download and you run the jnlp file it may complain about java so you'll need to fetch that
-plugin for your browser and operating system type)
+Problems:
+sometimes it will download and when you run the jnlp file it may complain about java so you'll need it:
+
+[http://www.java.com/en/download/installed.jsp](Verify your Java version)
+
+[http://java.com/en/download/index.jsp](Download Java7)
+
 
 - Download the jar from https://github.com/snasrallah/DiskSpaceInformer/raw/master/jar/DiskSpaceInformer.jar
 
 and run:
 java -jar jar/DiskSpaceInformer.jar
 
-- Download run sources in your IDE (I used itellij , should work in eclipse) and run 
+- Download run sources in your IDE (I used intellij , should work in eclipse) and run 
 
 
 
@@ -36,9 +41,9 @@ for intellij - other users go to where your classes got compiled
 
 2. cd out/production/DiskSpaceInformer/
 
-3. jar cfe ../../../jar/DiskSpaceInformer.jar DiskSpaceInformer *
+3. jar cfe ../../../jar/DiskSpaceInformer.jar dsi/DiskSpaceInformer *
 
-    4. check your jar java -jar ../../../jar/DiskSpaceInformer.jar
+4. check your jar java -jar ../../../jar/DiskSpaceInformer.jar
 
 5. then check in the new jar and relaunch
 
@@ -67,16 +72,17 @@ New In Versions
 
 1f to 1g - Added tests and dos tree style format
 
+1h to 1i - Added filtering paths e.g. /proc - you can put your own in
 
 BUGS
 ====
-- Mac swing chooser doesn't let you choose root drive, only folders below.
-- Windows or Linux if you select a root drive it doesn't show the drive or root name in the root
+[] Mac swing chooser doesn't let you choose root drive, only folders below.
+[] Windows or Linux if you select a root drive it doesn't show the drive or root name in the root
   node.
-- Cancel folder sizing needs a bit more investigation , notice CPU stays at 100 % if there is a problem e.g. processing /sys on linux
-- Bad problem with sys folders on linux like /sys , /dev reporting as being huge - may have to do more.
-- Block sizes on different Operating systems 4kb seems standard maybe I should check.
-- More work on accuracy of file checking. Folders take space as well ?
+[] Cancel folder sizing needs a bit more investigation , notice CPU stays at 100 % if there is a problem e.g. processing /sys on linux
+[] Bad problem with sys folders on linux like /sys , /dev reporting as being huge - may have to do more.
+[] Block sizes on different Operating systems 4kb seems standard maybe I should check.
+[] More work on accuracy of file checking. Folders take space as well ?
 
 
 TODO
@@ -109,10 +115,12 @@ run test via command line:
 
 run from the root of project:
 
-on windows
-java -classpath test/lib/fest-assert-1.2.jar;test/lib/junit-4.10.jar;test/lib/fest-util-1.1.2.jar;test/lib/fest-reflect-1.2.jar;test/lib/fest-swing-1.2.jar;out/production/DiskSpaceInformer;out/test/DiskSpaceInformer org.junit.runner.JUnitCore dsi.TestSuite
-on mac unix:
-java -classpath test/lib/fest-assert-1.2.jar:test/lib/junit-4.10.jar:test/lib/fest-util-1.1.2.jar:test/lib/fest-reflect-1.2.jar:test/lib/fest-swing-1.2.jar:out/production/DiskSpaceInformer:out/test/DiskSpaceInformer org.junit.runner.JUnitCore dsi.TestSuite
+unix/mac   
+ java -classpath test/lib/fest-assert-1.2.jar:test/lib/junit-4.10.jar:test/lib/fest-util-1.1.2.jar:test/lib/fest-reflect-1.2.jar:test/lib/fest-swing-1.2.jar:out/production/DiskSpaceInformer/:out/test/DiskSpaceInformer/ org.junit.runner.JUnitCore dsi.TestSuite
+
+windows (almost the same but with semicolons)   
+ java -classpath test/lib/fest-assert-1.2.jar;test/lib/junit-4.10.jar;test/lib/fest-util-1.1.2.jar;test/lib/fest-reflect-1.2.jar;test/lib/fest-swing-1.2.jar;out/production/DiskSpaceInformer/;out/test/DiskSpaceInformer/ org.junit.runner.JUnitCore dsi.TestSuite
+
 
 Build env:
  - use ant to do jaring, jar key signing ...etc
