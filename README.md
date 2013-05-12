@@ -115,7 +115,12 @@ run test via command line:
 
 run from the root of project:
 
-java -classpath test/lib/fest-assert-1.2.jar:test/lib/junit-4.10.jar:test/lib/fest-util-1.1.2.jar:test/lib/fest-reflect-1.2.jar:test/lib/fest-swing-1.2.jar:out/production/DiskSpaceInformer/:out/test/DiskSpaceInformer/ org.junit.runner.JUnitCore dsi.TestSuite
+unix/mac   
+ java -classpath test/lib/fest-assert-1.2.jar:test/lib/junit-4.10.jar:test/lib/fest-util-1.1.2.jar:test/lib/fest-reflect-1.2.jar:test/lib/fest-swing-1.2.jar:out/production/DiskSpaceInformer/:out/test/DiskSpaceInformer/ org.junit.runner.JUnitCore dsi.TestSuite
+
+windows (almost the same but with semicolons)   
+ java -classpath test/lib/fest-assert-1.2.jar;test/lib/junit-4.10.jar;test/lib/fest-util-1.1.2.jar;test/lib/fest-reflect-1.2.jar;test/lib/fest-swing-1.2.jar;out/production/DiskSpaceInformer/;out/test/DiskSpaceInformer/ org.junit.runner.JUnitCore dsi.TestSuite
+
 
 Build env:
  - use ant to do jaring, jar key signing ...etc
