@@ -1,9 +1,14 @@
 Disk Space Informer
 ================
 
-Find where all your disk space has gone - works on mac, linux and windows  
+Find where all your disk space has gone - works on mac, linux and windows:
 
 prequisite is Java 1.7 (web browser plugin is useful) or above (uses nio2).
+
+run instructions further down - you can run it in two clicks
+
+![Alt text](https://raw.github.com/snasrallah/DiskSpaceInformer/master/screenshot.png "Disk Space Informer")
+
 
 To run it 3 ways 
 
