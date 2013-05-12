@@ -19,7 +19,7 @@
     </resources>
     <application-desc
             name=">DiskSpaceInformer"
-            main-class="dsi.DiskSpaceInformer"
+            
             width="600"
             height="800">
     </application-desc>
