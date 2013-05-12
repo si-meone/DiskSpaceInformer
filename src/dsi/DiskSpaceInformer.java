@@ -18,7 +18,10 @@ import java.util.logging.Logger;
 
 public class DiskSpaceInformer extends JPanel
         implements ActionListener {
-    private static Logger log = Logger.getLogger(DiskSpaceInformer.class.getName());
+
+
+
+    private static Logger log;
     private static JTextArea textArea;
     private JTree tree;
     private final JButton checkButton;
@@ -35,6 +38,12 @@ public class DiskSpaceInformer extends JPanel
 
     public DiskSpaceInformer(File[] files, String path) {
         super(new BorderLayout());
+        try{
+            LogManager.getLogManager().readConfiguration(DiskSpaceInformer.class.getResourceAsStream("logging.properties"));
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        log = Logger.getLogger(DiskSpaceInformer.class.getName());
         log.log(Level.FINE, "Starting" + DiskSpaceInformer.class.getName());
 
         pathsToIgnore = new String[0];
@@ -176,8 +185,9 @@ public class DiskSpaceInformer extends JPanel
 
 
     public static void main(final String[] args) throws IOException {
-        LogManager logMan=LogManager.getLogManager();
-        logMan.readConfiguration(Thread.currentThread().getClass().getResourceAsStream("/dsi/logging.properties"));
+//        LogManager logMan=LogManager.getLogManager();
+//        logMan.readConfiguration(Thread.currentThread().getClass().getResourceAsStream("logging.properties"));
+
 
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
