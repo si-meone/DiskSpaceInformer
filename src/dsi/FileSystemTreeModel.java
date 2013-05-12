@@ -1,16 +1,23 @@
+package dsi;
+
 import javax.swing.event.EventListenerList;
 import javax.swing.event.TreeModelListener;
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
 import java.io.File;
 import java.util.Arrays;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class FileSystemTreeModel implements TreeModel {
     protected TreeFile topDirectory;
     private EventListenerList listeners = new EventListenerList();
 
+    private static Logger log = Logger.getLogger(FileSystemTreeModel.class.getName());
+
     FileSystemTreeModel(String dirName) {
         this(new TreeFile(dirName));
+        log.log(Level.CONFIG,  String.format("Loading folder: %s",dirName));
     }
 
     FileSystemTreeModel(TreeFile directory) {

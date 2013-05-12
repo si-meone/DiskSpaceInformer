@@ -1,3 +1,6 @@
+package dsi;
+
+import dsi.FileSystemTreeModel;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;

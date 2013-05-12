@@ -1,5 +1,5 @@
-import junit.framework.JUnit4TestAdapter;
-import junit.framework.TestCase;
+package dsi;
+
 import org.fest.swing.fixture.*;
 import org.junit.*;
 
@@ -91,7 +91,7 @@ public class DiskSpaceInformerTest{
     @Test
     public void testCheckTreeFolderWithOneMbFile() {
         JTreeFixture tree = new JTreeFixture(robot, "tree");
-        JTextComponentFixture log = new JTextComponentFixture(robot, "log");
+        JTextComponentFixture log = new JTextComponentFixture(robot, "textArea");
         assertFalse("error found 1 MB in log window", log.text().contains("1 MB"));
         //tree.clickRow(2);
         String f1 = tempFolder.getRoot().getName() + "/" + "f1";
@@ -104,7 +104,7 @@ public class DiskSpaceInformerTest{
   @Test
     public void testCheckTreeFolderSizeWithANumberOfFiles() {
         JTreeFixture tree = new JTreeFixture(robot, "tree");
-        JTextComponentFixture log = new JTextComponentFixture(robot, "log");
+        JTextComponentFixture log = new JTextComponentFixture(robot, "textArea");
         //tree.clickRow(2);
         String root = tempFolder.getRoot().getName();
         JTreeFixture jTreeFixture = tree.clickPath(root);

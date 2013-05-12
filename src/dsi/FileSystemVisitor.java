@@ -1,8 +1,12 @@
+package dsi;
+
 import javax.swing.*;
 import java.io.IOException;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class FileSystemVisitor implements FileVisitor<Path> {
 
@@ -11,6 +15,8 @@ public class FileSystemVisitor implements FileVisitor<Path> {
     private long dirTotal = 0;
     private Map<String, Long> foldersSizes = new LinkedHashMap<String, Long>();
     private List<Path> pathsToIgnore;
+    private static Logger log = Logger.getLogger(FileSystemVisitor.class.getName());
+
 
     public String getErrors() {
         return errors.toString();
@@ -31,7 +37,6 @@ public class FileSystemVisitor implements FileVisitor<Path> {
         this.progressBar.setString("Determining files to scan");
         this.progressBar.setStringPainted(true);
         this.progressBar.setVisible(true);
-        //this.progressBar.setIndeterminate(true);
     }
 
     FileSystemVisitor(Path path) {
@@ -43,7 +48,7 @@ public class FileSystemVisitor implements FileVisitor<Path> {
     }
 
     public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) throws IOException {
-        //System.out.println("[D]\t " + dir);
+        log.log(Level.FINE, "[D]\t " + dir);
         progressBar.setString(dir.toString());
         if (pathsToIgnore.contains(dir)){
             foldersSizes.put(dir.toString(), 0L);
@@ -55,7 +60,7 @@ public class FileSystemVisitor implements FileVisitor<Path> {
 
     @Override
     public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
-        //System.out.println("[F]\t " + file);
+        log.log(Level.FINE, "[F]\t " + file);
         if (pathsToIgnore.contains(file)){
             foldersSizes.put(file.toString(), 0L);
             errors.append("EXCLUDING: " + file.toString() + "\n" );
@@ -74,7 +79,7 @@ public class FileSystemVisitor implements FileVisitor<Path> {
     @Override
     public FileVisitResult visitFileFailed(Path file, IOException exc) throws IOException {
         String error = "ERROR: " + file + " : " + exc + "\n";
-        System.err.println(error);
+        log.log(Level.WARNING, error);
         errors.append(error);
         return FileVisitResult.SKIP_SUBTREE;
     }
@@ -88,7 +93,7 @@ public class FileSystemVisitor implements FileVisitor<Path> {
         foldersSizes.put(dir.getFileName().toString(), dirTotal);
         grandTotal += dirTotal;
         dirTotal = 0L; //reset
-        //System.out.format("foldersSizes: %s",foldersSizes);
+        log.log(Level.FINE, "foldersSizes: %s",foldersSizes);
         return FileVisitResult.CONTINUE;
     }
 
@@ -97,7 +102,6 @@ public class FileSystemVisitor implements FileVisitor<Path> {
             System.out.println("Use: java Size <directory>");
         }
         Path root = Paths.get(System.getProperty("user.home"));
-        //Path tempFolder = new File("/").toPath();
         List<String> foldersToIgnore  = new ArrayList<String>();
         foldersToIgnore.add("/proc");
         FileSystemVisitor visitor = new FileSystemVisitor(root, foldersToIgnore, new JProgressBar());

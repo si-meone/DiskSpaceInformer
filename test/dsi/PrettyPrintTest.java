@@ -1,3 +1,6 @@
+package dsi;
+
+import dsi.PrettyPrint;
 import org.junit.Test;
 
 import static org.hamcrest.core.Is.is;

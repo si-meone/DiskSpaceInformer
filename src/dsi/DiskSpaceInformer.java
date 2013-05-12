@@ -1,3 +1,5 @@
+package dsi;
+
 import javax.swing.*;
 import javax.swing.tree.*;
 import java.awt.*;
@@ -9,21 +11,22 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 import java.util.List;
-
-import static java.util.ResourceBundle.*;
+import java.util.logging.Level;
+import java.util.logging.LogManager;
+import java.util.logging.Logger;
 
 
 public class DiskSpaceInformer extends JPanel
         implements ActionListener {
-
-    private static JTextArea log;
+    private static Logger log = Logger.getLogger(DiskSpaceInformer.class.getName());
+    private static JTextArea textArea;
     private JTree tree;
     private final JButton checkButton;
     private JScrollPane treeScrollPane;
     protected FindFileAndFolderSizes task;
     protected JProgressBar progressBar;
 
-    private static String version = "Disk Space Informer v0.1i";
+    private static String version = "Disk Space Informer v0.1j";
     static private final String newline = "\n";
     private final JComboBox drives;
 
@@ -32,16 +35,17 @@ public class DiskSpaceInformer extends JPanel
 
     public DiskSpaceInformer(File[] files, String path) {
         super(new BorderLayout());
+        log.log(Level.FINE, "Starting" + DiskSpaceInformer.class.getName());
+
         pathsToIgnore = new String[0];
-        log = new JTextArea(30, 40);
-        log.setName("log");
-        log.setMargin(new Insets(5, 5, 5, 5));
-        log.setEditable(true);
+        textArea = new JTextArea(30, 40);
+        textArea.setName("textArea");
+        textArea.setMargin(new Insets(5, 5, 5, 5));
+        textArea.setEditable(true);
 
         try{
             pathsToIgnore = new Config("config.properties").getItems("folders.to.ignore");
             StringBuffer pathBuffer = new StringBuffer();
-            pathBuffer.append("config.properties\n");
             for(String pathToIgnore : pathsToIgnore) {
                 pathBuffer.append(String.format("path Ignored: %s\n", pathToIgnore));
             }
@@ -53,8 +57,8 @@ public class DiskSpaceInformer extends JPanel
         }
 
 
-        log.append(new FindFileAndFolderSizes().checkSpaceAvailable());
-        JScrollPane logScrollPane = new JScrollPane(log);
+        textArea.append(new FindFileAndFolderSizes().checkSpaceAvailable());
+        JScrollPane logScrollPane = new JScrollPane(textArea);
         logScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         logScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
 
@@ -165,13 +169,16 @@ public class DiskSpaceInformer extends JPanel
 
     protected static void logTop(StringBuffer currentLog) {
         StringBuffer oldLog = new StringBuffer();
-        oldLog.append(log.getText());
-        log.setText("");
-        log.append(currentLog + newline +  oldLog);
+        oldLog.append(textArea.getText());
+        textArea.setText("");
+        textArea.append(currentLog + newline + oldLog);
     }
 
 
-    public static void main(final String[] args) {
+    public static void main(final String[] args) throws IOException {
+        LogManager logMan=LogManager.getLogManager();
+        logMan.readConfiguration(Thread.currentThread().getClass().getResourceAsStream("/dsi/logging.properties"));
+
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
                 UIManager.put("swing.boldMetal", Boolean.FALSE);

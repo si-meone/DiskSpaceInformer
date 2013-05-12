@@ -1,5 +1,8 @@
+package dsi;
+
+import dsi.Config;
+import dsi.FileSystemVisitor;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
@@ -11,7 +14,6 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -105,30 +107,20 @@ public class FileSystemVisitorTest {
         Path root = tempFolder.getRoot().toPath();
         String propertyName = "config_test.properties";
         String replace = root.toString().replace("\\", "/");
-        System.out.println("replace: " +replace);
         File property = new File(replace + "/" + propertyName);
 
         String path1 = replace + "/" +  "f3" + "/" + "f3_2";
         String path2 = replace + "/"  + "f3" + "/" + "f3_3";
-        System.out.println("path1: " + path1);
-        //System.out.println("path2: " + path2);
         PrintWriter out = new PrintWriter(property);
         out.println("folders.to.ignore=" + path1 + ","+  path2);
         out.close();
 
-//        String content = readFile(property.getPath(), StandardCharsets.ISO_8859_1);
-//        System.out.println("content");
-//        System.out.println(content);
-//        System.out.println("content");
-
         addToClasspath(property.getParentFile());
-        String[] paths  = new Config("config_test.properties").getItems("folders.to.ignore");
+        String[] paths  = new Config(replace + "/" + "config_test.properties").getItems("folders.to.ignore");
 
         List foldersToIgnore = new ArrayList<Path>();
         for (String path : paths){
-            System.out.println("path: " + path);
             File file = new File(path);
-            System.out.println("@@@file: " + file);
             foldersToIgnore.add(file.toPath());
         }
         FileSystemVisitor visitor = new FileSystemVisitor(root, foldersToIgnore, new JProgressBar());
@@ -138,7 +130,6 @@ public class FileSystemVisitorTest {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
         Map<String,Long> foldersSizes = visitor.getFoldersSizes();
-        //System.out.println(foldersSizes);
         assertEquals((Object) 7340032L, foldersSizes.get("f3"));
     }
 

@@ -1,5 +1,8 @@
+package dsi;
+
 import java.util.*;
 
+import dsi.SizeComparator;
 import org.junit.Before;
 import org.junit.Test;
 

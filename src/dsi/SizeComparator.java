@@ -1,3 +1,5 @@
+package dsi;
+
 import java.util.Comparator;
 import java.util.Map;
 
