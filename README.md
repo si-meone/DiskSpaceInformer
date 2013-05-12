@@ -41,9 +41,9 @@ for intellij - other users go to where your classes got compiled
 
 2. cd out/production/DiskSpaceInformer/
 
-3. jar cfe ../../../jar/DiskSpaceInformer.jar DiskSpaceInformer *
+3. jar cfe ../../../jar/DiskSpaceInformer.jar dsi/DiskSpaceInformer *
 
-    4. check your jar java -jar ../../../jar/DiskSpaceInformer.jar
+4. check your jar java -jar ../../../jar/DiskSpaceInformer.jar
 
 5. then check in the new jar and relaunch
 
