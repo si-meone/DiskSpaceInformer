@@ -29,7 +29,7 @@ public class DiskSpaceInformer extends JPanel
     protected FindFileAndFolderSizes task;
     protected JProgressBar progressBar;
 
-    private static String version = "Disk Space Informer v0.1j";
+    private static String version = "Disk Space Informer v0.1k";
     static private final String newline = "\n";
     private final JComboBox drives;
 
@@ -39,6 +39,7 @@ public class DiskSpaceInformer extends JPanel
     public DiskSpaceInformer(File[] files, String path) {
         super(new BorderLayout());
         try{
+            System.out.println("Starting Application from: " + new File(".").getCanonicalPath());
             LogManager.getLogManager().readConfiguration(DiskSpaceInformer.class.getResourceAsStream("logging.properties"));
         } catch (Exception ex) {
             ex.printStackTrace();
