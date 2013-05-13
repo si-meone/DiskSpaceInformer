@@ -6,11 +6,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.*;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
@@ -18,8 +14,6 @@ import java.util.logging.Logger;
 
 public class DiskSpaceInformer extends JPanel
         implements ActionListener {
-
-
 
     private static Logger log;
     private static JTextArea textArea;
@@ -59,15 +53,14 @@ public class DiskSpaceInformer extends JPanel
             for(String pathToIgnore : pathsToIgnore) {
                 pathBuffer.append(String.format("path Ignored: %s\n", pathToIgnore));
             }
-            logTop(pathBuffer);
+            textArea.setText(pathBuffer + "\n" +  textArea.getText()+ "\n");
 
         }  catch (MissingResourceException e){
-            logTop(new StringBuffer(String.format("Error: %s File: %s Key Missing: %s", e.getMessage() , e.getClassName(),e.getKey())));
+            textArea.setText(new StringBuffer(String.format("Error: %s File: %s Key Missing: %s", e.getMessage() , e.getClassName(),e.getKey()))+ "\n" + textArea.getText()+ "\n");
 
         }
 
-
-        textArea.append(new FindFileAndFolderSizes().checkSpaceAvailable());
+        textArea.append(new FindFileAndFolderSizes().checkSpaceAvailable()+ "\n");
         JScrollPane logScrollPane = new JScrollPane(textArea);
         logScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         logScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
@@ -127,7 +120,7 @@ public class DiskSpaceInformer extends JPanel
             tree.addMouseListener(new LeftClickMouseListener());
             treeScrollPane.setViewportView(tree);
         } else if (e.getSource() == checkButton) {
-            task = new FindFileAndFolderSizes(new TreeFile(drives.getSelectedItem().toString()));
+            task = new FindFileAndFolderSizes(new TreeFile(drives.getSelectedItem().toString()),pathsToIgnore, textArea, progressBar,debug);
             task.execute();
         }
     }
@@ -136,13 +129,8 @@ public class DiskSpaceInformer extends JPanel
         TreePath[] selectionPaths = tree.getSelectionPaths();
         for (TreePath path : selectionPaths) {
             FindFileAndFolderSizes task;
-            if (selectionPaths.length > 1) {  //more than one thing
-                boolean summary = true;
-                task = new FindFileAndFolderSizes((File) path.getLastPathComponent(), summary);
-            } else {
-                File lastPathComponent = (File) path.getLastPathComponent();
-                task = new FindFileAndFolderSizes(lastPathComponent);
-            }
+            File lastPathComponent = (File) path.getLastPathComponent();
+            task = new FindFileAndFolderSizes(lastPathComponent,pathsToIgnore, textArea, progressBar,debug);
             task.execute();
         }
     }
@@ -155,7 +143,7 @@ public class DiskSpaceInformer extends JPanel
                     int rowLocation = tree.getRowForLocation(e.getX(), e.getY());
                     File lastPathComponent = (File) tree.getPathForRow(rowLocation).getLastPathComponent();
                     if (lastPathComponent.isFile()) {
-                        task = new FindFileAndFolderSizes(lastPathComponent);
+                        task = new FindFileAndFolderSizes(lastPathComponent, pathsToIgnore, textArea, progressBar,debug);
                         task.execute();
                     }
                 } else if (e.getClickCount() == 1) {
@@ -163,9 +151,7 @@ public class DiskSpaceInformer extends JPanel
                 }
             }
         }
-    }
-
-    ;
+    };
 
     private static void setupAndShowUI(File[] files, String path) {
         JFrame frame = new JFrame(version);
@@ -176,20 +162,7 @@ public class DiskSpaceInformer extends JPanel
         frame.setVisible(true);
     }
 
-
-    protected static void logTop(StringBuffer currentLog) {
-        StringBuffer oldLog = new StringBuffer();
-        oldLog.append(textArea.getText());
-        textArea.setText("");
-        textArea.append(currentLog + newline + oldLog);
-    }
-
-
     public static void main(final String[] args) throws IOException {
-//        LogManager logMan=LogManager.getLogManager();
-//        logMan.readConfiguration(Thread.currentThread().getClass().getResourceAsStream("logging.properties"));
-
-
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
                 UIManager.put("swing.boldMetal", Boolean.FALSE);
@@ -202,81 +175,5 @@ public class DiskSpaceInformer extends JPanel
         });
     }
 
-
-    protected class FindFileAndFolderSizes extends SwingWorker<Void, Void> {
-
-        private boolean summary = false;
-        private File file;
-
-        FindFileAndFolderSizes(File file, boolean summary) {
-            this(file);
-            this.summary = summary;
-        }
-
-        FindFileAndFolderSizes(File file) {
-            this.file = file;
-        }
-
-        FindFileAndFolderSizes() {
-        }
-
-        @Override
-        public Void doInBackground() throws Exception {
-            if (file.isFile()) {
-                logTop(PrettyPrint.prettyPrint(file));
-                return null;
-            }
-
-            progressBar.setString("Processing Selection...");
-            Map<String, Long> foldersSizes = null;
-            Path root = Paths.get(String.valueOf(file.getPath()));
-
-            List<Path> foldersToIgnore =  new ArrayList<Path>();
-            for (String path : pathsToIgnore) {
-                foldersToIgnore.add(new File(path).toPath());
-            }
-
-            FileSystemVisitor visitor = new FileSystemVisitor(root, foldersToIgnore, progressBar);
-            String extraInfo = "";
-            try {
-                Files.walkFileTree(root, visitor);
-                foldersSizes = visitor.getFoldersSizes();
-                extraInfo = visitor.getErrors();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            progressBar.setString("Sorting Listing...");
-            SizeComparator vc = new SizeComparator(foldersSizes);
-            Map<String, Long> sortedMap = new TreeMap<String, Long>(vc);
-            sortedMap.putAll(foldersSizes);
-            if (summary) {
-                logTop(PrettyPrint.prettyPrint(file, visitor.getGrandTotal()));
-            } else if (debug) {
-                logTop(PrettyPrint.prettyPrint(file, visitor.getGrandTotal(), sortedMap, extraInfo));
-            } else {
-                logTop(PrettyPrint.prettyPrint(file, visitor.getGrandTotal(), sortedMap, !extraInfo.isEmpty() ));
-            }
-            return null;
-        }
-
-        public String checkSpaceAvailable() {
-            StringBuffer sb = new StringBuffer();
-            File[] roots = File.listRoots();
-            for (File root : roots) {
-                long totalSpace = root.getTotalSpace();
-                long freeSpace = root.getFreeSpace();
-                long usedSpace = totalSpace - freeSpace;
-                sb.append(PrettyPrint.prettyPrint(root.getPath(), totalSpace, usedSpace, freeSpace));
-            }
-            return sb.toString();
-        }
-
-        @Override
-        public void done() {
-            progressBar.setString("Task Complete...");
-        }
-
-    }
 
 }

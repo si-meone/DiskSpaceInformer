@@ -86,10 +86,10 @@ public class FileSystemVisitor implements FileVisitor<Path> {
 
     @Override
     public FileVisitResult postVisitDirectory(Path dir, IOException exc) throws IOException {
-        if (dir.equals(path) || !dir.getParent().equals(path)) {
+        if (dir.equals(path) || !dir.getParent().equals(path)) { // start or first level folder
             return FileVisitResult.CONTINUE;
         }
-
+        // first level folder
         foldersSizes.put(dir.getFileName().toString(), dirTotal);
         grandTotal += dirTotal;
         dirTotal = 0L; //reset

@@ -1,7 +1,5 @@
 package dsi;
 
-import dsi.Config;
-import dsi.FileSystemVisitor;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -137,13 +135,6 @@ public class FileSystemVisitorTest {
         Method method = URLClassLoader.class.getDeclaredMethod("addURL", new Class[]{URL.class});
         method.setAccessible(true);
         method.invoke(ClassLoader.getSystemClassLoader(), new Object[]{file.toURI().toURL()});
-    }
-
-    static String readFile(String path, Charset encoding)
-            throws IOException
-    {
-        byte[] encoded = Files.readAllBytes(Paths.get(path));
-        return encoding.decode(ByteBuffer.wrap(encoded)).toString();
     }
 
 }
