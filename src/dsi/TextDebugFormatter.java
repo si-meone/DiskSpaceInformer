@@ -1,12 +1,10 @@
 package dsi;
 
-import javax.swing.*;
 import java.io.File;
-import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.Map;
 
-public final class PrettyPrint {
+public final class TextDebugFormatter implements Formatter {
 
     static private final String newline = "\n";
     static private final String tab = "\t";
@@ -14,14 +12,14 @@ public final class PrettyPrint {
     static private final String space = " ";
 
 
-    public static String readableFileSize(long size) {
+    public String readableFileSize(long size) {
         if (size <= 0) return "0";
         final String[] units = new String[]{"B", "KB", "MB", "GB", "TB"};
         int digitGroups = (int) (Math.log10(size) / Math.log10(1024));
         return new DecimalFormat("#,##0.#").format(size / Math.pow(1024, digitGroups)) + " " + units[digitGroups];
     }
 
-    public static String prettyPrint(String root, long totalSpace, long usedSpace, long freeSpace) {
+    public String format(String root, long totalSpace, long usedSpace, long freeSpace) {
         StringBuffer sb = new StringBuffer();
         long freeSpacePercent = Math.round(Float.valueOf(freeSpace) / Float.valueOf(totalSpace) * 100.0);
         String title = "Checked: [ " + root + " ]  " + "Free:" + " [ " + freeSpacePercent + "% ]";
@@ -36,19 +34,7 @@ public final class PrettyPrint {
         return sb.toString();
     }
 
-    public static StringBuffer prettyPrint(File file, long total, Map<String, Long> sortedFileFolderSizes, boolean errors) {
-        StringBuffer sb = new StringBuffer();
-        String status = errors ?  "  Error(s): turn on debug checkbox" : "";
-        String title = file.getAbsolutePath() + " [ " + readableFileSize(total) + " ]"  + space + status;
-        sb.append(space + title + newline + "│" + newline);
-        for (Map.Entry<String, Long> entry : sortedFileFolderSizes.entrySet()) {
-            sb.append("├─── " + entry.getKey());
-            sb.append("    [ " + readableFileSize(entry.getValue()) + " ]\n");
-        }
-        return sb;
-    }
-
-    public static StringBuffer prettyPrint(File file, long total, Map<String, Long> sortedFileFolderSizes, String extraInfo) {
+    public String format(File file, long total, Map<String, Long> sortedFileFolderSizes, String extraInfo) {
         StringBuffer sb = new StringBuffer();
         String title = file.getAbsolutePath() + tab + readableFileSize(total)   + tab;
         sb.append(title + newline );
@@ -57,15 +43,15 @@ public final class PrettyPrint {
             sb.append(entry.getKey());
             sb.append(tab + readableFileSize(entry.getValue()) + "\n");
         }
-        return sb;
+        return sb.toString();
     }
 
-    public static StringBuffer prettyPrint(File file, long total) {
-        return new StringBuffer(String.format("%s: [ %s ]\n", file.getName(), readableFileSize(total)));
+    public String format(File file, long total) {
+        return String.format("%s: [ %s ]\n", file.getName(), readableFileSize(total));
     }
 
-    public static StringBuffer prettyPrint(File file) {
-        return new StringBuffer(String.format("%s: [ %s ]\n", file.getName(), readableFileSize(file.length())));
+    public String format(File file) {
+        return String.format("%s: [ %s ]\n", file.getName(), readableFileSize(file.length()));
     }
 
 }

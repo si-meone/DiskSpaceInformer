@@ -11,8 +11,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-import static dsi.PrettyPrint.prettyPrint;
-
 class FindFileAndFolderSizes extends SwingWorker<Void, Void> {
 
     private String[] pathsToIgnore;
@@ -20,6 +18,8 @@ class FindFileAndFolderSizes extends SwingWorker<Void, Void> {
     private JProgressBar progressBar;
     private File file;
     private boolean debug;
+    private Formatter formatter = new TextFormatter();
+
 
     FindFileAndFolderSizes(File file, String[] pathsToIgnore, JTextArea textArea, JProgressBar progressBar, boolean debug) {
         this(file, debug);
@@ -39,7 +39,7 @@ class FindFileAndFolderSizes extends SwingWorker<Void, Void> {
     @Override
     public Void doInBackground() throws Exception {
         if (file.isFile()) {
-            textArea.setText(prettyPrint(file) + "\n" + textArea.getText() + "\n");
+            textArea.setText(formatter.format(file) + "\n" + textArea.getText() + "\n");
             return null;
         }
 
@@ -67,9 +67,11 @@ class FindFileAndFolderSizes extends SwingWorker<Void, Void> {
         Map<String, Long> sortedMap = new TreeMap<String, Long>(vc);
         sortedMap.putAll(foldersSizes);
         if (debug) {
-            textArea.setText(prettyPrint(file, visitor.getGrandTotal(), sortedMap, extraInfo) + "\n" + textArea.getText() + "\n");
+            Formatter debugFormatter = new TextDebugFormatter();
+            textArea.setText(debugFormatter.format(file, visitor.getGrandTotal(), sortedMap, extraInfo) + "\n" + textArea.getText() + "\n");
         } else {
-            textArea.setText(prettyPrint(file, visitor.getGrandTotal(), sortedMap, !extraInfo.isEmpty()) + "\n" + textArea.getText() + "\n");
+            String status = extraInfo.length() > 0 ?  "  Error(s): turn on debug checkbox" : "";
+            textArea.setText(formatter.format(file, visitor.getGrandTotal(), sortedMap, status) + "\n" + textArea.getText() + "\n");
         }
         return null;
     }
@@ -81,7 +83,7 @@ class FindFileAndFolderSizes extends SwingWorker<Void, Void> {
             long totalSpace = root.getTotalSpace();
             long freeSpace = root.getFreeSpace();
             long usedSpace = totalSpace - freeSpace;
-            sb.append(prettyPrint(root.getPath(), totalSpace, usedSpace, freeSpace));
+            sb.append(formatter.format(root.getPath(), totalSpace, usedSpace, freeSpace));
         }
         return sb.toString();
     }
