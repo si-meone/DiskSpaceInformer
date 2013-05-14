@@ -20,20 +20,43 @@ class FindFileAndFolderSizes extends SwingWorker<Void, Void> {
     private boolean debug;
     private Formatter formatter = new TextFormatter();
 
+    public static class Builder{
+        //req params
+        private File file;
+        //opt params
+        private String[] pathsToIgnore =  new String[0];
+        private JTextArea textArea = new JTextArea();
+        private Formatter formatter = new TextFormatter();
+        private boolean debug = false;
+        private JProgressBar progressBar = new JProgressBar();
 
-    FindFileAndFolderSizes(File file, String[] pathsToIgnore, JTextArea textArea, JProgressBar progressBar, boolean debug) {
-        this(file, debug);
-        this.pathsToIgnore = pathsToIgnore;
-        this.textArea = textArea;
-        this.progressBar = progressBar;
+        public Builder(File file){
+              this.file = file;
+        }
+
+        public Builder pathstoIgnore(String[] val)
+            {pathsToIgnore = val; return this;}
+        public Builder textArea(JTextArea val)
+            {textArea = val; return this;}
+        public Builder formatter(Formatter val)
+            {formatter = val; return this;}
+        public Builder debug(boolean val)
+            {debug = val; return this;}
+        public Builder progressBar(JProgressBar val)
+            {progressBar = val; return this;}
+
+        public FindFileAndFolderSizes build(){
+            return new FindFileAndFolderSizes(this);
+        }
     }
 
-    FindFileAndFolderSizes(File file, boolean debug) {
-        this.file = file;
-        this.debug = debug;
-    }
-
-    FindFileAndFolderSizes() {
+    private FindFileAndFolderSizes(Builder builder){
+        file = builder.file;
+        pathsToIgnore = builder.pathsToIgnore;
+        textArea = builder.textArea;
+        formatter = builder.formatter;
+        debug = builder.debug;
+        progressBar = builder.progressBar;
     }
 
     @Override
@@ -70,7 +93,7 @@ class FindFileAndFolderSizes extends SwingWorker<Void, Void> {
             Formatter debugFormatter = new TextDebugFormatter();
             textArea.setText(debugFormatter.format(file, visitor.getGrandTotal(), sortedMap, extraInfo) + "\n" + textArea.getText() + "\n");
         } else {
-            String status = extraInfo.length() > 0 ?  "  Error(s): turn on debug checkbox" : "";
+            String status = extraInfo.length() > 0 ? "  Error(s): turn on debug checkbox" : "";
             textArea.setText(formatter.format(file, visitor.getGrandTotal(), sortedMap, status) + "\n" + textArea.getText() + "\n");
         }
         return null;

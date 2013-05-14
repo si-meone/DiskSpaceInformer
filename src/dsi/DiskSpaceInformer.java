@@ -32,7 +32,7 @@ public class DiskSpaceInformer extends JPanel
 
     public DiskSpaceInformer(File[] files, String path) {
         super(new BorderLayout());
-        try{
+        try {
             System.out.println("Starting Application from: " + new File(".").getCanonicalPath());
             LogManager.getLogManager().readConfiguration(DiskSpaceInformer.class.getResourceAsStream("logging.properties"));
         } catch (Exception ex) {
@@ -47,20 +47,20 @@ public class DiskSpaceInformer extends JPanel
         textArea.setMargin(new Insets(5, 5, 5, 5));
         textArea.setEditable(true);
 
-        try{
+        try {
             pathsToIgnore = new Config("config.properties").getItems("folders.to.ignore");
             StringBuffer pathBuffer = new StringBuffer();
-            for(String pathToIgnore : pathsToIgnore) {
+            for (String pathToIgnore : pathsToIgnore) {
                 pathBuffer.append(String.format("path Ignored: %s\n", pathToIgnore));
             }
-            textArea.setText(pathBuffer + "\n" +  textArea.getText()+ "\n");
+            textArea.setText(pathBuffer + "\n" + textArea.getText() + "\n");
 
-        }  catch (MissingResourceException e){
-            textArea.setText(new StringBuffer(String.format("Error: %s File: %s Key Missing: %s", e.getMessage() , e.getClassName(),e.getKey()))+ "\n" + textArea.getText()+ "\n");
+        } catch (MissingResourceException e) {
+            textArea.setText(new StringBuffer(String.format("Error: %s File: %s Key Missing: %s", e.getMessage(), e.getClassName(), e.getKey())) + "\n" + textArea.getText() + "\n");
 
         }
 
-        textArea.append(new FindFileAndFolderSizes().checkSpaceAvailable()+ "\n");
+        textArea.append(new FindFileAndFolderSizes.Builder(new File("/")).build().checkSpaceAvailable() + "\n");
         JScrollPane logScrollPane = new JScrollPane(textArea);
         logScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         logScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
@@ -120,7 +120,12 @@ public class DiskSpaceInformer extends JPanel
             tree.addMouseListener(new LeftClickMouseListener());
             treeScrollPane.setViewportView(tree);
         } else if (e.getSource() == checkButton) {
-            task = new FindFileAndFolderSizes(new TreeFile(drives.getSelectedItem().toString()),pathsToIgnore, textArea, progressBar,debug);
+
+            task = new FindFileAndFolderSizes.Builder(new TreeFile(drives.getSelectedItem().toString()))
+                    .pathstoIgnore(pathsToIgnore)
+                    .textArea(textArea)
+                    .progressBar(progressBar)
+                    .debug(debug).build();
             task.execute();
         }
     }
@@ -130,7 +135,11 @@ public class DiskSpaceInformer extends JPanel
         for (TreePath path : selectionPaths) {
             FindFileAndFolderSizes task;
             File lastPathComponent = (File) path.getLastPathComponent();
-            task = new FindFileAndFolderSizes(lastPathComponent,pathsToIgnore, textArea, progressBar,debug);
+            task = new FindFileAndFolderSizes.Builder(lastPathComponent)
+                    .pathstoIgnore(pathsToIgnore)
+                    .textArea(textArea)
+                    .progressBar(progressBar)
+                    .debug(debug).build();
             task.execute();
         }
     }
@@ -143,7 +152,11 @@ public class DiskSpaceInformer extends JPanel
                     int rowLocation = tree.getRowForLocation(e.getX(), e.getY());
                     File lastPathComponent = (File) tree.getPathForRow(rowLocation).getLastPathComponent();
                     if (lastPathComponent.isFile()) {
-                        task = new FindFileAndFolderSizes(lastPathComponent, pathsToIgnore, textArea, progressBar,debug);
+                        task = new FindFileAndFolderSizes.Builder(lastPathComponent)
+                                .pathstoIgnore(pathsToIgnore)
+                                .textArea(textArea)
+                                .progressBar(progressBar)
+                                .debug(debug).build();
                         task.execute();
                     }
                 } else if (e.getClickCount() == 1) {
@@ -151,7 +164,9 @@ public class DiskSpaceInformer extends JPanel
                 }
             }
         }
-    };
+    }
+
+    ;
 
     private static void setupAndShowUI(File[] files, String path) {
         JFrame frame = new JFrame(version);
@@ -174,6 +189,5 @@ public class DiskSpaceInformer extends JPanel
             }
         });
     }
-
 
 }
