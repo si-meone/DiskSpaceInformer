@@ -10,11 +10,8 @@ import java.io.*;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.nio.ByteBuffer;
-import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.*;
 
 import static org.junit.Assert.*;
@@ -121,7 +118,7 @@ public class FileSystemVisitorTest {
             File file = new File(path);
             foldersToIgnore.add(file.toPath());
         }
-        FileSystemVisitor visitor = new FileSystemVisitor(root, foldersToIgnore, new JProgressBar());
+        FileSystemVisitor visitor = new FileSystemVisitor(root, foldersToIgnore, new JProgressBar() );
         try {
             Files.walkFileTree(root, visitor);
     } catch (IOException e) {

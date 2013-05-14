@@ -4,26 +4,29 @@ import javax.swing.*;
 import javax.swing.tree.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
-
 
 public class DiskSpaceInformer extends JPanel
         implements ActionListener {
 
     private static Logger log;
     private static JTextArea textArea;
+    private final JButton stopButton;
     private JTree tree;
     private final JButton checkButton;
     private JScrollPane treeScrollPane;
     protected FindFileAndFolderSizes task;
     protected JProgressBar progressBar;
 
-    private static String version = "Disk Space Informer v0.1k";
+    private static String version = "Disk Space Informer v0.1L";
     static private final String newline = "\n";
     private final JComboBox drives;
 
@@ -68,6 +71,9 @@ public class DiskSpaceInformer extends JPanel
         checkButton = new JButton("Check Space");
         checkButton.setName("Check Space");
         checkButton.addActionListener(this);
+        stopButton = new JButton("Stop");
+        stopButton.setName("Stop");
+        stopButton.addActionListener(this);
 
         drives = new JComboBox(files);
         if (path != "") drives.addItem(path);
@@ -87,6 +93,7 @@ public class DiskSpaceInformer extends JPanel
         JPanel controlPanel = new JPanel();
         controlPanel.add(drives);
         controlPanel.add(checkButton);
+        controlPanel.add(stopButton);
         controlPanel.add(debugToggle);
 
         progressBar = new JProgressBar();
@@ -95,6 +102,7 @@ public class DiskSpaceInformer extends JPanel
         progressBar.setPreferredSize(prefSize);
         JPanel progressPanel = new JPanel();
         progressPanel.add(progressBar);
+
 
         String root = drives.getSelectedItem().toString();
         tree = new JTree();
@@ -120,20 +128,21 @@ public class DiskSpaceInformer extends JPanel
             tree.addMouseListener(new LeftClickMouseListener());
             treeScrollPane.setViewportView(tree);
         } else if (e.getSource() == checkButton) {
-
             task = new FindFileAndFolderSizes.Builder(new TreeFile(drives.getSelectedItem().toString()))
                     .pathstoIgnore(pathsToIgnore)
                     .textArea(textArea)
                     .progressBar(progressBar)
                     .debug(debug).build();
             task.execute();
+        } else if (e.getSource() == stopButton) {
+            task.cancel(true);
+
         }
     }
 
     private void showSpaceUsedByFolder() {
         TreePath[] selectionPaths = tree.getSelectionPaths();
         for (TreePath path : selectionPaths) {
-            FindFileAndFolderSizes task;
             File lastPathComponent = (File) path.getLastPathComponent();
             task = new FindFileAndFolderSizes.Builder(lastPathComponent)
                     .pathstoIgnore(pathsToIgnore)
@@ -164,9 +173,7 @@ public class DiskSpaceInformer extends JPanel
                 }
             }
         }
-    }
-
-    ;
+    };
 
     private static void setupAndShowUI(File[] files, String path) {
         JFrame frame = new JFrame(version);
@@ -177,8 +184,8 @@ public class DiskSpaceInformer extends JPanel
         frame.setVisible(true);
     }
 
-    public static void main(final String[] args) throws IOException {
-        SwingUtilities.invokeLater(new Runnable() {
+    public static void main(final String[] args) throws IOException, InvocationTargetException, InterruptedException {
+        SwingUtilities.invokeAndWait(new Runnable() {
             public void run() {
                 UIManager.put("swing.boldMetal", Boolean.FALSE);
                 if (args.length == 0) {

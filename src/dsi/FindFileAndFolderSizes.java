@@ -30,6 +30,7 @@ class FindFileAndFolderSizes extends SwingWorker<Void, Void> {
         private boolean debug = false;
         private JProgressBar progressBar = new JProgressBar();
 
+
         public Builder(File file){
               this.file = file;
         }
@@ -44,6 +45,7 @@ class FindFileAndFolderSizes extends SwingWorker<Void, Void> {
             {debug = val; return this;}
         public Builder progressBar(JProgressBar val)
             {progressBar = val; return this;}
+
 
         public FindFileAndFolderSizes build(){
             return new FindFileAndFolderSizes(this);
@@ -61,6 +63,8 @@ class FindFileAndFolderSizes extends SwingWorker<Void, Void> {
 
     @Override
     public Void doInBackground() throws Exception {
+        //int progress = 0;
+        setProgress(0);
         if (file.isFile()) {
             textArea.setText(formatter.format(file) + "\n" + textArea.getText() + "\n");
             return null;
@@ -74,13 +78,15 @@ class FindFileAndFolderSizes extends SwingWorker<Void, Void> {
         for (String path : pathsToIgnore) {
             foldersToIgnore.add(new File(path).toPath());
         }
-
-        FileSystemVisitor visitor = new FileSystemVisitor(root, foldersToIgnore, progressBar);
-        String extraInfo = "";
+            FileSystemVisitor visitor = new FileSystemVisitor(root, foldersToIgnore, progressBar);
+            String extraInfo = "";
         try {
             Files.walkFileTree(root, visitor);
             foldersSizes = visitor.getFoldersSizes();
             extraInfo = visitor.getErrors();
+        } catch (VisitorException e) {
+            progressBar.setString(e.getMessage());
+            throw new VisitorException(e.getMessage());
         } catch (IOException e) {
             e.printStackTrace();
         }
