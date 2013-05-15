@@ -136,7 +136,6 @@ public class DiskSpaceInformer extends JPanel
             task.execute();
         } else if (e.getSource() == stopButton) {
             task.cancel(true);
-
         }
     }
 

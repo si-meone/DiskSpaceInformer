@@ -88,7 +88,7 @@ class FindFileAndFolderSizes extends SwingWorker<Void, Void> {
             e.printStackTrace();
         }
 
-        progressBar.setString("Sorting Listing...");
+        //progressBar.setString("Sorting Listing...");
         SizeComparator vc = new SizeComparator(foldersSizes);
         Map<String, Long> sortedMap = new TreeMap<String, Long>(vc);
         sortedMap.putAll(foldersSizes);
