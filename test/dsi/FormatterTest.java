@@ -8,6 +8,7 @@ import java.util.Map;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
+import static org.junit.matchers.JUnitMatchers.containsString;
 
 //TODO increase testing ...
 public class FormatterTest
@@ -34,7 +35,7 @@ public class FormatterTest
         sortedFileFolderSizes.put("c", 312L);    //To change body of overridden methods use File | Settings | File Templates.
         sortedFileFolderSizes.put("d", 212L);    //To change body of overridden methods use File | Settings | File Templates.
         String format = formatter.format(new File("/"), 2048L, sortedFileFolderSizes, "File Exception");
-        assertThat(format, is("/\t2 KB\t\n" +
+        assertThat("does not contain correct format or text", format, containsString("2 KB\t\n" +
                 "File Exceptiond\t212 B\n" +
                 "b\t412 B\n" +
                 "c\t312 B\n" +
