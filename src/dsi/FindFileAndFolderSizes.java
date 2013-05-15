@@ -84,9 +84,6 @@ class FindFileAndFolderSizes extends SwingWorker<Void, Void> {
             Files.walkFileTree(root, visitor);
             foldersSizes = visitor.getFoldersSizes();
             extraInfo = visitor.getErrors();
-        } catch (VisitorException e) {
-            progressBar.setString(e.getMessage());
-            throw new VisitorException(e.getMessage());
         } catch (IOException e) {
             e.printStackTrace();
         }

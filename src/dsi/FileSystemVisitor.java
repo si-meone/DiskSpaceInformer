@@ -8,18 +8,6 @@ import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-class VisitorException extends IOException
-{
-    public VisitorException() {}
-
-    //Constructor that accepts a message
-    public VisitorException(String message){
-        super(message);
-    }
-
-
-}
-
 public class FileSystemVisitor implements FileVisitor<Path> {
 
     private JProgressBar progressBar;
@@ -62,7 +50,7 @@ public class FileSystemVisitor implements FileVisitor<Path> {
     public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) throws IOException {
 
         if (Thread.interrupted()) {
-            throw new VisitorException("Cancelled Task");
+            return FileVisitResult.TERMINATE;
         }
         log.log(Level.FINE, "[D]\t " + dir);
         progressBar.setString(dir.toString());
