@@ -26,7 +26,7 @@ public class DiskSpaceInformer extends JPanel
     protected FindFileAndFolderSizes task;
     protected JProgressBar progressBar;
 
-    private static String version = "Disk Space Informer v0.1L";
+    private static String version = "Disk Space Informer v0.1m";
     static private final String newline = "\n";
     private final JComboBox drives;
 
@@ -136,6 +136,7 @@ public class DiskSpaceInformer extends JPanel
             task.execute();
         } else if (e.getSource() == stopButton) {
             task.cancel(true);
+            progressBar.setString("Task Cancelled, showing partial information");
         }
     }
 

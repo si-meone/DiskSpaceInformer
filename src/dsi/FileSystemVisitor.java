@@ -17,7 +17,6 @@ public class FileSystemVisitor implements FileVisitor<Path> {
     private List<Path> pathsToIgnore;
     private static Logger log = Logger.getLogger(FileSystemVisitor.class.getName());
 
-
     public String getErrors() {
         return errors.toString();
     }
@@ -49,6 +48,9 @@ public class FileSystemVisitor implements FileVisitor<Path> {
 
     public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) throws IOException {
 
+        if (Thread.interrupted()) {
+            return FileVisitResult.TERMINATE;
+        }
         log.log(Level.FINE, "[D]\t " + dir);
         progressBar.setString(dir.toString());
         if (pathsToIgnore.contains(dir)){
@@ -62,10 +64,6 @@ public class FileSystemVisitor implements FileVisitor<Path> {
     @Override
     public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
         log.log(Level.FINE, "[F]\t " + file);
-        if (Thread.interrupted()) {
-            progressBar.setString("Task Cancelled, listing incomplete");
-            return FileVisitResult.TERMINATE;
-        }
         if (pathsToIgnore.contains(file)){
             foldersSizes.put(file.toString(), 0L);
             errors.append("EXCLUDING: " + file.toString() + "\n" );

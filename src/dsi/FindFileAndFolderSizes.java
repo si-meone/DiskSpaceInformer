@@ -114,6 +114,7 @@ class FindFileAndFolderSizes extends SwingWorker<Void, Void> {
         return sb.toString();
     }
 
+
     @Override
     public void done() {
         progressBar.setString("Task Complete...");
