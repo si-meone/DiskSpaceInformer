@@ -77,6 +77,7 @@ New In Versions
 
 BUGS
 ====
+[] when taska is running if you run another task e.g. taskb. taska cannot be stopped anymore (reference is lost) only taskb can be stopped.
 [] Mac swing chooser doesn't let you choose root drive, only folders below.
 [] Windows or Linux if you select a root drive it doesn't show the drive or root name in the root
   node.
