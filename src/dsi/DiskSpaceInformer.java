@@ -98,13 +98,6 @@ public class DiskSpaceInformer extends JPanel
         controlPanel.add(stopButton);
         controlPanel.add(debugToggle);
 
-        progressBar = new JProgressBar();
-        Dimension prefSize = progressBar.getPreferredSize();
-        prefSize.width = 700;
-        progressBar.setPreferredSize(prefSize);
-        JPanel progressPanel = new JPanel();
-        progressPanel.add(progressBar);
-
 
         String root = drives.getSelectedItem().toString();
         tree = new JTree();
@@ -113,6 +106,13 @@ public class DiskSpaceInformer extends JPanel
         tree.addMouseListener(new LeftClickMouseListener());
 
         treeScrollPane = new JScrollPane(tree);
+        progressBar = new JProgressBar();
+        Dimension prefSize = progressBar.getPreferredSize();
+        prefSize.width = 700;
+        progressBar.setPreferredSize(prefSize);
+        JPanel progressPanel = new JPanel();
+        progressPanel.add(progressBar);
+
         JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
                 treeScrollPane, logScrollPane);
         splitPane.setOneTouchExpandable(true);
@@ -130,12 +130,17 @@ public class DiskSpaceInformer extends JPanel
             tree.addMouseListener(new LeftClickMouseListener());
             treeScrollPane.setViewportView(tree);
         } else if (e.getSource() == checkButton) {
-            task = new FindFileAndFolderSizes.Builder(new TreeFile(drives.getSelectedItem().toString()))
+            // check if tree is selected
+            if (tree.isSelectionEmpty()){
+                task = new FindFileAndFolderSizes.Builder(new TreeFile(drives.getSelectedItem().toString()))
                     .pathstoIgnore(pathsToIgnore)
                     .textArea(textArea)
                     .progressBar(progressBar)
                     .debug(debug).build();
-            tasks.add(task);
+                tasks.add(task);
+            }else{
+                showSpaceUsedByFolder();
+            }
             task.execute();
         } else if (e.getSource() == stopButton) {
             for (FindFileAndFolderSizes t : tasks){
@@ -178,7 +183,7 @@ public class DiskSpaceInformer extends JPanel
                         task.execute();
                     }
                 } else if (e.getClickCount() == 1) {
-                    showSpaceUsedByFolder();
+                    //showSpaceUsedByFolder();
                 }
             }
         }

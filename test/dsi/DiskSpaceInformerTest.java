@@ -96,6 +96,7 @@ public class DiskSpaceInformerTest{
         //tree.clickRow(2);
         String f1 = tempFolder.getRoot().getName() + "/" + "f1";
         JTreeFixture jTreeFixture = tree.clickPath(f1);
+        new JButtonFixture(robot, "Check Space").click();
         pause(100);
         assertThat(jTreeFixture.valueAt(f1), is("f1"));
         assertTrue("error could not find 1 MB in log window", log.text().contains("1 MB"));
@@ -108,6 +109,7 @@ public class DiskSpaceInformerTest{
         //tree.clickRow(2);
         String root = tempFolder.getRoot().getName();
         JTreeFixture jTreeFixture = tree.clickPath(root);
+        new JButtonFixture(robot, "Check Space").click();
         pause(100);
         assertTrue("error could not find 10 MB in log window", log.text().contains("10 MB"));
     }
