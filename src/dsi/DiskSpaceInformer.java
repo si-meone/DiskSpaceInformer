@@ -10,6 +10,7 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
@@ -32,6 +33,7 @@ public class DiskSpaceInformer extends JPanel
 
     public static boolean debug = false;
     private String[] pathsToIgnore;
+    private List<FindFileAndFolderSizes> tasks = new  ArrayList<FindFileAndFolderSizes>();
 
     public DiskSpaceInformer(File[] files, String path) {
         super(new BorderLayout());
@@ -133,12 +135,18 @@ public class DiskSpaceInformer extends JPanel
                     .textArea(textArea)
                     .progressBar(progressBar)
                     .debug(debug).build();
+            tasks.add(task);
             task.execute();
         } else if (e.getSource() == stopButton) {
-            task.cancel(true);
+            for (FindFileAndFolderSizes t : tasks){
+                if(!t.isDone()){
+                    t.cancel(true);
+                }
+            }
             progressBar.setString("Task Cancelled, showing partial information");
         }
     }
+
 
     private void showSpaceUsedByFolder() {
         TreePath[] selectionPaths = tree.getSelectionPaths();
@@ -149,6 +157,7 @@ public class DiskSpaceInformer extends JPanel
                     .textArea(textArea)
                     .progressBar(progressBar)
                     .debug(debug).build();
+            tasks.add(task);
             task.execute();
         }
     }
