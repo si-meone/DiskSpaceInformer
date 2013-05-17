@@ -27,7 +27,7 @@ sometimes it will download and when you run the jnlp file it may complain about 
 and run from project home:
 java -jar jar/DiskSpaceInformer.jar
 
-- Download run sources in your IDE (I used intellij , should work in eclipse) and from project home run 
+- Download run sources in your IDE (I use intellij , should work in eclipse) and from project home run 
 java -classpath out/production/DiskSpaceInformer/ dsi.DiskSpaceInformer
 
 Note: out/production/DiskSpaceInformer may be different if you compile with another IDE or command-line.
