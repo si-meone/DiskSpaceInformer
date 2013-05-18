@@ -101,6 +101,8 @@ public class FileSystemVisitor implements FileVisitor<Path> {
     }
 
     public static void main(String[] args) throws Exception {
+        long startTime = System.currentTimeMillis();
+
         if (args.length != 1) {
             System.out.println("Use: java Size <directory>");
         }
@@ -110,5 +112,7 @@ public class FileSystemVisitor implements FileVisitor<Path> {
         FileSystemVisitor visitor = new FileSystemVisitor(root, foldersToIgnore, new JProgressBar());
         Files.walkFileTree(root, visitor);
         System.out.println(visitor.getFoldersSizes());
+        long endTime = System.currentTimeMillis();
+        log.info("That took " + (endTime - startTime) + " milliseconds");
     }
 }

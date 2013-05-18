@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.logging.Logger;
 
 class FindFileAndFolderSizes extends SwingWorker<Void, Void> {
 
@@ -19,6 +20,7 @@ class FindFileAndFolderSizes extends SwingWorker<Void, Void> {
     private File file;
     private boolean debug;
     private Formatter formatter = new TextFormatter();
+    private static Logger log = Logger.getLogger(FindFileAndFolderSizes.class.getName());
 
     public static class Builder{
         //req params
@@ -71,6 +73,7 @@ class FindFileAndFolderSizes extends SwingWorker<Void, Void> {
         }
 
         progressBar.setString("Processing Selection...");
+        long startTime = System.currentTimeMillis();
         Map<String, Long> foldersSizes = null;
         Path root = Paths.get(String.valueOf(file.getPath()));
 
@@ -99,6 +102,8 @@ class FindFileAndFolderSizes extends SwingWorker<Void, Void> {
             String status = extraInfo.length() > 0 ? "  Error(s): turn on debug checkbox" : "";
             textArea.setText(formatter.format(file, visitor.getGrandTotal(), sortedMap, status) + "\n" + textArea.getText() + "\n");
         }
+        long endTime = System.currentTimeMillis();
+        log.info("The scan for [" + file.getAbsolutePath() + "] took " + (endTime - startTime) + " milliseconds");
         return null;
     }
 
