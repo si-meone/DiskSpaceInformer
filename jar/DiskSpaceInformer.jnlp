@@ -14,7 +14,7 @@
 
     <resources>
         <!-- Application Resources -->
-        <j2se version="1.7+" initial-heap-size="64m" max-heap-size="128m" href="http://java.sun.com/products/autodl/j2se"/>
+        <j2se version="1.7+" href="http://java.sun.com/products/autodl/j2se"/>
         <jar href="DiskSpaceInformer.jar" main="true" />
     </resources>
     <application-desc
