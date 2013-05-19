@@ -1,4 +1,4 @@
-<project name="DiskSpaceInformer" default="jar-sign" basedir=".">
+<project name="DiskSpaceInformer" default="dist" basedir=".">
     <description>
         simple example build file
     </description>
@@ -73,7 +73,7 @@
         </jar>
     </target>
 
-    <target name="jar-sign" depends="clean, compile, copy_props, unit-tests, dist"
+    <target name="deploy" depends="clean, compile, copy_props, unit-tests, dist"
             description="sign distribution" >
     <signjar destDir="jar"
              alias="key" keystore="keystore"
