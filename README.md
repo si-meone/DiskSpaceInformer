@@ -41,8 +41,10 @@ Features:
 
 To Build
 =========
-Use ant and Java 7 was done on mac.
+Use ant and Java 1.7.0_21 was done on mac.
 my mac has ant 1.8.2
+
+*was also tested on lubuntu 12.10
 
 New In Versions
 ===============
