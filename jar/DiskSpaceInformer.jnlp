@@ -14,8 +14,8 @@
 
     <resources>
         <!-- Application Resources -->
-        <j2se version="1.7+" java-vm-args="-Xmx64m -Xms32m" href="http://java.sun.com/products/autodl/j2se"/>
         <jar href="DiskSpaceInformer.jar" main="true" />
+        <j2se version="1.7+" java-vm-args="-Xmx64m -Xms32m" href="http://java.sun.com/products/autodl/j2se"/>
     </resources>
     <application-desc
             name=">DiskSpaceInformer"
