@@ -100,7 +100,9 @@ class FindFileAndFolderSizes extends SwingWorker<Void, Void> {
             textArea.setText(debugFormatter.format(file, visitor.getGrandTotal(), sortedMap, extraInfo) + "\n" + textArea.getText() + "\n");
         } else {
             String status = extraInfo.length() > 0 ? "  Error(s): turn on debug checkbox" : "";
-            textArea.setText(formatter.format(file, visitor.getGrandTotal(), sortedMap, status) + "\n" + textArea.getText() + "\n");
+            String currentText =  "\n" + textArea.getText();
+            textArea.setText("");
+            textArea.setText(formatter.format(file, visitor.getGrandTotal(), sortedMap, status) + currentText);
         }
         long endTime = System.currentTimeMillis();
         log.info("The scan for [" + file.getAbsolutePath() + "] took " + (endTime - startTime) + " milliseconds");

@@ -4,6 +4,8 @@ import javax.swing.*;
 import java.io.File;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Map;
 
 public final class TextFormatter implements Formatter {
@@ -37,14 +39,22 @@ public final class TextFormatter implements Formatter {
     }
 
     public String format(File file, long total, Map<String, Long> sortedFileFolderSizes, String extraInfo) {
-        StringBuffer sb = new StringBuffer();
-        String title = file.getAbsolutePath() + " [ " + readableFileSize(total) + " ]"  + space + extraInfo;
-        sb.append(space + title + newline + "│" + newline);
-        for (Map.Entry<String, Long> entry : sortedFileFolderSizes.entrySet()) {
-            sb.append("├─── " + entry.getKey());
-            sb.append("    [ " + readableFileSize(entry.getValue()) + " ]\n");
+        ArrayList<TreeNode> treeNodes = new ArrayList<TreeNode>();
+        Iterator it = sortedFileFolderSizes.entrySet().iterator();
+        while (it.hasNext()) {
+            Map.Entry pairs = (Map.Entry)it.next();
+            String folderName  = pairs.getKey().toString();
+            String folderSize = "[ " + readableFileSize((Long) pairs.getValue()).toString() + " ]";
+            treeNodes.add(new TreeNode(folderSize + space + space + folderName));
+            it.remove(); // avoids a ConcurrentModificationException
         }
-        return sb.toString();
+        TreeNode.output = new StringBuffer();  //reset buffer redo this
+        TreeNode[] nodes = new TreeNode[treeNodes.size()];
+        nodes = treeNodes.toArray(nodes);
+        TreeNode treeNode = new TreeNode(file.getAbsolutePath() + space + " [ " + readableFileSize(total) + " ]"  + space
+                + extraInfo, nodes);
+        treeNode.print();
+        return treeNode.output.toString();
     }
 
 
