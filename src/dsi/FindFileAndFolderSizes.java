@@ -18,8 +18,6 @@ class FindFileAndFolderSizes extends SwingWorker<Void, Void> {
     private JTextArea textArea;
     private JProgressBar progressBar;
     private File file;
-    private boolean debug;
-    private Formatter formatter = new TextFormatter();
     private static Logger log = Logger.getLogger(FindFileAndFolderSizes.class.getName());
 
     public static class Builder{
@@ -28,8 +26,6 @@ class FindFileAndFolderSizes extends SwingWorker<Void, Void> {
         //opt params
         private String[] pathsToIgnore =  new String[0];
         private JTextArea textArea = new JTextArea();
-        private Formatter formatter = new TextFormatter();
-        private boolean debug = false;
         private JProgressBar progressBar = new JProgressBar();
 
 
@@ -41,10 +37,6 @@ class FindFileAndFolderSizes extends SwingWorker<Void, Void> {
             {pathsToIgnore = val; return this;}
         public Builder textArea(JTextArea val)
             {textArea = val; return this;}
-        public Builder formatter(Formatter val)
-            {formatter = val; return this;}
-        public Builder debug(boolean val)
-            {debug = val; return this;}
         public Builder progressBar(JProgressBar val)
             {progressBar = val; return this;}
 
@@ -58,23 +50,19 @@ class FindFileAndFolderSizes extends SwingWorker<Void, Void> {
         file = builder.file;
         pathsToIgnore = builder.pathsToIgnore;
         textArea = builder.textArea;
-        formatter = builder.formatter;
-        debug = builder.debug;
         progressBar = builder.progressBar;
     }
 
     @Override
     public Void doInBackground() throws Exception {
-        //int progress = 0;
         setProgress(0);
         if (file.isFile()) {
-            textArea.setText(formatter.format(file) + "\n" + textArea.getText() + "\n");
+            textArea.setText(new TextFormatter().format(file) + "\n" + textArea.getText() + "\n");
             return null;
         }
 
         progressBar.setString("Processing Selection...");
         long startTime = System.currentTimeMillis();
-        Map<String, Long> foldersSizes = null;
         Path root = Paths.get(String.valueOf(file.getPath()));
 
         List<Path> foldersToIgnore = new ArrayList<Path>();
@@ -82,28 +70,13 @@ class FindFileAndFolderSizes extends SwingWorker<Void, Void> {
             foldersToIgnore.add(new File(path).toPath());
         }
             FileSystemVisitor visitor = new FileSystemVisitor(root, foldersToIgnore, progressBar);
-            String extraInfo = "";
         try {
             Files.walkFileTree(root, visitor);
-            foldersSizes = visitor.getFoldersSizes();
-            extraInfo = visitor.getErrors();
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        //progressBar.setString("Sorting Listing...");
-        SizeComparator vc = new SizeComparator(foldersSizes);
-        Map<String, Long> sortedMap = new TreeMap<String, Long>(vc);
-        sortedMap.putAll(foldersSizes);
-        if (debug) {
-            Formatter debugFormatter = new TextDebugFormatter();
-            textArea.setText(debugFormatter.format(file, visitor.getGrandTotal(), sortedMap, extraInfo) + "\n" + textArea.getText() + "\n");
-        } else {
-            String status = extraInfo.length() > 0 ? "  Error(s): turn on debug checkbox" : "";
-            String currentText =  "\n" + textArea.getText();
-            textArea.setText("");
-            textArea.setText(formatter.format(file, visitor.getGrandTotal(), sortedMap, status) + currentText);
-        }
+        textArea.setText(visitor.getTreeView() + "\n" + textArea.getText());
         long endTime = System.currentTimeMillis();
         log.info("The scan for [" + file.getAbsolutePath() + "] took " + (endTime - startTime) + " milliseconds");
         return null;
@@ -116,7 +89,7 @@ class FindFileAndFolderSizes extends SwingWorker<Void, Void> {
             long totalSpace = root.getTotalSpace();
             long freeSpace = root.getFreeSpace();
             long usedSpace = totalSpace - freeSpace;
-            sb.append(formatter.format(root.getPath(), totalSpace, usedSpace, freeSpace));
+            sb.append(new TextFormatter().format(root.getPath(), totalSpace, usedSpace, freeSpace));
         }
         return sb.toString();
     }

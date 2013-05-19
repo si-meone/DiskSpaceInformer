@@ -82,22 +82,10 @@ public class DiskSpaceInformer extends JPanel
         drives.setSelectedItem(path);
         drives.addActionListener(this);
 
-        JCheckBox debugToggle = new JCheckBox();
-        debugToggle.addItemListener(new ItemListener() {
-            @Override
-            public void itemStateChanged(ItemEvent e) {
-                JCheckBox cb = (JCheckBox) e.getSource();
-                debug = cb.isSelected() ? true : false;
-            }
-        });
-        debugToggle.setToolTipText("Debugging");
-
         JPanel controlPanel = new JPanel();
         controlPanel.add(drives);
         controlPanel.add(checkButton);
         controlPanel.add(stopButton);
-        controlPanel.add(debugToggle);
-
 
         String root = drives.getSelectedItem().toString();
         tree = new JTree();
@@ -135,8 +123,7 @@ public class DiskSpaceInformer extends JPanel
                 task = new FindFileAndFolderSizes.Builder(new TreeFile(drives.getSelectedItem().toString()))
                     .pathstoIgnore(pathsToIgnore)
                     .textArea(textArea)
-                    .progressBar(progressBar)
-                    .debug(debug).build();
+                    .progressBar(progressBar).build();
                 tasks.add(task);
             }else{
                 showSpaceUsedByFolder();
@@ -160,8 +147,7 @@ public class DiskSpaceInformer extends JPanel
             task = new FindFileAndFolderSizes.Builder(lastPathComponent)
                     .pathstoIgnore(pathsToIgnore)
                     .textArea(textArea)
-                    .progressBar(progressBar)
-                    .debug(debug).build();
+                    .progressBar(progressBar).build();
             tasks.add(task);
             task.execute();
         }
@@ -178,8 +164,7 @@ public class DiskSpaceInformer extends JPanel
                         task = new FindFileAndFolderSizes.Builder(lastPathComponent)
                                 .pathstoIgnore(pathsToIgnore)
                                 .textArea(textArea)
-                                .progressBar(progressBar)
-                                .debug(debug).build();
+                                .progressBar(progressBar).build();
                         task.execute();
                     }
                 } else if (e.getClickCount() == 1) {

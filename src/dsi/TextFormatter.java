@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map;
 
-public final class TextFormatter implements Formatter {
+public final class TextFormatter {
 
     static private final String newline = "\n";
     static private final String tab = "\t";
@@ -16,7 +16,7 @@ public final class TextFormatter implements Formatter {
     static private final String space = " ";
 
 
-    public String readableFileSize(long size) {
+    public static String readableFileSize(long size) {
         if (size <= 0) return "0";
         final String[] units = new String[]{"B", "KB", "MB", "GB", "TB"};
         int digitGroups = (int) (Math.log10(size) / Math.log10(1024));
@@ -37,26 +37,6 @@ public final class TextFormatter implements Formatter {
         );
         return sb.toString();
     }
-
-    public String format(File file, long total, Map<String, Long> sortedFileFolderSizes, String extraInfo) {
-        ArrayList<TreeNode> treeNodes = new ArrayList<TreeNode>();
-        Iterator it = sortedFileFolderSizes.entrySet().iterator();
-        while (it.hasNext()) {
-            Map.Entry pairs = (Map.Entry)it.next();
-            String folderName  = pairs.getKey().toString();
-            String folderSize = "[ " + readableFileSize((Long) pairs.getValue()).toString() + " ]";
-            treeNodes.add(new TreeNode(folderSize + space + space + folderName));
-            it.remove(); // avoids a ConcurrentModificationException
-        }
-        TreeNode.output = new StringBuffer();  //reset buffer redo this
-        TreeNode[] nodes = new TreeNode[treeNodes.size()];
-        nodes = treeNodes.toArray(nodes);
-        TreeNode treeNode = new TreeNode(file.getAbsolutePath() + space + " [ " + readableFileSize(total) + " ]"  + space
-                + extraInfo, nodes);
-        treeNode.print();
-        return treeNode.output.toString();
-    }
-
 
     public String format(File file, long total) {
         return String.format("%s: [ %s ]\n", file.getName(), readableFileSize(total));

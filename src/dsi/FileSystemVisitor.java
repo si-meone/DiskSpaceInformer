@@ -8,6 +8,9 @@ import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import static dsi.TextFormatter.readableFileSize;
+
+
 public class FileSystemVisitor implements FileVisitor<Path> {
 
     private JProgressBar progressBar;
@@ -15,11 +18,23 @@ public class FileSystemVisitor implements FileVisitor<Path> {
     private long dirTotal = 0;
     private Map<String, Long> foldersSizes = new LinkedHashMap<String, Long>();
     private List<Path> pathsToIgnore;
-    private static Logger log = Logger.getLogger(FileSystemVisitor.class.getName());
 
-    public String getErrors() {
-        return errors.toString();
+    public String getTreeView() {
+        String status = errors.length() > 0 ? "  Error(s): turn on debug checkbox" : "";
+        treeView.append(String.format("%s Total: [ %s ] %s\n|\n", path, readableFileSize(grandTotal), status));
+        SizeComparator vc = new SizeComparator(foldersSizes);
+        Map<String, Long> sortedMap = new TreeMap<String, Long>(vc);
+        sortedMap.putAll(foldersSizes);
+        for (String key: sortedMap.keySet()){
+            treeView.append(String.format("\\__  [ %s ]   %s \n", readableFileSize(sortedMap.get(key)), key));
+        }
+
+
+        return treeView.toString();
     }
+
+    private StringBuilder treeView = new StringBuilder();
+    private static Logger log = Logger.getLogger(FileSystemVisitor.class.getName());
 
     private StringBuilder errors = new StringBuilder();
 
@@ -75,6 +90,7 @@ public class FileSystemVisitor implements FileVisitor<Path> {
         } else { // on first level
             grandTotal += attrs.size();
             foldersSizes.put(file.getFileName().toString(), attrs.size());
+
             return FileVisitResult.CONTINUE;
         }
     }
@@ -95,6 +111,7 @@ public class FileSystemVisitor implements FileVisitor<Path> {
         // first level folder
         foldersSizes.put(dir.getFileName().toString(), dirTotal);
         grandTotal += dirTotal;
+
         dirTotal = 0L; //reset
         log.log(Level.FINE, "foldersSizes: %s",foldersSizes);
         return FileVisitResult.CONTINUE;
