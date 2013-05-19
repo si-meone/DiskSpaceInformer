@@ -21,7 +21,7 @@ public class FileSystemVisitor implements FileVisitor<Path> {
 
     public String getTreeView() {
         String status = errors.length() > 0 ? "  Error(s): turn on debug checkbox" : "";
-        treeView.append(String.format("%s Total: [ %s ] %s\n|\n", path, readableFileSize(grandTotal), status));
+        treeView.append(String.format("%s Total: [ %s ] %s\n\\\n", path, readableFileSize(grandTotal), status));
         SizeComparator vc = new SizeComparator(foldersSizes);
         Map<String, Long> sortedMap = new TreeMap<String, Long>(vc);
         sortedMap.putAll(foldersSizes);
