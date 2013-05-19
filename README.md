@@ -42,7 +42,7 @@ Features:
 To Build
 =========
 Use ant and Java 7 was done on mac.
-my mac has ant 
+my mac has ant 1.8.2
 
 New In Versions
 ===============
