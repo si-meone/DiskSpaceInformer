@@ -79,10 +79,11 @@ class FindFileAndFolderSizes extends SwingWorker<Void, Void> {
         }
 
         if (filter.equals("Size")){
-            SizeComparator vc = new SizeComparator(visitor.getFoldersSizes());
-            textArea.setText(visitor.getTreeView(vc) + "\n" + textArea.getText());
-        }else{
-            textArea.setText(visitor.getTreeView(null) + "\n" + textArea.getText());
+            SizeComparator sizeComparator = new SizeComparator(visitor.getFoldersSizes());
+            textArea.setText(visitor.getTreeView(sizeComparator) + "\n" + textArea.getText());
+        }else {
+            AlphaComparator alphaComparator = new AlphaComparator(visitor.getFoldersSizes());
+            textArea.setText(visitor.getTreeView(alphaComparator) + "\n" + textArea.getText());
         }
         long endTime = System.currentTimeMillis();
         log.info("The scan for [" + file.getAbsolutePath() + "] took " + (endTime - startTime) + " milliseconds");

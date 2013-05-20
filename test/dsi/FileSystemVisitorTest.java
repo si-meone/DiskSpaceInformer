@@ -14,6 +14,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
 
+import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.*;
 
 public class FileSystemVisitorTest {
@@ -64,7 +65,7 @@ public class FileSystemVisitorTest {
     @Test
     public void testAFileExists() {
         String tmpPath = tempFolder.getRoot().toString();
-        assertTrue(new File(tmpPath + File.separator + "empty.txt").exists());
+        assertThat(new File(tmpPath + File.separator + "empty.txt").exists(), is(true));
     }
 
     @Test
@@ -76,8 +77,8 @@ public class FileSystemVisitorTest {
         } catch (IOException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
-        assertEquals(5, visitor.getFoldersSizes().size());
-        assertFalse(visitor.getFoldersSizes().containsKey("f4"));
+        assertThat(visitor.getFoldersSizes().size(), is(5));
+        assertThat(visitor.getFoldersSizes().containsKey("f4"), is(false));
     }
 
     @Test
@@ -90,7 +91,14 @@ public class FileSystemVisitorTest {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
         Map<String,Long> foldersSizes = visitor.getFoldersSizes();
-        //System.out.println(foldersSizes);
+        assertThat(foldersSizes.get("empty.txt"), is((Object) 0L));
+        assertThat(foldersSizes.get("f1"), is((Object) 1048576L));
+        assertThat(foldersSizes.get("f2"), is((Object) 2097152L));
+        assertThat(foldersSizes.get("f3"), is((Object) 9437184L));
+
+
+
+
         assertEquals((Object) 0L, foldersSizes.get("empty.txt"));
         assertEquals((Object) 1048576L, foldersSizes.get("f1"));
         assertEquals((Object) 2097152L, foldersSizes.get("f2"));
@@ -125,7 +133,7 @@ public class FileSystemVisitorTest {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
         Map<String,Long> foldersSizes = visitor.getFoldersSizes();
-        assertEquals((Object) 7340032L, foldersSizes.get("f3"));
+        assertThat(foldersSizes.get("f3"), is((Object) 7340032L));
     }
 
     private static void addToClasspath(File file) throws Exception {

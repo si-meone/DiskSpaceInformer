@@ -22,13 +22,8 @@ public class FileSystemVisitor implements FileVisitor<Path> {
     public String getTreeView(Comparator comparator) {
         String status = errors.length() > 0 ? "  Error(s): turn on debug checkbox" : "";
         treeView.append(String.format("%s Total: [ %s ] %s\n\\\n", path, readableFileSize(grandTotal), status));
-        Map<String, Long> sortedMap;
-        if (null != comparator){
-            sortedMap = new TreeMap<String, Long>(comparator);
-            sortedMap.putAll(foldersSizes);
-        }else{
-            sortedMap = foldersSizes;
-        }
+        Map<String, Long> sortedMap = new TreeMap<String, Long>(comparator);
+        sortedMap.putAll(foldersSizes);
         for (String key: sortedMap.keySet()){
             treeView.append(String.format("\\__  [ %s ]   %s \n", readableFileSize(sortedMap.get(key)), key));
         }
@@ -132,6 +127,6 @@ public class FileSystemVisitor implements FileVisitor<Path> {
         Files.walkFileTree(root, visitor);
         System.out.println(visitor.getFoldersSizes());
         long endTime = System.currentTimeMillis();
-        log.info("That took " + (endTime - startTime) + " milliseconds");
+        log.info("Scan of" + root  + "took " + (endTime - startTime) + " milliseconds");
     }
 }

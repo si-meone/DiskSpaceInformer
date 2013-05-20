@@ -21,9 +21,10 @@ import java.io.IOException;
 import static junit.framework.Assert.assertFalse;
 import static org.fest.swing.timing.Pause.pause;
 import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
-
+import static org.junit.matchers.JUnitMatchers.containsString;
 
 
 public class DiskSpaceInformerTest{
@@ -49,10 +50,10 @@ public class DiskSpaceInformerTest{
         fillFileToSize(new File(f1, "1Mb.txt"), 1024);
 
         File f2 = tempFolder.newFolder("f2");
-        fillFileToSize(new File(f2, "2Mb.txt"), 2048);
+        fillFileToSize(new File(f2, "2Mb.txt"), 3072);
 
         File f3 = tempFolder.newFolder("f3");
-        fillFileToSize(new File(f3, "3Mb.txt"), 3072);
+        fillFileToSize(new File(f3, "3Mb.txt"), 2048);
 
         File f4 = new File(f3, "f4");
         f4.mkdir();
@@ -99,21 +100,50 @@ public class DiskSpaceInformerTest{
         new JButtonFixture(robot, "Check Space").click();
         pause(100);
         assertThat(jTreeFixture.valueAt(f1), is("f1"));
-        assertTrue("error could not find 1 MB in log window", log.text().contains("1 MB"));
+        assertThat(log.text(), containsString("Total: [ 1 MB ]"));
     }
 
   @Test
-    public void testCheckTreeFolderSizeWithANumberOfFiles() {
+    public void testCheckTreeFolderSizeWithANumberOfFilesShouldAddCorrectly() {
         JTreeFixture tree = new JTreeFixture(robot, "tree");
         JTextComponentFixture log = new JTextComponentFixture(robot, "textArea");
-        //tree.clickRow(2);
         String root = tempFolder.getRoot().getName();
         JTreeFixture jTreeFixture = tree.clickPath(root);
         new JButtonFixture(robot, "Check Space").click();
         pause(100);
-        assertTrue("error could not find 10 MB in log window", log.text().contains("10 MB"));
+      assertThat(log.text(), containsString("Total: [ 10 MB ]"));
     }
 
+    @Test
+    public void testCheckTreeFolderResultShouldSortBySizeDesc() {
+        JTreeFixture tree = new JTreeFixture(robot, "tree");
+        JTextComponentFixture log = new JTextComponentFixture(robot, "textArea");
+        String root = tempFolder.getRoot().getName();
+        tree.clickPath(root);
+        new JButtonFixture(robot, "Check Space").click();
+        pause(100);
+        assertThat(log.text(), containsString("\\\n" +
+                "\\__  [ 6 MB ]   f3 \n" +
+                "\\__  [ 3 MB ]   f2 \n" +
+                "\\__  [ 1 MB ]   f1 \n" +
+                "\\__  [ 0 ]   empty.txt "));
+    }
+
+    @Test
+    public void testCheckTreeFolderResultShouldSortByFolderNameAsc() {
+        JTreeFixture tree = new JTreeFixture(robot, "tree");
+        JTextComponentFixture log = new JTextComponentFixture(robot, "textArea");
+        String root = tempFolder.getRoot().getName();
+        tree.clickPath(root);
+        JComboBoxFixture filter = new JComboBoxFixture(robot, "filterBox");
+        filter.selectItem("Alpha");
+        new JButtonFixture(robot, "Check Space").click();
+        pause(100);
+        assertThat(log.text(), containsString("\\__  [ 0 ]   empty.txt \n" +
+                "\\__  [ 1 MB ]   f1 \n" +
+                "\\__  [ 3 MB ]   f2 \n" +
+                "\\__  [ 6 MB ]   f3 "));
+    }
 
 
 
