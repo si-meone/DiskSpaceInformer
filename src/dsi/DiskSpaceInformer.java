@@ -32,9 +32,7 @@ public class DiskSpaceInformer extends JPanel
     static private final String newline = "\n";
     private final JComboBox drives;
 
-    public static boolean debug = false;
     private String[] pathsToIgnore;
-    private Comparator comparator;
     private List<FindFileAndFolderSizes> tasks = new  ArrayList<FindFileAndFolderSizes>();
 
     public DiskSpaceInformer(File[] files, String path) {
@@ -133,7 +131,7 @@ public class DiskSpaceInformer extends JPanel
                 task = new FindFileAndFolderSizes.Builder(new TreeFile(drives.getSelectedItem().toString()))
                     .pathstoIgnore(pathsToIgnore)
                     .textArea(textArea)
-                    .filter((String)filterBox.getSelectedItem())
+                    .filter(filterBox.getSelectedItem().toString())
                     .progressBar(progressBar).build();
                 tasks.add(task);
             }

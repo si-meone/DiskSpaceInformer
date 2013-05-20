@@ -23,7 +23,7 @@ class FindFileAndFolderSizes extends SwingWorker<Void, Void> {
         private File file;
         //opt params
         private String[] pathsToIgnore =  new String[0];
-        private String filter = "Size";
+        private String filter = new String("Size");
         private JTextArea textArea = new JTextArea();
         private JProgressBar progressBar = new JProgressBar();
 
@@ -50,6 +50,7 @@ class FindFileAndFolderSizes extends SwingWorker<Void, Void> {
     private FindFileAndFolderSizes(Builder builder){
         file = builder.file;
         pathsToIgnore = builder.pathsToIgnore;
+        filter = builder.filter;
         textArea = builder.textArea;
         progressBar = builder.progressBar;
     }
