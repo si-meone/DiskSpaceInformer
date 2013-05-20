@@ -157,6 +157,7 @@ public class DiskSpaceInformer extends JPanel
             File lastPathComponent = (File) path.getLastPathComponent();
             task = new FindFileAndFolderSizes.Builder(lastPathComponent)
                     .pathstoIgnore(pathsToIgnore)
+                    .filter(filterBox.getSelectedItem().toString())
                     .textArea(textArea)
                     .progressBar(progressBar).build();
             tasks.add(task);
