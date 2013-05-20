@@ -82,6 +82,7 @@ public class DiskSpaceInformer extends JPanel
         filterBox = new JComboBox(filters);
         filterBox.setName("filterBox");
         filterBox.setSelectedIndex(0);
+        filterBox.setToolTipText("Set filter");
         filterBox.addActionListener(this);
 
         drives = new JComboBox(files);
