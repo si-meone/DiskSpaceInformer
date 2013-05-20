@@ -20,7 +20,7 @@ public class FileSystemVisitor implements FileVisitor<Path> {
     private List<Path> pathsToIgnore;
 
     public String getTreeView(Comparator comparator) {
-        treeView.append(String.format("%s Total: [ %s ] %s\n\\\n", path, readableFileSize(grandTotal)));
+        treeView.append(String.format("%s Total: [ %s ]\n\\\n", path, readableFileSize(grandTotal)));
         Map<String, Long> sortedMap = new TreeMap<String, Long>(comparator);
         sortedMap.putAll(foldersSizes);
         for (String key: sortedMap.keySet()){
