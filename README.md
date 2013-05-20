@@ -70,6 +70,8 @@ New In Versions
 
 0.1n - Added ant for building
 
+0.1j - Added filter for size or alphabetically
+
 BUGS
 ====
 -  More work on accuracy of file checking. Folders take space as well, sometimes file permssions get in the way ?
