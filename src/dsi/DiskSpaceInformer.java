@@ -105,7 +105,7 @@ public class DiskSpaceInformer extends JPanel
         treeScrollPane = new JScrollPane(tree);
         progressBar = new JProgressBar();
         Dimension prefSize = progressBar.getPreferredSize();
-        prefSize.width = 30;
+        prefSize.width = 600;
         progressBar.setPreferredSize(prefSize);
         JPanel progressPanel = new JPanel();
         progressPanel.add(progressBar);
