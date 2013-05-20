@@ -19,17 +19,19 @@ public class FileSystemVisitor implements FileVisitor<Path> {
     private Map<String, Long> foldersSizes = new LinkedHashMap<String, Long>();
     private List<Path> pathsToIgnore;
 
-    public String getTreeView() {
+    public String getTreeView(Comparator comparator) {
         String status = errors.length() > 0 ? "  Error(s): turn on debug checkbox" : "";
         treeView.append(String.format("%s Total: [ %s ] %s\n\\\n", path, readableFileSize(grandTotal), status));
-        SizeComparator vc = new SizeComparator(foldersSizes);
-        Map<String, Long> sortedMap = new TreeMap<String, Long>(vc);
-        sortedMap.putAll(foldersSizes);
+        Map<String, Long> sortedMap;
+        if (null == comparator){
+            sortedMap = new TreeMap<String, Long>(comparator);
+            sortedMap.putAll(foldersSizes);
+        }else{
+            sortedMap = foldersSizes;
+        }
         for (String key: sortedMap.keySet()){
             treeView.append(String.format("\\__  [ %s ]   %s \n", readableFileSize(sortedMap.get(key)), key));
         }
-
-
         return treeView.toString();
     }
 

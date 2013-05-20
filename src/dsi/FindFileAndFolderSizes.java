@@ -6,15 +6,13 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 import java.util.logging.Logger;
 
 class FindFileAndFolderSizes extends SwingWorker<Void, Void> {
 
     private String[] pathsToIgnore;
+    private String filter;
     private JTextArea textArea;
     private JProgressBar progressBar;
     private File file;
@@ -25,6 +23,7 @@ class FindFileAndFolderSizes extends SwingWorker<Void, Void> {
         private File file;
         //opt params
         private String[] pathsToIgnore =  new String[0];
+        private String filter = "Size";
         private JTextArea textArea = new JTextArea();
         private JProgressBar progressBar = new JProgressBar();
 
@@ -35,6 +34,8 @@ class FindFileAndFolderSizes extends SwingWorker<Void, Void> {
 
         public Builder pathstoIgnore(String[] val)
             {pathsToIgnore = val; return this;}
+        public Builder filter(String val)
+            {filter = val; return this;}
         public Builder textArea(JTextArea val)
             {textArea = val; return this;}
         public Builder progressBar(JProgressBar val)
@@ -76,7 +77,12 @@ class FindFileAndFolderSizes extends SwingWorker<Void, Void> {
             e.printStackTrace();
         }
 
-        textArea.setText(visitor.getTreeView() + "\n" + textArea.getText());
+        if (filter.equals("Size")){
+            SizeComparator vc = new SizeComparator(visitor.getFoldersSizes());
+            textArea.setText(visitor.getTreeView(vc) + "\n" + textArea.getText());
+        }else{
+            textArea.setText(visitor.getTreeView(null) + "\n" + textArea.getText());
+        }
         long endTime = System.currentTimeMillis();
         log.info("The scan for [" + file.getAbsolutePath() + "] took " + (endTime - startTime) + " milliseconds");
         return null;
