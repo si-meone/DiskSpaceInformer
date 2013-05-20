@@ -47,7 +47,7 @@ public class DiskSpaceInformer extends JPanel
         log.log(Level.FINE, "Starting" + DiskSpaceInformer.class.getName());
 
         pathsToIgnore = new String[0];
-        textArea = new JTextArea(30, 40);
+        textArea = new JTextArea(30, 30);
         textArea.setName("textArea");
         textArea.setMargin(new Insets(5, 5, 5, 5));
         textArea.setEditable(true);
@@ -105,7 +105,7 @@ public class DiskSpaceInformer extends JPanel
         treeScrollPane = new JScrollPane(tree);
         progressBar = new JProgressBar();
         Dimension prefSize = progressBar.getPreferredSize();
-        prefSize.width = 700;
+        prefSize.width = 30;
         progressBar.setPreferredSize(prefSize);
         JPanel progressPanel = new JPanel();
         progressPanel.add(progressBar);
