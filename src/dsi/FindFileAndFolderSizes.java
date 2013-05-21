@@ -13,7 +13,7 @@ class FindFileAndFolderSizes extends SwingWorker<Void, Void> {
 
     private String[] pathsToIgnore;
     private String filter;
-    private JTextArea textArea;
+    private JTable table;
     private JProgressBar progressBar;
     private File file;
     private static Logger log = Logger.getLogger(FindFileAndFolderSizes.class.getName());
@@ -24,7 +24,7 @@ class FindFileAndFolderSizes extends SwingWorker<Void, Void> {
         //opt params
         private String[] pathsToIgnore =  new String[0];
         private String filter = new String("Size");
-        private JTextArea textArea = new JTextArea();
+        private JTable table = new JTable();
         private JProgressBar progressBar = new JProgressBar();
 
 
@@ -36,8 +36,8 @@ class FindFileAndFolderSizes extends SwingWorker<Void, Void> {
             {pathsToIgnore = val; return this;}
         public Builder filter(String val)
             {filter = val; return this;}
-        public Builder textArea(JTextArea val)
-            {textArea = val; return this;}
+        public Builder table(JTable val)
+            {table = val; return this;}
         public Builder progressBar(JProgressBar val)
             {progressBar = val; return this;}
 
@@ -51,7 +51,7 @@ class FindFileAndFolderSizes extends SwingWorker<Void, Void> {
         file = builder.file;
         pathsToIgnore = builder.pathsToIgnore;
         filter = builder.filter;
-        textArea = builder.textArea;
+        table = builder.table;
         progressBar = builder.progressBar;
     }
 
@@ -59,7 +59,7 @@ class FindFileAndFolderSizes extends SwingWorker<Void, Void> {
     public Void doInBackground() throws Exception {
         setProgress(0);
         if (file.isFile()) {
-            textArea.setText(new TextFormatter().format(file) + "\n" + textArea.getText() + "\n");
+            //textArea.setText(new TextFormatter().format(file) + "\n" + textArea.getText() + "\n");
             return null;
         }
 
@@ -80,26 +80,47 @@ class FindFileAndFolderSizes extends SwingWorker<Void, Void> {
 
         if (filter.equals("Size")){
             SizeComparator sizeComparator = new SizeComparator(visitor.getFoldersSizes());
-            textArea.setText(visitor.getTreeView(sizeComparator) + "\n" + textArea.getText());
+            Map<String, Long> foldersSizes = visitor.getFoldersSizes();
+            Object[][] data = new Object[foldersSizes.size()][2];
+            int row = 0;
+            for (Map.Entry<String, Long> entry : foldersSizes.entrySet()){
+                data[row][0] = entry.getKey();
+                data[row][1] = TextFormatter.readableFileSize(entry.getValue());
+                row++;
+            }
+            TableModel model = new TableModel(new String[]{"Name", "Size"}, data);
+            table.setModel(model);
+            model.fireTableDataChanged();
+
+            //textArea.setText(visitor.getTreeView(sizeComparator) + "\n" + textArea.getText());
         }else {
             AlphaComparator alphaComparator = new AlphaComparator(visitor.getFoldersSizes());
-            textArea.setText(visitor.getTreeView(alphaComparator) + "\n" + textArea.getText());
+            //textArea.setText(visitor.getTreeView(alphaComparator) + "\n" + textArea.getText());
         }
         long endTime = System.currentTimeMillis();
         log.info("The scan for [" + file.getAbsolutePath() + "] took " + (endTime - startTime) + " milliseconds");
         return null;
     }
 
-    public String checkSpaceAvailable() {
-        StringBuffer sb = new StringBuffer();
+    public static String[][] checkSpaceAvailable() {
+        String[][] info = new String[(File.listRoots().length*4)][2];
         File[] roots = File.listRoots();
+        int row = 0;
         for (File root : roots) {
-            long totalSpace = root.getTotalSpace();
-            long freeSpace = root.getFreeSpace();
-            long usedSpace = totalSpace - freeSpace;
-            sb.append(new TextFormatter().format(root.getPath(), totalSpace, usedSpace, freeSpace));
+            long totalSpace =  root.getTotalSpace();
+            long freeSpace =  root.getFreeSpace();
+            info[row][0] = String.format("Total Space on [ %s ]",root.getAbsolutePath()) ;
+            info[row][1] = TextFormatter.readableFileSize(totalSpace);
+            row++;
+            info[row][0] = String.format("Used Space on [ %s ]",root.getAbsolutePath()) ;
+            info[row][1] = TextFormatter.readableFileSize(totalSpace - freeSpace);
+            row++;
+            info[row][0] = String.format("Free Space on [ %s ]", root.getAbsolutePath()) ;
+            info[row][1] = TextFormatter.readableFileSize(freeSpace);
+            row++;
+            row++;
         }
-        return sb.toString();
+        return info;
     }
 
 

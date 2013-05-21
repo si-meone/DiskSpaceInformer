@@ -4,8 +4,6 @@ import javax.swing.*;
 import javax.swing.tree.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -27,8 +25,9 @@ public class DiskSpaceInformer extends JPanel
     private JScrollPane treeScrollPane;
     protected FindFileAndFolderSizes task;
     protected JProgressBar progressBar;
+    private JTable table;
 
-    private static String version = "Disk Space Informer v0.1r";
+    private static String version = "Disk Space Informer v0.1s";
     static private final String newline = "\n";
     private final JComboBox drives;
 
@@ -47,10 +46,14 @@ public class DiskSpaceInformer extends JPanel
         log.log(Level.FINE, "Starting" + DiskSpaceInformer.class.getName());
 
         pathsToIgnore = new String[0];
-        textArea = new JTextArea(35, 35);
-        textArea.setName("textArea");
-        textArea.setMargin(new Insets(5, 5, 5, 5));
-        textArea.setEditable(true);
+
+        table = new JTable(new TableModel());
+        table.setName("table");
+        table.setPreferredScrollableViewportSize(new Dimension(100, 100));
+        table.setFillsViewportHeight(true);
+        table.setAutoCreateRowSorter(true);
+        JScrollPane tableScrollPane = new JScrollPane(table);
+
 
         try {
             pathsToIgnore = new Config("config.properties").getItems("folders.to.ignore");
@@ -58,17 +61,15 @@ public class DiskSpaceInformer extends JPanel
             for (String pathToIgnore : pathsToIgnore) {
                 pathBuffer.append(String.format("path Ignored: %s\n", pathToIgnore));
             }
-            textArea.setText(pathBuffer + "\n" + textArea.getText() + "\n");
+            log.info(pathBuffer + "\n");
 
         } catch (MissingResourceException e) {
-            textArea.setText(new StringBuffer(String.format("Error: %s File: %s Key Missing: %s", e.getMessage(), e.getClassName(), e.getKey())) + "\n" + textArea.getText() + "\n");
+            log.info(new StringBuffer(String.format("Error: %s File: %s Key Missing: %s", e.getMessage(), e.getClassName(), e.getKey())) + "\n");
 
         }
 
-        textArea.append(new FindFileAndFolderSizes.Builder(new File("/")).build().checkSpaceAvailable() + "\n");
-        JScrollPane logScrollPane = new JScrollPane(textArea);
-        logScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-        logScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+        //TODO: we lost this functionality a quick summary would be nice of all root drives
+        // textArea.append(new FindFileAndFolderSizes.Builder(new File("/")).build().checkSpaceAvailable() + "\n");
 
         checkButton = new JButton("Check Space");
         checkButton.setName("Check Space");
@@ -111,7 +112,7 @@ public class DiskSpaceInformer extends JPanel
         progressPanel.add(progressBar);
 
         JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
-                treeScrollPane, logScrollPane);
+                treeScrollPane, tableScrollPane);
         splitPane.setOneTouchExpandable(true);
         splitPane.setDividerLocation(300);
 
@@ -131,7 +132,7 @@ public class DiskSpaceInformer extends JPanel
             if (tree.isSelectionEmpty()){
                 task = new FindFileAndFolderSizes.Builder(new TreeFile(drives.getSelectedItem().toString()))
                     .pathstoIgnore(pathsToIgnore)
-                    .textArea(textArea)
+                    .table(table)
                     .filter(filterBox.getSelectedItem().toString())
                     .progressBar(progressBar).build();
                 tasks.add(task);
@@ -158,7 +159,7 @@ public class DiskSpaceInformer extends JPanel
             task = new FindFileAndFolderSizes.Builder(lastPathComponent)
                     .pathstoIgnore(pathsToIgnore)
                     .filter(filterBox.getSelectedItem().toString())
-                    .textArea(textArea)
+                    .table(table)
                     .progressBar(progressBar).build();
             tasks.add(task);
             task.execute();
@@ -175,7 +176,7 @@ public class DiskSpaceInformer extends JPanel
                     if (lastPathComponent.isFile()) {
                         task = new FindFileAndFolderSizes.Builder(lastPathComponent)
                                 .pathstoIgnore(pathsToIgnore)
-                                .textArea(textArea)
+                                .table(table)
                                 .progressBar(progressBar).build();
                         task.execute();
                     }
