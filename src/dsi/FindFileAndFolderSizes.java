@@ -53,8 +53,13 @@ class FindFileAndFolderSizes extends SwingWorker<Void, Void> {
     @Override
     public Void doInBackground() throws Exception {
         setProgress(0);
+        Object[][] data = new Object[1][2];
         if (file.isFile()) {
-            //textArea.setText(new TextFormatter().format(file) + "\n" + textArea.getText() + "\n");
+            data[0][0] = file.getName();
+            data[0][1]= TextFormatter.readableFileSize(file.length()) ;
+            TableModel model = new TableModel(new String[]{"Name", "Size"}, data);
+            table.setModel(model);
+            model.fireTableDataChanged();
             return null;
         }
 
@@ -73,15 +78,22 @@ class FindFileAndFolderSizes extends SwingWorker<Void, Void> {
             e.printStackTrace();
         }
 
-        SizeComparator sizeComparator = new SizeComparator(visitor.getFoldersSizes());
         Map<String, Long> foldersSizes = visitor.getFoldersSizes();
+        if (visitor.getFoldersSizes().size() == 0){
+            data[0][0] = file.getName();
+            data[0][1]= TextFormatter.readableFileSize(0) ;
+            TableModel model = new TableModel(new String[]{"Name", "Size"}, data);
+            table.setModel(model);
+            model.fireTableDataChanged();
+            return null;
+        }
 
         progressBar.setString("Sorting Listing...");
         SizeComparator vc = new SizeComparator(foldersSizes);
         Map<String, Long> sortedMap = new TreeMap<String, Long>(vc);
         sortedMap.putAll(foldersSizes);
 
-        Object[][] data = new Object[sortedMap.size()][2];
+        data = new Object[sortedMap.size()][2];
         int row = 0;
         for (Map.Entry<String, Long> entry : sortedMap.entrySet()){
             data[row][0] = entry.getKey();
