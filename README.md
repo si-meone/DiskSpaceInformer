@@ -76,6 +76,7 @@ New In Versions
 
 BUGS
 ====
+-  Sorting only works intially on size because I add MB's String sorting is occuring 
 -  More work on accuracy of file checking. Folders take space as well, sometimes file permssions get in the way ?
 
 
