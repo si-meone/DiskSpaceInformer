@@ -12,7 +12,6 @@ import java.util.logging.Logger;
 class FindFileAndFolderSizes extends SwingWorker<Void, Void> {
 
     private String[] pathsToIgnore;
-    private String filter;
     private JTable table;
     private JProgressBar progressBar;
     private File file;
@@ -23,7 +22,6 @@ class FindFileAndFolderSizes extends SwingWorker<Void, Void> {
         private File file;
         //opt params
         private String[] pathsToIgnore =  new String[0];
-        private String filter = new String("Size");
         private JTable table = new JTable();
         private JProgressBar progressBar = new JProgressBar();
 
@@ -34,8 +32,6 @@ class FindFileAndFolderSizes extends SwingWorker<Void, Void> {
 
         public Builder pathstoIgnore(String[] val)
             {pathsToIgnore = val; return this;}
-        public Builder filter(String val)
-            {filter = val; return this;}
         public Builder table(JTable val)
             {table = val; return this;}
         public Builder progressBar(JProgressBar val)
@@ -50,7 +46,6 @@ class FindFileAndFolderSizes extends SwingWorker<Void, Void> {
     private FindFileAndFolderSizes(Builder builder){
         file = builder.file;
         pathsToIgnore = builder.pathsToIgnore;
-        filter = builder.filter;
         table = builder.table;
         progressBar = builder.progressBar;
     }
@@ -78,25 +73,25 @@ class FindFileAndFolderSizes extends SwingWorker<Void, Void> {
             e.printStackTrace();
         }
 
-        if (filter.equals("Size")){
-            SizeComparator sizeComparator = new SizeComparator(visitor.getFoldersSizes());
-            Map<String, Long> foldersSizes = visitor.getFoldersSizes();
-            Object[][] data = new Object[foldersSizes.size()][2];
-            int row = 0;
-            for (Map.Entry<String, Long> entry : foldersSizes.entrySet()){
-                data[row][0] = entry.getKey();
-                data[row][1] = TextFormatter.readableFileSize(entry.getValue());
-                row++;
-            }
-            TableModel model = new TableModel(new String[]{"Name", "Size"}, data);
-            table.setModel(model);
-            model.fireTableDataChanged();
+        SizeComparator sizeComparator = new SizeComparator(visitor.getFoldersSizes());
+        Map<String, Long> foldersSizes = visitor.getFoldersSizes();
 
-            //textArea.setText(visitor.getTreeView(sizeComparator) + "\n" + textArea.getText());
-        }else {
-            AlphaComparator alphaComparator = new AlphaComparator(visitor.getFoldersSizes());
-            //textArea.setText(visitor.getTreeView(alphaComparator) + "\n" + textArea.getText());
+        progressBar.setString("Sorting Listing...");
+        SizeComparator vc = new SizeComparator(foldersSizes);
+        Map<String, Long> sortedMap = new TreeMap<String, Long>(vc);
+        sortedMap.putAll(foldersSizes);
+
+        Object[][] data = new Object[sortedMap.size()][2];
+        int row = 0;
+        for (Map.Entry<String, Long> entry : sortedMap.entrySet()){
+            data[row][0] = entry.getKey();
+            data[row][1] = TextFormatter.readableFileSize(entry.getValue());
+            row++;
         }
+        TableModel model = new TableModel(new String[]{"Name", "Size"}, data);
+        table.setModel(model);
+        model.fireTableDataChanged();
+
         long endTime = System.currentTimeMillis();
         log.info("The scan for [" + file.getAbsolutePath() + "] took " + (endTime - startTime) + " milliseconds");
         return null;

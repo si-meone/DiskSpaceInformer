@@ -21,7 +21,6 @@ public class DiskSpaceInformer extends JPanel
     private final JButton stopButton;
     private JTree tree;
     private final JButton checkButton;
-    private final JComboBox filterBox;
     private JScrollPane treeScrollPane;
     protected FindFileAndFolderSizes task;
     protected JProgressBar progressBar;
@@ -78,14 +77,6 @@ public class DiskSpaceInformer extends JPanel
         stopButton.setName("Stop");
         stopButton.addActionListener(this);
 
-        JComboBox<String> filter = new JComboBox<String>();
-        String[] filters = { "Size", "Alpha"};
-        filterBox = new JComboBox(filters);
-        filterBox.setName("filterBox");
-        filterBox.setSelectedIndex(0);
-        filterBox.setToolTipText("Set filter");
-        filterBox.addActionListener(this);
-
         drives = new JComboBox(files);
         if (path != "") drives.addItem(path);
         drives.setSelectedItem(path);
@@ -94,7 +85,6 @@ public class DiskSpaceInformer extends JPanel
         JPanel controlPanel = new JPanel();
         controlPanel.add(drives);
         controlPanel.add(checkButton);
-        controlPanel.add(filterBox);
         controlPanel.add(stopButton);
 
         String root = drives.getSelectedItem().toString();
@@ -133,7 +123,6 @@ public class DiskSpaceInformer extends JPanel
                 task = new FindFileAndFolderSizes.Builder(new TreeFile(drives.getSelectedItem().toString()))
                     .pathstoIgnore(pathsToIgnore)
                     .table(table)
-                    .filter(filterBox.getSelectedItem().toString())
                     .progressBar(progressBar).build();
                 tasks.add(task);
             }
@@ -158,7 +147,6 @@ public class DiskSpaceInformer extends JPanel
             File lastPathComponent = (File) path.getLastPathComponent();
             task = new FindFileAndFolderSizes.Builder(lastPathComponent)
                     .pathstoIgnore(pathsToIgnore)
-                    .filter(filterBox.getSelectedItem().toString())
                     .table(table)
                     .progressBar(progressBar).build();
             tasks.add(task);
