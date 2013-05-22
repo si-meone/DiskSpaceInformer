@@ -25,6 +25,6 @@
     </application-desc>
     <update check="background" />
     <security>
-        <all-permissions/>
+     
     </security>
 </jnlp>
