@@ -26,7 +26,7 @@ public class DiskSpaceInformer extends JPanel
     protected JProgressBar progressBar;
     private JTable table;
 
-    private static String version = "Disk Space Informer v0.1s";
+    private static String version = "Disk Space Informer v0.1t";
     static private final String newline = "\n";
     private final JComboBox drives;
 

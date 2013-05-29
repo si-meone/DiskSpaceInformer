@@ -8,35 +8,21 @@ import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import static dsi.TextFormatter.readableFileSize;
-
-
 public class FileSystemVisitor implements FileVisitor<Path> {
 
     private JProgressBar progressBar;
     private long grandTotal = 0;
     private long dirTotal = 0;
-    private Map<String, Long> foldersSizes = new LinkedHashMap<String, Long>();
+    private Map<String, HumanReadableFileSize> foldersSizes = new LinkedHashMap<String, HumanReadableFileSize>();
     private List<Path> pathsToIgnore;
 
-    public String getTreeView(Comparator comparator) {
-        treeView.append(String.format("%s Total: [ %s ]\n\\\n", path, readableFileSize(grandTotal)));
-        Map<String, Long> sortedMap = new TreeMap<String, Long>(comparator);
-        sortedMap.putAll(foldersSizes);
-        for (String key: sortedMap.keySet()){
-            treeView.append(String.format("\\__  [ %s ]   %s \n", readableFileSize(sortedMap.get(key)), key));
-        }
-        return treeView.toString();
-    }
-
-    private StringBuilder treeView = new StringBuilder();
     private static Logger log = Logger.getLogger(FileSystemVisitor.class.getName());
 
     private StringBuilder errors = new StringBuilder();
 
     private Path path;
 
-    public Map<String, Long> getFoldersSizes() {
+    public Map<String, HumanReadableFileSize> getFoldersSizes() {
         return foldersSizes;
     }
 
@@ -65,7 +51,7 @@ public class FileSystemVisitor implements FileVisitor<Path> {
         log.log(Level.FINE, "[D]\t " + dir);
         progressBar.setString(dir.toString());
         if (pathsToIgnore.contains(dir)){
-            foldersSizes.put(dir.toString(), 0L);
+            foldersSizes.put(dir.toString(), new HumanReadableFileSize(0L));
             errors.append("EXCLUDING: " + dir.toString() + "\n" );
             return FileVisitResult.SKIP_SUBTREE;
         }
@@ -76,7 +62,7 @@ public class FileSystemVisitor implements FileVisitor<Path> {
     public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
         log.log(Level.FINE, "[F]\t " + file);
         if (pathsToIgnore.contains(file)){
-            foldersSizes.put(file.toString(), 0L);
+            foldersSizes.put(file.toString(), new HumanReadableFileSize(0L));
             errors.append("EXCLUDING: " + file.toString() + "\n" );
             return FileVisitResult.CONTINUE;
         }
@@ -85,7 +71,7 @@ public class FileSystemVisitor implements FileVisitor<Path> {
             return FileVisitResult.CONTINUE;
         } else { // on first level
             grandTotal += attrs.size();
-            foldersSizes.put(file.getFileName().toString(), attrs.size());
+            foldersSizes.put(file.getFileName().toString(), new HumanReadableFileSize(attrs.size()));
 
             return FileVisitResult.CONTINUE;
         }
@@ -105,7 +91,7 @@ public class FileSystemVisitor implements FileVisitor<Path> {
             return FileVisitResult.CONTINUE;
         }
         // first level folder
-        foldersSizes.put(dir.getFileName().toString(), dirTotal);
+        foldersSizes.put(dir.getFileName().toString(), new HumanReadableFileSize(dirTotal));
         grandTotal += dirTotal;
 
         dirTotal = 0L; //reset
@@ -126,6 +112,6 @@ public class FileSystemVisitor implements FileVisitor<Path> {
         Files.walkFileTree(root, visitor);
         System.out.println(visitor.getFoldersSizes());
         long endTime = System.currentTimeMillis();
-        log.info("Scan of" + root  + "took " + (endTime - startTime) + " milliseconds");
+        log.info("Scan of" + root  + " took " + (endTime - startTime) + " milliseconds");
     }
 }

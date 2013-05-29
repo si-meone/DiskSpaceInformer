@@ -90,19 +90,11 @@ public class FileSystemVisitorTest {
     } catch (IOException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
-        Map<String,Long> foldersSizes = visitor.getFoldersSizes();
-        assertThat(foldersSizes.get("empty.txt"), is((Object) 0L));
-        assertThat(foldersSizes.get("f1"), is((Object) 1048576L));
-        assertThat(foldersSizes.get("f2"), is((Object) 2097152L));
-        assertThat(foldersSizes.get("f3"), is((Object) 9437184L));
-
-
-
-
-        assertEquals((Object) 0L, foldersSizes.get("empty.txt"));
-        assertEquals((Object) 1048576L, foldersSizes.get("f1"));
-        assertEquals((Object) 2097152L, foldersSizes.get("f2"));
-        assertEquals((Object) 9437184L, foldersSizes.get("f3"));
+        Map<String,HumanReadableFileSize> foldersSizes = visitor.getFoldersSizes();
+        assertThat(foldersSizes.get("empty.txt").toString(), is("0"));
+        assertThat(foldersSizes.get("f1").toString(), is("1 MB"));
+        assertThat(foldersSizes.get("f2").toString(), is("2 MB"));
+        assertThat(foldersSizes.get("f3").toString(), is("9 MB"));
     }
 
     @Test
@@ -132,8 +124,8 @@ public class FileSystemVisitorTest {
     } catch (IOException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
-        Map<String,Long> foldersSizes = visitor.getFoldersSizes();
-        assertThat(foldersSizes.get("f3"), is((Object) 7340032L));
+        Map<String, HumanReadableFileSize> foldersSizes = visitor.getFoldersSizes();
+        assertThat(foldersSizes.get("f3").toString(), is((String) "7 MB"));
     }
 
     private static void addToClasspath(File file) throws Exception {

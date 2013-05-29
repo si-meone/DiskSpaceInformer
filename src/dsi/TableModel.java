@@ -1,26 +1,19 @@
 package dsi;
 
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
-import java.awt.Dimension;
-import java.awt.GridLayout;
 
 
 class TableModel extends AbstractTableModel {
-    private String[] columnNames = {"Folder Name",
+    private String[] columnNames = {"Drive",
             "Size"};
     private Object[][] data = FindFileAndFolderSizes.checkSpaceAvailable();
 
     TableModel(){
         super();
-        this.data = data;
     }
 
 
-    TableModel(String[] ColumnNames, Object[][] data){
+    TableModel(String[] columnNames, Object[][] data){
         super();
         this.data = data;
         this.columnNames = columnNames;

@@ -56,7 +56,7 @@ class FindFileAndFolderSizes extends SwingWorker<Void, Void> {
         Object[][] data = new Object[1][2];
         if (file.isFile()) {
             data[0][0] = file.getName();
-            data[0][1]= TextFormatter.readableFileSize(file.length()) ;
+            data[0][1]= HumanReadableFileSize.readableFileSize(file.length()) ;
             TableModel model = new TableModel(new String[]{"Name", "Size"}, data);
             table.setModel(model);
             model.fireTableDataChanged();
@@ -78,10 +78,10 @@ class FindFileAndFolderSizes extends SwingWorker<Void, Void> {
             e.printStackTrace();
         }
 
-        Map<String, Long> foldersSizes = visitor.getFoldersSizes();
+        Map<String, HumanReadableFileSize> foldersSizes = visitor.getFoldersSizes();
         if (visitor.getFoldersSizes().size() == 0){
             data[0][0] = file.getName();
-            data[0][1]= TextFormatter.readableFileSize(0) ;
+            data[0][1]= HumanReadableFileSize.readableFileSize(0) ;
             TableModel model = new TableModel(new String[]{"Name", "Size"}, data);
             table.setModel(model);
             model.fireTableDataChanged();
@@ -89,18 +89,14 @@ class FindFileAndFolderSizes extends SwingWorker<Void, Void> {
         }
 
         progressBar.setString("Sorting Listing...");
-        SizeComparator vc = new SizeComparator(foldersSizes);
-        Map<String, Long> sortedMap = new TreeMap<String, Long>(vc);
-        sortedMap.putAll(foldersSizes);
-
-        data = new Object[sortedMap.size()][2];
+        data = new Object[foldersSizes.size()][2];
         int row = 0;
-        for (Map.Entry<String, Long> entry : sortedMap.entrySet()){
+        for (Map.Entry<String, HumanReadableFileSize> entry : foldersSizes.entrySet()){
             data[row][0] = entry.getKey();
-            data[row][1] = TextFormatter.readableFileSize(entry.getValue());
+            data[row][1] = entry.getValue();
             row++;
         }
-        TableModel model = new TableModel(new String[]{"Name", "Size"}, data);
+        TableModel model = new TableModel(new String[]{"Name", "Size (Total = "  +  HumanReadableFileSize.readableFileSize(visitor.getGrandTotal()) + ")"}, data);
         table.setModel(model);
         model.fireTableDataChanged();
 
@@ -117,13 +113,13 @@ class FindFileAndFolderSizes extends SwingWorker<Void, Void> {
             long totalSpace =  root.getTotalSpace();
             long freeSpace =  root.getFreeSpace();
             info[row][0] = String.format("Total Space on [ %s ]",root.getAbsolutePath()) ;
-            info[row][1] = TextFormatter.readableFileSize(totalSpace);
+            info[row][1] = HumanReadableFileSize.readableFileSize(totalSpace);
             row++;
             info[row][0] = String.format("Used Space on [ %s ]",root.getAbsolutePath()) ;
-            info[row][1] = TextFormatter.readableFileSize(totalSpace - freeSpace);
+            info[row][1] = HumanReadableFileSize.readableFileSize(totalSpace - freeSpace);
             row++;
             info[row][0] = String.format("Free Space on [ %s ]", root.getAbsolutePath()) ;
-            info[row][1] = TextFormatter.readableFileSize(freeSpace);
+            info[row][1] = HumanReadableFileSize.readableFileSize(freeSpace);
             row++;
             row++;
         }

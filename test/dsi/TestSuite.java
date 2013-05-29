@@ -8,8 +8,7 @@ import org.junit.runners.Suite.SuiteClasses;
 @SuiteClasses(value = { DiskSpaceInformerTest.class,
         FileSystemTreeModelTest.class,
         FileSystemVisitorTest.class,
-        SizeComparatorTest.class,
-        FormatterTest.class})
+        HumanReadableFileSizeTest.class})
 public class TestSuite {
 
 
