@@ -13,11 +13,15 @@ import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
+import org.python.core.PyInteger;
+import org.python.util.PythonInterpreter;
+import org.python.core.PyObject;
+import org.python.core.PyString;
+
 public class DiskSpaceInformer extends JPanel
         implements ActionListener {
 
     private static Logger log;
-    private static JTextArea textArea;
     private final JButton stopButton;
     private JTree tree;
     private final JButton checkButton;
@@ -26,8 +30,8 @@ public class DiskSpaceInformer extends JPanel
     protected JProgressBar progressBar;
     private JTable table;
 
-    private static String version = "Disk Space Informer v0.1t";
-    static private final String newline = "\n";
+    private PythonInterpreter interp = new PythonInterpreter();
+
     private final JComboBox drives;
 
     private String[] pathsToIgnore;
@@ -66,9 +70,6 @@ public class DiskSpaceInformer extends JPanel
             log.info(new StringBuffer(String.format("Error: %s File: %s Key Missing: %s", e.getMessage(), e.getClassName(), e.getKey())) + "\n");
 
         }
-
-        //TODO: we lost this functionality a quick summary would be nice of all root drives
-        // textArea.append(new FindFileAndFolderSizes.Builder(new File("/")).build().checkSpaceAvailable() + "\n");
 
         checkButton = new JButton("Check Space");
         checkButton.setName("Check Space");
@@ -176,10 +177,13 @@ public class DiskSpaceInformer extends JPanel
     };
 
     private static void setupAndShowUI(File[] files, String path) {
-        JFrame frame = new JFrame(version);
+        DiskSpaceInformer di = new DiskSpaceInformer(files, path);
+        di.interp.set("version", new PyString("Disk Space Informer v0.1u"));
+
+        JFrame frame = new JFrame(di.interp.get("version").toString());
         frame.setName("DiskSpaceInformer");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.add(new DiskSpaceInformer(files, path));
+        frame.add(di);
         frame.pack();
         frame.setVisible(true);
     }
