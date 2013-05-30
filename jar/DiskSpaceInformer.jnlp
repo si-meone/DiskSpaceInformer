@@ -15,8 +15,8 @@
     <resources>
         <!-- Application Resources -->
         <jar href="DiskSpaceInformer.jar" main="true" />
+        <jar href="../../../blob/master/src/lib/jython.jar" eager="true"/>
         <j2se version="1.7+" java-vm-args="-Xmx64m -Xms33m" href="http://java.sun.com/products/autodl/j2se"/>
-        <jar href="../../../blob/master/src/lib/jython.jar"/>
     </resources>
     <application-desc
             name=">DiskSpaceInformer"
