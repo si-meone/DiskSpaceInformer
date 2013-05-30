@@ -1,6 +1,7 @@
 package dsi;
 
 import javax.swing.*;
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
@@ -105,9 +106,10 @@ public class FileSystemVisitor implements FileVisitor<Path> {
         if (args.length != 1) {
             System.out.println("Use: java Size <directory>");
         }
-        Path root = Paths.get(System.getProperty("user.home"));
+        //Path root = Paths.get(System.getProperty("user.home"));
+        Path root = Paths.get(new File("/").toURI());
         List<String> foldersToIgnore  = new ArrayList<String>();
-        foldersToIgnore.add("/proc");
+        foldersToIgnore.add("");
         FileSystemVisitor visitor = new FileSystemVisitor(root, foldersToIgnore, new JProgressBar());
         Files.walkFileTree(root, visitor);
         System.out.println(visitor.getFoldersSizes());
