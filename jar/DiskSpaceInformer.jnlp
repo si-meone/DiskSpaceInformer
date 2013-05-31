@@ -25,7 +25,6 @@
             width="600"
             height="800">
     </application-desc>
-    <update check="background" />
     <security>
     <all-permissions/> 
     </security>
