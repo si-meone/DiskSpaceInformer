@@ -28,4 +28,5 @@
     <security>
     <all-permissions/> 
     </security>
+    <update check="always" policy="always">
 </jnlp>
