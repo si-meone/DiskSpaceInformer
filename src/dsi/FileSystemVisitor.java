@@ -9,17 +9,26 @@ import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.python.core.PyDictionary;
+import org.python.core.PyObject;
+import org.python.core.PyString;
+import org.python.util.PythonInterpreter;
+
 public class FileSystemVisitor implements FileVisitor<Path> {
 
     private JProgressBar progressBar;
     private long grandTotal = 0;
     private long dirTotal = 0;
+
     private Map<String, HumanReadableFileSize> foldersSizes = new LinkedHashMap<String, HumanReadableFileSize>();
     private List<Path> pathsToIgnore;
 
     private static Logger log = Logger.getLogger(FileSystemVisitor.class.getName());
 
     private StringBuilder errors = new StringBuilder();
+
+    private PythonInterpreter interp = new PythonInterpreter();
+    private PyDictionary folderSizesDict = new PyDictionary();
 
     private Path path;
 
@@ -34,6 +43,7 @@ public class FileSystemVisitor implements FileVisitor<Path> {
         this.progressBar.setString("Determining files to scan");
         this.progressBar.setStringPainted(true);
         this.progressBar.setVisible(true);
+        interp.set("folderSizesDict", folderSizesDict);
     }
 
     FileSystemVisitor(Path path) {
@@ -53,7 +63,8 @@ public class FileSystemVisitor implements FileVisitor<Path> {
         progressBar.setString(dir.toString());
         if (pathsToIgnore.contains(dir)){
             foldersSizes.put(dir.toString(), new HumanReadableFileSize(0L));
-            errors.append("EXCLUDING: " + dir.toString() + "\n" );
+//            interp.exec(String.format("folderSizesDict[%s] = %s", dir.toString(), 0L));
+            errors.append("EXCLUDING: " + dir.toString() + "\n");
             return FileVisitResult.SKIP_SUBTREE;
         }
         return FileVisitResult.CONTINUE;
@@ -64,6 +75,7 @@ public class FileSystemVisitor implements FileVisitor<Path> {
         log.log(Level.FINE, "[F]\t " + file);
         if (pathsToIgnore.contains(file)){
             foldersSizes.put(file.toString(), new HumanReadableFileSize(0L));
+//            interp.exec(String.format("folderSizesDict[%s] = %s", file.toString(), 0L));
             errors.append("EXCLUDING: " + file.toString() + "\n" );
             return FileVisitResult.CONTINUE;
         }
@@ -73,7 +85,8 @@ public class FileSystemVisitor implements FileVisitor<Path> {
         } else { // on first level
             grandTotal += attrs.size();
             foldersSizes.put(file.getFileName().toString(), new HumanReadableFileSize(attrs.size()));
-
+               //folderSizesDict.update(new PyObject(file.getFileName().toString()), new PyObject(new HumanReadableFileSize(attrs.size())));
+               interp.exec("folderSizesDict[\"" + file.getFileName().toString() + "\"] = " + "\"" + new HumanReadableFileSize(attrs.size()) + "\"");
             return FileVisitResult.CONTINUE;
         }
     }
@@ -93,6 +106,7 @@ public class FileSystemVisitor implements FileVisitor<Path> {
         }
         // first level folder
         foldersSizes.put(dir.getFileName().toString(), new HumanReadableFileSize(dirTotal));
+//        interp.exec(String.format("folderSizesDict[%s] = %s",dir.getFileName().toString(), dirTotal));
         grandTotal += dirTotal;
 
         dirTotal = 0L; //reset
@@ -106,13 +120,18 @@ public class FileSystemVisitor implements FileVisitor<Path> {
         if (args.length != 1) {
             System.out.println("Use: java Size <directory>");
         }
-        //Path root = Paths.get(System.getProperty("user.home"));
-        Path root = Paths.get(new File("/").toURI());
+        Path root = Paths.get(System.getProperty("user.home"));
+//        Path root = Paths.get(new File("/").toURI());
         List<String> foldersToIgnore  = new ArrayList<String>();
         foldersToIgnore.add("");
         FileSystemVisitor visitor = new FileSystemVisitor(root, foldersToIgnore, new JProgressBar());
         Files.walkFileTree(root, visitor);
         System.out.println(visitor.getFoldersSizes());
+
+        System.out.println("---python---");
+        visitor.interp.exec("print folderSizesDict");
+        System.out.println("---python---");
+
         long endTime = System.currentTimeMillis();
         log.info("Scan of" + root  + " took " + (endTime - startTime) + " milliseconds");
     }
