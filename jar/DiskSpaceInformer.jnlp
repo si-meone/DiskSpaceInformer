@@ -15,7 +15,7 @@
     <resources>
         <!-- Application Resources -->
         <jar href="DiskSpaceInformer.jar" main="true" />
-        <jar href="Hello.jar" main="true" />
+        <jar href="../raw/master/src/lib/Hello.jar" main="true" />
         <j2se version="1.7+" java-vm-args="-Xmx64m -Xms33m" href="http://java.sun.com/products/autodl/j2se"/>
     </resources>
     <application-desc
