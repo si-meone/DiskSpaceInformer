@@ -1,5 +1,7 @@
 package dsi;
 
+import org.python.core.PyInteger;
+import org.python.core.PyString;
 import test.Hello;
 
 import javax.swing.*;
@@ -15,6 +17,9 @@ import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
+import org.python.core.PyObject;
+import org.python.util.PythonInterpreter;
+
 public class DiskSpaceInformer extends JPanel
         implements ActionListener {
 
@@ -28,7 +33,7 @@ public class DiskSpaceInformer extends JPanel
     protected JProgressBar progressBar;
     private JTable table;
 
-    private static String version = "Disk Space Informer v0.1t";
+
     static private final String newline = "\n";
     private final JComboBox drives;
 
@@ -179,7 +184,15 @@ public class DiskSpaceInformer extends JPanel
 
     private static void setupAndShowUI(File[] files, String path) {
         new Hello();
-        JFrame frame = new JFrame(version);
+
+
+        PythonInterpreter interp = new PythonInterpreter();
+
+        // Set variable values within the PythonInterpreter instance
+        interp.set("version", new PyString("Disk Space Informer v0.1u"));
+
+
+        JFrame frame = new JFrame(interp.get("version").toString());
         frame.setName("DiskSpaceInformer");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.add(new DiskSpaceInformer(files, path));
