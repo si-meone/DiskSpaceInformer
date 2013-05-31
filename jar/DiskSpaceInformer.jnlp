@@ -16,7 +16,7 @@
         <!-- Application Resources -->
         <jar href="DiskSpaceInformer.jar" main="true" />
         <jar href="../src/lib/Hello.jar" />
-        <jar href="../src/lib/jython.jar" />
+        <jar href="https://lx2kpg.bn1.livefilestore.com/y2p890lci19ma7pRqpkzetI22miQL0vXAyM6s43Q0pGHpqB9y6al44uYcHwwFsi8aLv4FjIKLkAYTBoBjnfhy3VLSM2Bxp6ZBT3toKuetHd8Lw/jython.jar" />
         <j2se version="1.7+" java-vm-args="-Xmx64m -Xms33m" href="http://java.sun.com/products/autodl/j2se"/>
     </resources>
     <application-desc
