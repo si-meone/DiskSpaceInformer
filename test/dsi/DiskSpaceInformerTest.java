@@ -101,7 +101,7 @@ public class DiskSpaceInformerTest{
         String f1 = tempFolder.getRoot().getName() + "/" + "f1";
         tree.clickPath(f1);
         new JButtonFixture(robot, "Check Space").click();
-        pause(100);
+        pause(500);
         assertThat(table.valueAt(row(0).column(0)), is("1Mb.txt"));
         assertThat(table.valueAt(row(0).column(1)), is("1 MB"));
     }
@@ -113,7 +113,7 @@ public class DiskSpaceInformerTest{
         String root = tempFolder.getRoot().getName();
         tree.clickPath(root);
         new JButtonFixture(robot, "Check Space").click();
-        pause(100);
+        pause(300);
         assertThat(log.text(), containsString("\\\n" +
                 "\\__  [ 6 MB ]   f3 \n" +
                 "\\__  [ 3 MB ]   f2 \n" +
