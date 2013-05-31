@@ -25,14 +25,7 @@
         <mkdir dir="${build}/test"/>
     </target>
 
-
-
-    <target name="unzipJython" depends="init"
-            description="unpack jython " >
-        <unzip src="${src}/lib/jython.jar" dest="${build}/src"/>
-    </target>
-
-    <target name="compile" depends="init, unzipJython"
+    <target name="compile" depends="init"
             description="compile the source " >
         <!-- Compile the java code from ${src} into ${build} -->
         <javac srcdir="${src}" destdir="${build}/src" classpathref="classpath-src"/>
