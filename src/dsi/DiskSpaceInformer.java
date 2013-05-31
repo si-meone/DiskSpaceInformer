@@ -1,5 +1,7 @@
 package dsi;
 
+import test.Hello;
+
 import javax.swing.*;
 import javax.swing.tree.*;
 import java.awt.*;
@@ -176,6 +178,7 @@ public class DiskSpaceInformer extends JPanel
     };
 
     private static void setupAndShowUI(File[] files, String path) {
+        new Hello();
         JFrame frame = new JFrame(version);
         frame.setName("DiskSpaceInformer");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
