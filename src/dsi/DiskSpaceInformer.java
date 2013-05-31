@@ -1,8 +1,5 @@
 package dsi;
 
-import org.python.core.PyInteger;
-import org.python.core.PyString;
-import test.Hello;
 
 import javax.swing.*;
 import javax.swing.tree.*;
@@ -17,8 +14,8 @@ import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
-import org.python.core.PyObject;
 import org.python.util.PythonInterpreter;
+import org.python.core.PyString;
 
 public class DiskSpaceInformer extends JPanel
         implements ActionListener {
@@ -183,9 +180,6 @@ public class DiskSpaceInformer extends JPanel
     };
 
     private static void setupAndShowUI(File[] files, String path) {
-        new Hello();
-
-
         PythonInterpreter interp = new PythonInterpreter();
 
         // Set variable values within the PythonInterpreter instance

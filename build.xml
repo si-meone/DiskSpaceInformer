@@ -81,6 +81,7 @@
              preservelastmodified="true">
         <path>
             <fileset dir="${build}/jar" includes="**/*.jar" />
+            <fileset dir="${src}/lib" includes="**/*.jar" />
         </path>
         <flattenmapper />
     </signjar>
