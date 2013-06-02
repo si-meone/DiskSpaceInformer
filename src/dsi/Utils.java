@@ -18,20 +18,20 @@ public class Utils {
         String path1 = "__pyclasspath__/Lib";
         String path2 = "__pyclasspath__/dsi";
         Properties props = new Properties();
-        props.setProperty("python.path", path1);
-        props.setProperty("python.path", path2);
-        PythonInterpreter.initialize(System.getProperties(), props,
-              new String[] {""});
-//        if (System.getProperty("os.name").startsWith("Win")){
-//            props.setProperty("python.path", path1 + ";" + path2);
-//        } else{
-//            props.setProperty("python.path", path1 + ":" + path2);
-//        }
+//        props.setProperty("python.path", path1);
+//        props.setProperty("python.path", path2);
+//        PythonInterpreter.initialize(System.getProperties(), props,
+//              new String[] {""});
+        if (System.getProperty("os.name").startsWith("Win")){
+            props.setProperty("python.path", path1 + ";" + path2);
+        } else{
+            props.setProperty("python.path", path1 + ":" + path2);
+        }
 //        log.info("setting python.path to: " + path1);
 //        log.info("setting python.path to: " + path2);
 
-//        PythonInterpreter.initialize(System.getProperties(), props,
-//                new String[] {""});
+        PythonInterpreter.initialize(System.getProperties(), props,
+                new String[] {""});
 
         PySystemState pySysState = new PySystemState();
         log.info("Jython sys state initialized. sys.path: " + pySysState.path);
