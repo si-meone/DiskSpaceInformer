@@ -15,21 +15,21 @@ public class Utils {
     private String folder = "";
 
     public Utils() {
-        String path1 = Paths.get("").toAbsolutePath().toString() + File.separator +
-                "src"+ File.separator + "dsi";
-        String path2 = Paths.get("").toAbsolutePath().toString() + File.separator +
-                "dsi";
-        Properties props = new Properties();
-        if (System.getProperty("os.name").startsWith("Win")){
-            props.setProperty("python.path", path1 + ";" + path2);
-        } else{
-            props.setProperty("python.path", path1 + ":" + path2);
-        }
-        log.info("setting python.path to: " + path1);
-        log.info("setting python.path to: " + path2);
+//        String path1 = Paths.get("").toAbsolutePath().toString() + File.separator +
+//                "src"+ File.separator + "dsi";
+//        String path2 = Paths.get("").toAbsolutePath().toString() + File.separator +
+//                "dsi";
+//        Properties props = new Properties();
+//        if (System.getProperty("os.name").startsWith("Win")){
+//            props.setProperty("python.path", path1 + ";" + path2);
+//        } else{
+//            props.setProperty("python.path", path1 + ":" + path2);
+//        }
+//        log.info("setting python.path to: " + path1);
+//        log.info("setting python.path to: " + path2);
 
-        PythonInterpreter.initialize(System.getProperties(), props,
-                new String[] {""});
+//        PythonInterpreter.initialize(System.getProperties(), props,
+//                new String[] {""});
 
         PySystemState pySysState = new PySystemState();
         log.info("Jython sys state initialized. sys.path: " + pySysState.path);

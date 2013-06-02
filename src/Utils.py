@@ -28,6 +28,7 @@ class Utils(UtilsType):
 
 
    def get_free_space(self):
+
        """ Return folder/drive free space (in bytes)
        """
        # if platform.system() == 'Windows':
@@ -37,7 +38,9 @@ class Utils(UtilsType):
        # else:
        #     # s = os.statvfs(self.path)
        #     # return self.sizeof_fmt((s.f_bavail * s.f_frsize) / 1024)
-       return '0 B'
+       #return '1 B'
+
+       return os.name
 
 def main():
     path = '/'
