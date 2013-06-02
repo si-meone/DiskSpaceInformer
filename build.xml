@@ -51,13 +51,14 @@
         </junit>
     </target>
 
-    <target name="copy_props" depends="clean, init, compile" description="copy property files" >
+    <target name="copy_props_python" depends="clean, init, compile" description="copy property and python files" >
     <copy todir="${build}/src">
         <fileset dir="${src}" includes="**/*.properties"/>
+        <fileset dir="${src}" includes="**/*.py"/>
     </copy>
     </target>
 
-    <target name="dist" depends="clean, compile, copy_props, unit-tests"
+    <target name="dist" depends="clean, compile, copy_props_python, unit-tests"
             description="generate the distribution" >
         <!-- Create the distribution directory -->
         <mkdir dir="${build}/jar"/>
@@ -74,7 +75,7 @@
         </jar>
     </target>
 
-    <target name="deploy" depends="clean, compile, copy_props, unit-tests, dist"
+    <target name="deploy" depends="clean, compile, copy_props_python, unit-tests, dist"
             description="sign distribution" >
     <signjar destDir="jar"
              alias="key" keystore="keystore"
