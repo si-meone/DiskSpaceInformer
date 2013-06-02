@@ -1,5 +1,7 @@
 package dsi;
 
+import com.ziclix.python.sql.util.PyArgParser;
+import org.python.core.PyDictionary;
 import org.python.core.PyObject;
 import org.python.core.PyString;
 import org.python.util.PythonInterpreter;

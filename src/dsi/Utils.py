@@ -7,18 +7,6 @@ class Utils(UtilsType):
    def __init__(self, path):
       self.path = path
 
-   def get_folder_sizes(self):
-       folderSize = 0
-
-       # for (path, dirs, files) in os.walk(self.path):
-       #     for file in files:
-       #         filename = os.path.join(path, file)
-       #         try:
-       #             folderSize += os.path.getsize(filename)
-       #         except OSError as ose:
-       #             print 'An OS error occured :%s' %ose
-       return folderSize
-
    def sizeof_fmt(self, num):
        for x in [' B',' KB',' MB',' GB']:
            if num < 1024.0:
@@ -31,16 +19,22 @@ class Utils(UtilsType):
 
        """ Return folder/drive free space (in bytes)
        """
-       # if platform.system() == 'Windows':
-       #     free_bytes = ctypes.c_ulonglong(0)
-       #     ctypes.windll.kernel32.GetDiskFreeSpaceExW(ctypes.c_wchar_p(self.path), None, None, ctypes.pointer(free_bytes))
-       #     return free_bytes.value
-       # else:
-       #     # s = os.statvfs(self.path)
-       #     # return self.sizeof_fmt((s.f_bavail * s.f_frsize) / 1024)
-       #return '1 B'
+       import java.lang.reflect.Array
+       import java.io.File
+       roots = java.io.File.listRoots()
+       rows = len(roots) * 4
+       str2d = java.lang.reflect.Array.newInstance(java.lang.String,[rows, 2])
+       row_count = 0
+       for i in roots:
+           str2d[row_count][0] = str(i)
+           str2d[row_count][1] = 'Total capacity: ' + self.sizeof_fmt(i.getTotalSpace())
+           row_count += 1
+           str2d[row_count][1] = 'Used Space:  ' + self.sizeof_fmt(i.getTotalSpace() - i.getFreeSpace())
+           row_count += 1
+           str2d[row_count][1] = 'Free Space:  ' + self.sizeof_fmt(i.getFreeSpace())
+           row_count += 2
+       return str2d
 
-       return os.name + ' oses'
 
 def main():
     path = '/'

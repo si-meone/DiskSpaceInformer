@@ -50,14 +50,16 @@ public class Utils {
 
 
     public String[][] getFreeSpace() {
-        String[][] s = new String[2][2];
-        s[0][0] = folder;
-        s[0][1] = utilsType.get_free_space();
-        return s;
+        return utilsType.get_free_space();
+//        String[][] s = new String[2][2];
+//        s[0][0] = folder;
+//        s[0][1] = String.valueOf(utilsType.get_free_space());
+//        return s;
     }
 
     public static void main(String[] args) {
-        new Utils();
+        String[][] freeSpace = new Utils().getFreeSpace();
+        System.out.println(freeSpace[0][0] + " " + freeSpace[0][1]);
 
     }
 
