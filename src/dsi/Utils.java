@@ -15,7 +15,7 @@ public class Utils {
     private String folder = "";
 
     public Utils() {
-        String path = "__pyclasspath__/jython.jar/Lib";
+        String path = "__pyclasspath__/jyLib/";
 //        String path2 = Paths.get("").toAbsolutePath().toString() + File.separator +
 //                "dsi";
         Properties props = new Properties();
