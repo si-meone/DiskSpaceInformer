@@ -54,8 +54,11 @@
     <target name="copy_props_python" depends="clean, init, compile" description="copy property and python files" >
     <copy todir="${build}/src">
         <fileset dir="${src}" includes="**/*.properties"/>
+    </copy>
+       <copy todir="${build}/src">
         <fileset dir="${src}" includes="**/*.py"/>
     </copy>
+
     </target>
 
     <target name="dist" depends="clean, compile, copy_props_python, unit-tests"
