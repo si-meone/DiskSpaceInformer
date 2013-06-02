@@ -14,14 +14,11 @@ import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
-import org.python.util.PythonInterpreter;
-import org.python.core.PyString;
 
 public class DiskSpaceInformer extends JPanel
         implements ActionListener {
 
     private static Logger log;
-    private static JTextArea textArea;
     private final JButton stopButton;
     private JTree tree;
     private final JButton checkButton;
@@ -31,7 +28,7 @@ public class DiskSpaceInformer extends JPanel
     private JTable table;
 
 
-    static private final String newline = "\n";
+    static private final String version = "Disk Space Informer v0.1u";
     private final JComboBox drives;
 
     private String[] pathsToIgnore;
@@ -180,13 +177,7 @@ public class DiskSpaceInformer extends JPanel
     };
 
     private static void setupAndShowUI(File[] files, String path) {
-        PythonInterpreter interp = new PythonInterpreter();
-
-        // Set variable values within the PythonInterpreter instance
-        interp.set("version", new PyString("Disk Space Informer v0.1u"));
-
-
-        JFrame frame = new JFrame(interp.get("version").toString());
+        JFrame frame = new JFrame(version);
         frame.setName("DiskSpaceInformer");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.add(new DiskSpaceInformer(files, path));

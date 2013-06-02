@@ -6,7 +6,8 @@ import javax.swing.table.AbstractTableModel;
 class TableModel extends AbstractTableModel {
     private String[] columnNames = {"Drive",
             "Size"};
-    private Object[][] data = FindFileAndFolderSizes.checkSpaceAvailable();
+
+    private Object[][] data = new Utils().getFreeSpace();
 
     TableModel(){
         super();
@@ -17,6 +18,7 @@ class TableModel extends AbstractTableModel {
         super();
         this.data = data;
         this.columnNames = columnNames;
+        this.data = data;
     }
 
 
