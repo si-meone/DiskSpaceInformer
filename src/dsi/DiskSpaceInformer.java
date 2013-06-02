@@ -28,7 +28,7 @@ public class DiskSpaceInformer extends JPanel
     private JTable table;
 
 
-    static private final String version = "Disk Space Informer v0.1u";
+    static private final String version = "Disk Space Informer v0.1w";
     private final JComboBox drives;
 
     private String[] pathsToIgnore;

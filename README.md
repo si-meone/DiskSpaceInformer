@@ -46,6 +46,12 @@ my mac has ant 1.8.2
 
 *was also tested on lubuntu 12.10
 
+To Distro
+===========
+1. ant deploy
+2. then copy DiskSpaceInformerjar/DiskSpaceInformer.jar spiralecafe/dsi (apps engine)
+3. then click deploy in apps engine (remember ay changes check them into repo)
+
 New In Versions
 ===============
 
@@ -73,6 +79,8 @@ New In Versions
 0.1j - Added filter for size or alphabetically
 
 0.1s - Added table for output.
+
+0.1w - Added jython support
 
 BUGS
 ====

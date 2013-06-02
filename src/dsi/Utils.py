@@ -40,7 +40,7 @@ class Utils(UtilsType):
        #     # return self.sizeof_fmt((s.f_bavail * s.f_frsize) / 1024)
        #return '1 B'
 
-       return os.name
+       return os.name + ' os'
 
 def main():
     path = '/'
