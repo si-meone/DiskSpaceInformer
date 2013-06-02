@@ -51,6 +51,7 @@ To Distro
 1. ant deploy
 2. then copy DiskSpaceInformerjar/DiskSpaceInformer.jar spiralecafe/dsi (apps engine)
 3. then click deploy in apps engine (remember ay changes check them into repo)
+4. seems like I have to delete cache of local machines to get the new version
 
 New In Versions
 ===============
