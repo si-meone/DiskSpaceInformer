@@ -1,6 +1,6 @@
 from dsi import UtilsType
-# import os
-# import platform
+import os
+import platform
 import sys
 class Utils(UtilsType):
 # class Utils(object):
