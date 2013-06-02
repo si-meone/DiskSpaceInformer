@@ -14,7 +14,7 @@ To run it 3 ways
 
 - Click on the link below which will download the file link below and then double click on the file.
 
-https://github.com/snasrallah/DiskSpaceInformer/raw/master/jar/DiskSpaceInformer.jnlp
+http://www.spirale.co.uk/dsi/DiskSpaceInformer.jnlp
 
 Problems:
 sometimes it will download and when you run the jnlp file it may complain about java so you'll need it:
