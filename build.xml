@@ -58,7 +58,7 @@
        <copy todir="${build}/src">
         <fileset dir="${src}" includes="**/*.py"/>
     </copy>
-
+    <unzip src="${src}/lib/jython.jar" dest="${build}/src"/>
     </target>
 
     <target name="dist" depends="clean, compile, copy_props_python, unit-tests"
@@ -86,7 +86,6 @@
              preservelastmodified="true">
         <path>
             <fileset dir="${build}/jar" includes="**/*.jar" />
-            <fileset dir="${src}/lib" includes="**/*.jar" />
         </path>
         <flattenmapper />
     </signjar>

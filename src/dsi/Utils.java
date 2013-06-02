@@ -15,11 +15,11 @@ public class Utils {
     private String folder = "";
 
     public Utils() {
-        String path = "__pyclasspath__/jython.jar/Lib";
-//        String path2 = Paths.get("").toAbsolutePath().toString() + File.separator +
-//                "dsi";
+        String path1 = "__pyclasspath__/Lib";
+        String path2 = "__pyclasspath__/dsi";
         Properties props = new Properties();
-        props.setProperty("python.path", path);
+        props.setProperty("python.path", path1);
+        props.setProperty("python.path", path2);
         PythonInterpreter.initialize(System.getProperties(), props,
               new String[] {""});
 //        if (System.getProperty("os.name").startsWith("Win")){

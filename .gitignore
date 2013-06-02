@@ -10,4 +10,5 @@ target/
 out/
 build/
 jar/jython.jar
+jar/DiskSpaceInformer.jar
 result.*
