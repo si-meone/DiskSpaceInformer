@@ -22,10 +22,10 @@ sometimes it will download and when you run the jnlp file it may complain about 
 [http://www.java.com/en/download/installed.jsp](Verify your Java version)
 [http://java.com/en/download/index.jsp](Download Java7)
 
-- Download the jar from https://github.com/snasrallah/DiskSpaceInformer/raw/master/jar/DiskSpaceInformer.jar
+- Download the jar from http://www.spirale.co.uk/dsi/DiskSpaceInformer.jar
 
-and run from project home:
-java -jar jar/DiskSpaceInformer.jar
+and run:
+java -jar DiskSpaceInformer.jar
 
 - Download run sources in your IDE (I use intellij , should work in eclipse) and from project home run 
 java -classpath out/production/DiskSpaceInformer/ dsi.DiskSpaceInformer
