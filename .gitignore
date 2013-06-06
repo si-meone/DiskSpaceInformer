@@ -9,4 +9,5 @@ log/
 target/
 out/
 build/
+cachedir/
 result.*
