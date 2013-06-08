@@ -4,8 +4,6 @@ package dsi;
 import org.python.core.PySystemState;
 import org.python.util.PythonInterpreter;
 
-import java.io.File;
-import java.nio.file.Paths;
 import java.util.Properties;
 import java.util.logging.Logger;
 
@@ -55,6 +53,10 @@ public class Utils {
 //        s[0][0] = folder;
 //        s[0][1] = String.valueOf(utilsType.get_free_space());
 //        return s;
+    }
+
+    public float get_dir_size(String path){
+        return utilsType.get_dir_size(path);
     }
 
     public static void main(String[] args) {

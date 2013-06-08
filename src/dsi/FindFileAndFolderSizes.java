@@ -2,10 +2,6 @@ package dsi;
 
 import javax.swing.*;
 import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.*;
 import java.util.logging.Logger;
 
@@ -16,6 +12,7 @@ class FindFileAndFolderSizes extends SwingWorker<Void, Void> {
     private JProgressBar progressBar;
     private File file;
     private static Logger log = Logger.getLogger(FindFileAndFolderSizes.class.getName());
+    private Utils utils;
 
     public static class Builder{
         //req params
@@ -65,21 +62,29 @@ class FindFileAndFolderSizes extends SwingWorker<Void, Void> {
 
         progressBar.setString("Processing Selection...");
         long startTime = System.currentTimeMillis();
-        Path root = Paths.get(String.valueOf(file.getPath()));
 
-        List<Path> foldersToIgnore = new ArrayList<Path>();
-        for (String path : pathsToIgnore) {
-            foldersToIgnore.add(new File(path).toPath());
-        }
-            FileSystemVisitor visitor = new FileSystemVisitor(root, foldersToIgnore, progressBar);
-        try {
-            Files.walkFileTree(root, visitor);
-        } catch (IOException e) {
-            e.printStackTrace();
+        this.progressBar.setString("Determining files to scan");
+        this.progressBar.setStringPainted(true);
+        this.progressBar.setVisible(true);
+
+        utils = new Utils();
+        Map<String, HumanReadableFileSize> foldersSizes = new HashMap<String, HumanReadableFileSize>();
+        File[] files = file.listFiles();
+        long grandTotal = 0;
+        for(File f : files){
+            if (Thread.interrupted()) {
+                break;
+            }
+            progressBar.setString(f.toString());
+            float dir_size = utils.get_dir_size(f.getPath());
+            grandTotal += dir_size;
+            // System.out.println(f.toString() + " " + dir_size);
+            int idx = f.toString().replaceAll("\\\\", "/").lastIndexOf("/");
+            String lastPart = idx >= 0 ? f.toString().substring(idx + 1) : f.toString();
+            foldersSizes.put(lastPart, new HumanReadableFileSize(dir_size));
         }
 
-        Map<String, HumanReadableFileSize> foldersSizes = visitor.getFoldersSizes();
-        if (visitor.getFoldersSizes().size() == 0){
+        if (foldersSizes.size() == 0){
             data[0][0] = file.getName();
             data[0][1]= HumanReadableFileSize.readableFileSize(0) ;
             TableModel model = new TableModel(new String[]{"Name", "Size"}, data);
@@ -96,7 +101,7 @@ class FindFileAndFolderSizes extends SwingWorker<Void, Void> {
             data[row][1] = entry.getValue();
             row++;
         }
-        TableModel model = new TableModel(new String[]{"Name", "Size (Total = "  +  HumanReadableFileSize.readableFileSize(visitor.getGrandTotal()) + ")"}, data);
+        TableModel model = new TableModel(new String[]{"Name", "Size (Total = "  +  HumanReadableFileSize.readableFileSize(grandTotal) + ")"}, data);
         table.setModel(model);
         model.fireTableDataChanged();
 
