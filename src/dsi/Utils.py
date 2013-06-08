@@ -6,6 +6,7 @@ class Utils(UtilsType):
 # class Utils(object):
    def __init__(self, path):
       self.path = path
+      self.errors = ''
 
    def sizeof_fmt(self, num):
        for x in [' B',' KB',' MB',' GB']:
@@ -38,6 +39,7 @@ class Utils(UtilsType):
    def get_dir_size(self, file_or_folder):
        # print '###### utils.get_dir_size ######'
        # print file_or_folder
+       self.errors = ''
        size = 0
        if os.path.isfile(file_or_folder):
            # print os.path.getsize(file_or_folder)
@@ -45,11 +47,16 @@ class Utils(UtilsType):
        for path, dirs, files in os.walk(file_or_folder):
            for f in files:
                try:
-                   size +=  os.path.getsize( os.path.join( path, f ) )
+                   # print 'getsize '
+                   full_path = os.path.join(path, f)
+                   size += os.path.getsize(full_path)
                except:
-                   print("error with file:  " + os.path.join( path, f ))
-       # print size
+                   # pass
+                   self.errors += "error with file:  " + full_path + '\n'
        return size
+
+   def get_errors(self):
+       return self.errors
 
 def main():
     path = '/'

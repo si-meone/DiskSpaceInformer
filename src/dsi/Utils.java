@@ -59,6 +59,10 @@ public class Utils {
         return utilsType.get_dir_size(path);
     }
 
+    public String get_errors(){
+        return utilsType.get_errors();
+    }
+
     public static void main(String[] args) {
         String[][] freeSpace = new Utils().getFreeSpace();
         System.out.println(freeSpace[0][0] + " " + freeSpace[0][1]);

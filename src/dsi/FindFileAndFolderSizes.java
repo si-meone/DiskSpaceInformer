@@ -72,16 +72,17 @@ class FindFileAndFolderSizes extends SwingWorker<Void, Void> {
         File[] files = file.listFiles();
         long grandTotal = 0;
         for(File f : files){
-            if (Thread.interrupted()) {
-                break;
-            }
             progressBar.setString(f.toString());
             float dir_size = utils.get_dir_size(f.getPath());
+            if (utils.get_errors().length() > 0) {log.info(utils.get_errors());};
             grandTotal += dir_size;
             // System.out.println(f.toString() + " " + dir_size);
             int idx = f.toString().replaceAll("\\\\", "/").lastIndexOf("/");
             String lastPart = idx >= 0 ? f.toString().substring(idx + 1) : f.toString();
             foldersSizes.put(lastPart, new HumanReadableFileSize(dir_size));
+            if (Thread.interrupted()) {
+                break;
+            }
         }
 
         if (foldersSizes.size() == 0){
