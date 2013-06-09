@@ -12,6 +12,8 @@ import java.util.logging.Logger;
 public class Config {
     private final String configFilePrefix;
     private Properties props;
+    static public final String appName = "Disk Space Informer ";
+    static public final String version = "version 0.1x";
     private static Logger log = Logger.getLogger(Config.class.getName());
 
 

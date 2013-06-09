@@ -13,6 +13,8 @@ class FindFileAndFolderSizes extends SwingWorker<Void, Void> {
     private File file;
     private static Logger log = Logger.getLogger(FindFileAndFolderSizes.class.getName());
     private Utils utils;
+    private int progressBarLevel = 0;
+    private int progressBarMax = 0;
 
     public static class Builder{
         //req params
@@ -63,20 +65,28 @@ class FindFileAndFolderSizes extends SwingWorker<Void, Void> {
         progressBar.setString("Processing Selection...");
         long startTime = System.currentTimeMillis();
 
-        this.progressBar.setString("Determining files to scan");
-        this.progressBar.setStringPainted(true);
-        this.progressBar.setVisible(true);
+        progressBar.setString("Determining files to scan");
+        progressBar.setStringPainted(true);
+        progressBar.setVisible(true);
 
         utils = new Utils();
         Map<String, HumanReadableFileSize> foldersSizes = new HashMap<String, HumanReadableFileSize>();
         File[] files = file.listFiles();
+        progressBarLevel = 0;
+        progressBarMax = files.length;
+        progressBar.setMinimum(progressBarLevel);
+        progressBar.setMaximum(progressBarMax);
         long grandTotal = 0;
         for(File f : files){
+            if (pathsToIgnore.length > 0 && Arrays.asList(pathsToIgnore).contains(f.getPath())){
+                continue;
+            }
             progressBar.setString(f.toString());
             float dir_size = utils.get_dir_size(f.getPath());
             if (utils.get_errors().length() > 0) {log.info(utils.get_errors());};
             grandTotal += dir_size;
             // System.out.println(f.toString() + " " + dir_size);
+            progressBar.setValue(progressBarLevel++);
             int idx = f.toString().replaceAll("\\\\", "/").lastIndexOf("/");
             String lastPart = idx >= 0 ? f.toString().substring(idx + 1) : f.toString();
             foldersSizes.put(lastPart, new HumanReadableFileSize(dir_size));
@@ -103,6 +113,7 @@ class FindFileAndFolderSizes extends SwingWorker<Void, Void> {
             row++;
         }
         TableModel model = new TableModel(new String[]{"Name", "Size (Total = "  +  HumanReadableFileSize.readableFileSize(grandTotal) + ")"}, data);
+        progressBar.setString("Sorted List");
         table.setModel(model);
         model.fireTableDataChanged();
 
@@ -135,7 +146,10 @@ class FindFileAndFolderSizes extends SwingWorker<Void, Void> {
 
     @Override
     public void done() {
+        progressBar.setValue(progressBarMax);
         progressBar.setString("Task Complete...");
     }
+
+
 
 }

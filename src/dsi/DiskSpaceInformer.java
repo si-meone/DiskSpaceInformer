@@ -27,8 +27,6 @@ public class DiskSpaceInformer extends JPanel
     protected JProgressBar progressBar;
     private JTable table;
 
-
-    static private final String version = "Disk Space Informer v0.1x";
     private final JComboBox drives;
 
     private String[] pathsToIgnore;
@@ -177,7 +175,7 @@ public class DiskSpaceInformer extends JPanel
     };
 
     private static void setupAndShowUI(File[] files, String path) {
-        JFrame frame = new JFrame(version);
+        JFrame frame = new JFrame(Config.appName + " " + Config.version);
         frame.setName("DiskSpaceInformer");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.add(new DiskSpaceInformer(files, path));

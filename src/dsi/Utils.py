@@ -50,9 +50,10 @@ class Utils(UtilsType):
                    # print 'getsize '
                    full_path = os.path.join(path, f)
                    size += os.path.getsize(full_path)
-               except:
+               except Exception, e:
+                   print e
                    # pass
-                   self.errors += "error with file:  " + full_path + '\n'
+                   # self.errors += "error with file:  " + full_path + '\n'
        return size
 
    def get_errors(self):

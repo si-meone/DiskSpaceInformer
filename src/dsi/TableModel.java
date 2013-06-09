@@ -4,10 +4,10 @@ import javax.swing.table.AbstractTableModel;
 
 
 class TableModel extends AbstractTableModel {
-    private String[] columnNames = {"Drive",
-            "Size"};
+    private String[] columnNames = {"Name",
+            "Value"};
 
-    private Object[][] data = new Utils().getFreeSpace();
+    private Object[][] data = new Utils().getInfo();
 
     TableModel(){
         super();
