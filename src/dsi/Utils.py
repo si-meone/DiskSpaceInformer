@@ -1,5 +1,6 @@
 from dsi import UtilsType
-import os
+from os.path import isfile, getsize, join
+from os import walk
 import platform
 import sys
 class Utils(UtilsType):
@@ -37,41 +38,35 @@ class Utils(UtilsType):
        return str2d
 
    def get_dir_size(self, file_or_folder):
-       # print '###### utils.get_dir_size ######'
-       # print file_or_folder
        self.errors = ''
        size = 0
-       if os.path.isfile(file_or_folder):
-           # print os.path.getsize(file_or_folder)
-           return os.path.getsize(file_or_folder)
-       for path, dirs, files in os.walk(file_or_folder):
-           for f in files:
-               try:
-                   # print 'getsize '
-                   full_path = os.path.join(path, f)
-                   size += os.path.getsize(full_path)
-               except Exception, e:
-                   print e
-                   # pass
-                   # self.errors += "error with file:  " + full_path + '\n'
+       if isfile(file_or_folder):
+           return getsize(file_or_folder)
+       for path, dirs, files in walk(file_or_folder):
+           try:
+               size += sum([getsize(join(path, name)) for name in files])
+           except Exception, e:
+               self.errors += "error with file:  " + name + '\n'
        return size
 
    def get_errors(self):
        return self.errors
 
 def main():
-    path = '/'
+    path = '/Users/snasrallah'
     utils = Utils(path)
-    #print('%s = %s \n' % (path, Utils(path).getFolderSizes()))
-    print(utils.get_free_space())
-    # start_time = time.time()
-    # folder = "/Users/snasrallah"
-    # folder_sizes = {}
-    # for child in os.listdir(folder):
-    #     path = folder + os.sep + child
-    #     folder_sizes[path] = sizeof_fmt(get_dir_size(path))
-    # print folder_sizes
-    # print time.time() - start_time, "seconds"
+    # #print('%s = %s \n' % (path, Utils(path).getFolderSizes()))
+    # print(utils.get_free_space())
+    import time, os
+    start_time = time.time()
+    folder = "/Users/snasrallah"
+    folder_sizes = {}
+    for child in os.listdir(folder):
+        path = folder + os.sep + child
+        folder_sizes[path] = utils.sizeof_fmt(utils.get_dir_size(path))
+    print folder_sizes
+    # print utils.sizeof_fmt(utils.get_dir_size(path))
+    print time.time() - start_time, "seconds"
 
 if __name__ == "__main__":
     main()
