@@ -71,7 +71,12 @@ class FindFileAndFolderSizes extends SwingWorker<Void, Void> {
 
         utils = new Utils();
         Map<String, HumanReadableFileSize> foldersSizes = new HashMap<String, HumanReadableFileSize>();
-        File[] files = file.listFiles();
+        File[] files = null;
+        try{
+            files = file.listFiles();
+        }catch (Exception se){
+            log.info("Error:" + se);
+        }
         progressBarLevel = 0;
         progressBarMax = files.length;
         progressBar.setMinimum(progressBarLevel);
