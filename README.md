@@ -16,8 +16,8 @@ check your java version
 [http://java.com/en/download/index.jsp](Download Java7)
 
 
-and run:
-ant 
+and run:  
+ant  
 java -jar jar/DiskSpaceInformer.jar
 
 - Download run sources in your IDE (I use intellij , should work in eclipse) and from project home run 
