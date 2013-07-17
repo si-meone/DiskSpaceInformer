@@ -10,22 +10,15 @@ run instructions further down - you can run it in two clicks
 ![Alt text](https://raw.github.com/snasrallah/DiskSpaceInformer/master/screenshot.png "Disk Space Informer")
 
 
-To run it 3 ways 
-
-- Click on the link below which will download the file link below and then double click on the file.
-
-http://www.spirale.co.uk/dsi/DiskSpaceInformer.jnlp
-
-Problems:
-sometimes it will download and when you run the jnlp file it may complain about java so you'll need it:
-
+prereq:
+check your java version
 [http://www.java.com/en/download/installed.jsp](Verify your Java version)
 [http://java.com/en/download/index.jsp](Download Java7)
 
-- Download the jar from http://www.spirale.co.uk/dsi/DiskSpaceInformer.jar
 
 and run:
-java -jar DiskSpaceInformer.jar
+ant 
+java -jar jar/DiskSpaceInformer.jar
 
 - Download run sources in your IDE (I use intellij , should work in eclipse) and from project home run 
 java -classpath out/production/DiskSpaceInformer/ dsi.DiskSpaceInformer
