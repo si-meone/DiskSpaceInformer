@@ -11,4 +11,4 @@ out/
 build/
 cachedir/
 result.*
-DiskSpaceInformer.jar
+jar/DiskSpaceInformer.jar
