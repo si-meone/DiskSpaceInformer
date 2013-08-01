@@ -1,0 +1,105 @@
+<project name="DiskSpaceInformer" default="dist" basedir=".">
+    <description>
+        simple example build file
+    </description>
+    <!-- set global properties for this build -->
+    <property name="src" location="src"/>
+    <property name="test"  location="test"/>
+    <property name="build" location="build"/>
+    <property name="ant.build.javac.source" value="1.6"/>
+    <property name="ant.build.javac.target" value="1.6"/>
+
+    <path id="classpath-src">
+        <fileset dir="${src}/lib" includes="**/*.jar"/>
+        <pathelement location="${build}/src" />
+    </path>
+
+    <path id="classpath-test">
+        <fileset dir="${test}/lib" includes="**/*.jar"/>
+        <pathelement location="${build}/src" />
+    </path>
+
+    <target name="init">
+        <!-- Create the time stamp -->
+        <tstamp/>
+        <!-- Create the build directory structure used by compile -->
+        <mkdir dir="${build}/src"/>
+        <mkdir dir="${build}/test"/>
+    </target>
+
+    <target name="compile" depends="init"
+            description="compile the source " >
+        <!-- Compile the java code from ${src} into ${build} -->
+        <javac srcdir="${src}" destdir="${build}/src" classpathref="classpath-src"/>
+        <javac srcdir="${test}" destdir="${build}/test" classpathref="classpath-test"/>
+    </target>
+
+    <target name="unit-tests" depends="compile">
+        <junit printsummary="yes" haltonfailure="yes">
+            <classpath>
+                <pathelement location="${build}/src"/>
+                <pathelement location="${build}/test"/>
+                <fileset dir="${src}/lib" includes="**/*.jar"/>
+                <fileset dir="${test}/lib" includes="**/*.jar"/>
+                <pathelement path="${java.class.path}"/>
+            </classpath>
+
+            <test name="dsi.TestSuite"
+                  haltonfailure="no" outfile="result">
+                <formatter type="plain"/>
+                <formatter type="xml"/>
+            </test>
+
+        </junit>
+    </target>
+
+    <target name="copy_props_python" depends="clean, init, compile" description="copy property and python files" >
+    <copy todir="${build}/src">
+        <fileset dir="${src}" includes="**/*.properties"/>
+    </copy>
+       <copy todir="${build}/src">
+        <fileset dir="${src}" includes="**/*.py"/>
+    </copy>
+    <unzip src="${src}/lib/jython.jar" dest="${build}/src"/>
+    </target>
+
+    <target name="dist" depends="clean, compile, copy_props_python, unit-tests"
+            description="generate the distribution" >
+        <!-- Create the distribution directory -->
+        <mkdir dir="${build}/jar"/>
+
+        <!-- Put everything in ${build} into the MyProject-${DSTAMP}.jar file -->
+        <jar jarfile="${build}/jar/DiskSpaceInformer.jar" basedir="${build}/src">
+            <!-- define MANIFEST.MF -->
+            <manifest>
+                <attribute name="Built-By" value="Simon Nasrallah" />
+                <attribute name="Main-Class" value="dsi.DiskSpaceInformer" />
+                <!-- finally, use the magically generated libs path -->
+                <attribute name="Class-Path" value="." />
+            </manifest>
+        </jar>
+    </target>
+
+    <target name="deploy" depends="clean, compile, copy_props_python, unit-tests, dist"
+            description="sign distribution" >
+    <signjar destDir="jar"
+             alias="key" keystore="keystore"
+             storepass="password"
+             preservelastmodified="true">
+        <path>
+            <fileset dir="${build}/jar" includes="**/*.jar" />
+        </path>
+        <flattenmapper />
+    </signjar>
+    </target>
+
+
+    <target name="clean"
+            description="clean up" >
+        <!-- Delete the ${build} and ${dist} directory trees -->
+        <delete dir="${build}"/>
+    </target>
+
+
+
+</project>

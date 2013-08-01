@@ -1,0 +1,19 @@
+<component name="libraryTable">
+  <library name="fest-assert-1.2">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/test/lib/fest-assert-1.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/test/lib/fest-reflect-1.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/test/lib/fest-swing-1.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/test/lib/fest-util-1.1.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/test/lib/jcip-annotations-1.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/test/lib/junit-4.10.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/test/lib/fest-assert-1.2-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/test/lib/fest-reflect-1.2-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/test/lib/fest-util-1.1.2-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/test/lib/jcip-annotations-1.0-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

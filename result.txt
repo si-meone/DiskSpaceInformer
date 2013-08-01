@@ -1,0 +1,28 @@
+Testsuite: dsi.TestSuite
+Tests run: 5, Failures: 0, Errors: 0, Time elapsed: 11.167 sec
+------------- Standard Output ---------------
+Starting Application from: /Users/snasrallah/IdeaProjects/DiskSpaceInformer
+Starting Application from: /Users/snasrallah/IdeaProjects/DiskSpaceInformer
+------------- ---------------- ---------------
+------------- Standard Error -----------------
+Jun 15, 2013 11:43:07 PM dsi.DiskSpaceInformer <init>
+INFO: path Ignored: /proc
+path Ignored: /dev
+path Ignored: /media
+
+
+Jun 15, 2013 11:43:09 PM dsi.DiskSpaceInformer <init>
+INFO: path Ignored: /proc
+path Ignored: /dev
+path Ignored: /media
+
+
+Jun 15, 2013 11:43:10 PM dsi.FindFileAndFolderSizes doInBackground
+INFO: The scan for [/var/folders/qk/ct_9nvms305fbytm7jd2t83c3911xp/T/junit3075158466223946225/f1] took 62 milliseconds
+------------- ---------------- ---------------
+
+Testcase: testCheckSpaceButtonWindow took 9.221 sec
+Testcase: testCheckTreeFolderWithOneMbFile took 1.903 sec
+Testcase: testGetRoot took 0.002 sec
+Testcase: testUnderOneKBShouldReadInBytes took 0.001 sec
+Testcase: humanReadableSizeSortShouldReturnLargestSizeFirst took 0.001 sec
