@@ -1,21 +1,21 @@
-<jnlp spec="1.0+" codebase="http://www.spirale.co.uk/dsi" href="DiskSpaceInformer.jnlp">
+<jnlp spec="1.0+" codebase="https://github.com/snasrallah/DiskSpaceInformer/raw/master/jar" href="DiskSpaceInformer.jnlp">
     <information>
         <title>DiskSpaceInformer</title>
         <vendor>simon</vendor>
         <offline-allowed />
         <update check="always" policy="always" />
-        <icon kind="shortcut" href="icon.png" width="32" height="34"/>
-        <icon kind="shortcut" href="icon.png" width="64" height="64"/>
-        <shortcut online="false" install="true">
-            <desktop/>
-            <menu submenu="Disk Space Informer"/>
+       <icon kind="shortcut" href="icon.png" width="32" height="34"/>
+       <icon kind="shortcut" href="icon.png" width="64" height="64"/> 
+       <shortcut online="false" install="true">
+          <desktop/>
+          <menu submenu="Disk Space Informer"/>
         </shortcut>
     </information>
 
     <resources>
         <!-- Application Resources -->
-        <jar href="http://www.spirale.co.uk/dsi/DiskSpaceInformer.jar" main="true"/>
-        <j2se version="1.6+" java-vm-args="-Xmx64m -Xms33m" href="http://java.sun.com/products/autodl/j2se"/>
+        <jar href="DiskSpaceInformer.jar" main="true" />
+        <j2se version="1.7+" java-vm-args="-Xmx64m -Xms33m" href="http://java.sun.com/products/autodl/j2se"/>
     </resources>
     <application-desc
             name=">DiskSpaceInformer"
@@ -23,8 +23,8 @@
             width="600"
             height="800">
     </application-desc>
+    <update check="background" />
     <security>
-        <all-permissions/>
+    <all-permissions/> 
     </security>
-    <update check="always" policy="always">
 </jnlp>

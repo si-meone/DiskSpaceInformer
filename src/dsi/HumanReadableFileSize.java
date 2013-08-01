@@ -6,15 +6,10 @@ public class HumanReadableFileSize implements Comparable{
     private Long size;
     private String humanReadableSize;
 
-    public HumanReadableFileSize(Float size) {
-        this(size.longValue());
-    }
-
     public HumanReadableFileSize(Long size) {
         this.size = size;
         this.humanReadableSize = readableFileSize(size);
     }
-
 
     public static String readableFileSize(long size) {
         if (size <= 0) return "0";

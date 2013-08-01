@@ -3,21 +3,28 @@ Disk Space Informer
 
 Find where all your disk space has gone - works on mac, linux and windows:
 
-prequisite is Java 1.6 (web browser plugin is useful.
+prequisite is Java 1.7 (web browser plugin is useful) or above (uses nio2).
 
 run instructions further down - you can run it in two clicks
 
 ![Alt text](https://raw.github.com/snasrallah/DiskSpaceInformer/master/screenshot.png "Disk Space Informer")
 
 
-prereq:
-check your java version
+To run it 3 ways 
+
+- Click on the link below which will download the file link below and then double click on the file.
+
+https://github.com/snasrallah/DiskSpaceInformer/raw/master/jar/DiskSpaceInformer.jnlp
+
+Problems:
+sometimes it will download and when you run the jnlp file it may complain about java so you'll need it:
+
 [http://www.java.com/en/download/installed.jsp](Verify your Java version)
 [http://java.com/en/download/index.jsp](Download Java7)
 
+- Download the jar from https://github.com/snasrallah/DiskSpaceInformer/raw/master/jar/DiskSpaceInformer.jar
 
-and run:  
-ant  
+and run from project home:
 java -jar jar/DiskSpaceInformer.jar
 
 - Download run sources in your IDE (I use intellij , should work in eclipse) and from project home run 
@@ -38,13 +45,6 @@ Use ant and Java 1.7.0_21 was done on mac.
 my mac has ant 1.8.2
 
 *was also tested on lubuntu 12.10
-
-To Distro
-===========
-1. ant deploy
-2. then copy DiskSpaceInformerjar/DiskSpaceInformer.jar spiralecafe/dsi (apps engine)
-3. then click deploy in apps engine (remember ay changes check them into repo)
-4. seems like I have to delete cache of local machines to get the new version
 
 New In Versions
 ===============
@@ -73,8 +73,6 @@ New In Versions
 0.1j - Added filter for size or alphabetically
 
 0.1s - Added table for output.
-
-0.1w - Added jython support
 
 BUGS
 ====

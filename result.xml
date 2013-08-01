@@ -1,104 +1,100 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite errors="0" failures="0" hostname="LM-LHR-00677099" name="dsi.TestSuite" tests="5" time="11.167" timestamp="2013-06-15T22:43:00">
+<testsuite errors="0" failures="0" hostname="LM-LHR-00677099" name="dsi.TestSuite" tests="9" time="3.697" timestamp="2013-08-01T14:20:39">
   <properties>
-    <property name="java.vendor" value="Apple Inc." />
+    <property name="java.vendor" value="Oracle Corporation" />
     <property name="sun.java.launcher" value="SUN_STANDARD" />
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers" />
     <property name="os.name" value="Mac OS X" />
-    <property name="sun.boot.class.path" value="/System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Classes/jsfd.jar:/System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Classes/classes.jar:/System/Library/Frameworks/JavaVM.framework/Frameworks/JavaRuntimeSupport.framework/Resources/Java/JavaRuntimeSupport.jar:/System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Classes/ui.jar:/System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Classes/laf.jar:/System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Classes/sunrsasign.jar:/System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Classes/jsse.jar:/System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Classes/jce.jar:/System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Classes/charsets.jar" />
-    <property name="TODAY" value="June 15 2013" />
-    <property name="java.vm.specification.vendor" value="Sun Microsystems Inc." />
-    <property name="ant.home" value="/Applications/IntelliJ IDEA 12.app/lib/ant" />
-    <property name="java.runtime.version" value="1.6.0_45-b06-451-11M4406" />
+    <property name="sun.boot.class.path" value="/Library/Java/JavaVirtualMachines/jdk1.7.0_21.jdk/Contents/Home/jre/lib/resources.jar:/Library/Java/JavaVirtualMachines/jdk1.7.0_21.jdk/Contents/Home/jre/lib/rt.jar:/Library/Java/JavaVirtualMachines/jdk1.7.0_21.jdk/Contents/Home/jre/lib/sunrsasign.jar:/Library/Java/JavaVirtualMachines/jdk1.7.0_21.jdk/Contents/Home/jre/lib/jsse.jar:/Library/Java/JavaVirtualMachines/jdk1.7.0_21.jdk/Contents/Home/jre/lib/jce.jar:/Library/Java/JavaVirtualMachines/jdk1.7.0_21.jdk/Contents/Home/jre/lib/charsets.jar:/Library/Java/JavaVirtualMachines/jdk1.7.0_21.jdk/Contents/Home/jre/lib/jfr.jar:/Library/Java/JavaVirtualMachines/jdk1.7.0_21.jdk/Contents/Home/jre/lib/JObjC.jar:/Library/Java/JavaVirtualMachines/jdk1.7.0_21.jdk/Contents/Home/jre/classes" />
+    <property name="TODAY" value="August 1 2013" />
+    <property name="user.country.format" value="GB" />
+    <property name="java.vm.specification.vendor" value="Oracle Corporation" />
+    <property name="ant.home" value="/usr/share/ant" />
+    <property name="java.runtime.version" value="1.7.0_21-b12" />
     <property name="ant.file.type.DiskSpaceInformer" value="file" />
     <property name="ant.file.DiskSpaceInformer" value="/Users/snasrallah/IdeaProjects/DiskSpaceInformer/build.xml" />
     <property name="user.name" value="snasrallah" />
-    <property name="awt.nativeDoubleBuffering" value="true" />
-    <property name="ant.build.javac.target" value="1.6" />
     <property name="user.language" value="en" />
     <property name="build" value="/Users/snasrallah/IdeaProjects/DiskSpaceInformer/build" />
-    <property name="sun.boot.library.path" value="/System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Libraries" />
+    <property name="sun.boot.library.path" value="/Library/Java/JavaVirtualMachines/jdk1.7.0_21.jdk/Contents/Home/jre/lib" />
     <property name="ant.project.default-target" value="dist" />
     <property name="ant.project.name" value="DiskSpaceInformer" />
-    <property name="DSTAMP" value="20130615" />
-    <property name="java.version" value="1.6.0_45" />
+    <property name="DSTAMP" value="20130801" />
+    <property name="java.version" value="1.7.0_21" />
     <property name="user.timezone" value="" />
     <property name="sun.arch.data.model" value="64" />
-    <property name="java.endorsed.dirs" value="/System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Home/lib/endorsed" />
+    <property name="java.endorsed.dirs" value="/Library/Java/JavaVirtualMachines/jdk1.7.0_21.jdk/Contents/Home/jre/lib/endorsed" />
     <property name="sun.cpu.isalist" value="" />
-    <property name="sun.jnu.encoding" value="MacRoman" />
+    <property name="sun.jnu.encoding" value="UTF-8" />
     <property name="file.encoding.pkg" value="sun.io" />
     <property name="file.separator" value="/" />
     <property name="java.specification.name" value="Java Platform API Specification" />
-    <property name="java.class.version" value="50.0" />
+    <property name="java.class.version" value="51.0" />
     <property name="src" value="/Users/snasrallah/IdeaProjects/DiskSpaceInformer/src" />
     <property name="user.country" value="US" />
-    <property name="java.home" value="/System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Home" />
+    <property name="java.home" value="/Library/Java/JavaVirtualMachines/jdk1.7.0_21.jdk/Contents/Home/jre" />
     <property name="java.vm.info" value="mixed mode" />
     <property name="ant.file" value="/Users/snasrallah/IdeaProjects/DiskSpaceInformer/build.xml" />
-    <property name="os.version" value="10.8.3" />
+    <property name="os.version" value="10.8.4" />
     <property name="path.separator" value=":" />
-    <property name="java.vm.version" value="20.45-b01-451" />
-    <property name="ant.library.dir" value="/Applications/IntelliJ IDEA 12.app/lib/ant/lib" />
-    <property name="java.awt.printerjob" value="apple.awt.CPrinterJob" />
-    <property name="sun.io.unicode.encoding" value="UnicodeLittle" />
-    <property name="awt.toolkit" value="apple.awt.CToolkit" />
-    <property name="ant.build.javac.source" value="1.6" />
+    <property name="java.vm.version" value="23.21-b01" />
+    <property name="ant.library.dir" value="/usr/share/ant/lib" />
+    <property name="java.awt.printerjob" value="sun.lwawt.macosx.CPrinterJob" />
+    <property name="sun.io.unicode.encoding" value="UnicodeBig" />
+    <property name="awt.toolkit" value="sun.lwawt.macosx.LWCToolkit" />
     <property name="user.home" value="/Users/snasrallah" />
-    <property name="java.specification.vendor" value="Sun Microsystems Inc." />
+    <property name="java.specification.vendor" value="Oracle Corporation" />
     <property name="test" value="/Users/snasrallah/IdeaProjects/DiskSpaceInformer/test" />
-    <property name="java.library.path" value=".:/Library/Java/Extensions:/System/Library/Java/Extensions:/usr/lib/java" />
-    <property name="java.vendor.url" value="http://www.apple.com/" />
-    <property name="java.vm.vendor" value="Apple Inc." />
+    <property name="java.library.path" value="/Users/snasrallah/Library/Java/Extensions:/Library/Java/Extensions:/Network/Library/Java/Extensions:/System/Library/Java/Extensions:/usr/lib/java:." />
+    <property name="java.vendor.url" value="http://java.oracle.com/" />
+    <property name="java.vm.vendor" value="Oracle Corporation" />
     <property name="gopherProxySet" value="false" />
     <property name="java.runtime.name" value="Java(TM) SE Runtime Environment" />
-    <property name="sun.java.command" value="com.intellij.rt.ant.execution.AntMain2 -logger com.intellij.rt.ant.execution.IdeaAntLogger2 -inputhandler com.intellij.rt.ant.execution.IdeaInputHandler -buildfile /Users/snasrallah/IdeaProjects/DiskSpaceInformer/build.xml deploy" />
-    <property name="java.class.path" value="/System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Home/lib/deploy.jar:/System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Home/lib/dt.jar:/System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Home/lib/javaws.jar:/System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Home/lib/jce.jar:/System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Home/lib/jconsole.jar:/System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Home/lib/management-agent.jar:/System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Home/lib/plugin.jar:/System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Home/lib/sa-jdi.jar:/System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Classes/charsets.jar:/System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Classes/classes.jar:/System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Classes/jsse.jar:/System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Classes/ui.jar:/System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Home/lib/ext/apple_provider.jar:/System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Home/lib/ext/dnsns.jar:/System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Home/lib/ext/localedata.jar:/System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Home/lib/ext/sunjce_provider.jar:/System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Home/lib/ext/sunpkcs11.jar:/Applications/IntelliJ IDEA 12.app/lib/ant/lib/ant-antlr.jar:/Applications/IntelliJ IDEA 12.app/lib/ant/lib/ant-apache-bcel.jar:/Applications/IntelliJ IDEA 12.app/lib/ant/lib/ant-apache-bsf.jar:/Applications/IntelliJ IDEA 12.app/lib/ant/lib/ant-apache-log4j.jar:/Applications/IntelliJ IDEA 12.app/lib/ant/lib/ant-apache-oro.jar:/Applications/IntelliJ IDEA 12.app/lib/ant/lib/ant-apache-regexp.jar:/Applications/IntelliJ IDEA 12.app/lib/ant/lib/ant-apache-resolver.jar:/Applications/IntelliJ IDEA 12.app/lib/ant/lib/ant-apache-xalan2.jar:/Applications/IntelliJ IDEA 12.app/lib/ant/lib/ant-commons-logging.jar:/Applications/IntelliJ IDEA 12.app/lib/ant/lib/ant-commons-net.jar:/Applications/IntelliJ IDEA 12.app/lib/ant/lib/ant-jai.jar:/Applications/IntelliJ IDEA 12.app/lib/ant/lib/ant-javamail.jar:/Applications/IntelliJ IDEA 12.app/lib/ant/lib/ant-jdepend.jar:/Applications/IntelliJ IDEA 12.app/lib/ant/lib/ant-jmf.jar:/Applications/IntelliJ IDEA 12.app/lib/ant/lib/ant-jsch.jar:/Applications/IntelliJ IDEA 12.app/lib/ant/lib/ant-junit.jar:/Applications/IntelliJ IDEA 12.app/lib/ant/lib/ant-launcher.jar:/Applications/IntelliJ IDEA 12.app/lib/ant/lib/ant-netrexx.jar:/Applications/IntelliJ IDEA 12.app/lib/ant/lib/ant-swing.jar:/Applications/IntelliJ IDEA 12.app/lib/ant/lib/ant-testutil.jar:/Applications/IntelliJ IDEA 12.app/lib/ant/lib/ant.jar:/System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Home/lib/tools.jar:/Applications/IntelliJ IDEA 12.app/lib/idea_rt.jar" />
-    <property name="ant.version" value="Apache Ant(TM) version 1.8.2 compiled on December 20 2010" />
-    <property name="TSTAMP" value="2342" />
+    <property name="sun.java.command" value="org.apache.tools.ant.launch.Launcher -cp " />
+    <property name="java.class.path" value="/usr/share/ant/lib/ant-launcher.jar:/usr/share/ant/lib/ant-antlr.jar:/usr/share/ant/lib/ant-jmf.jar:/usr/share/ant/lib/ant-junit.jar:/usr/share/ant/lib/ant-junit4.jar:/usr/share/ant/lib/ant-launcher.jar:/usr/share/ant/lib/ant-swing.jar:/usr/share/ant/lib/ant-testutil.jar:/usr/share/ant/lib/ant.jar:/Library/Java/JavaVirtualMachines/jdk1.7.0_21.jdk/Contents/Home/lib/tools.jar" />
+    <property name="ant.version" value="Apache Ant(TM) version 1.8.2 compiled on June 16 2012" />
+    <property name="TSTAMP" value="1520" />
     <property name="java.vm.specification.name" value="Java Virtual Machine Specification" />
     <property name="ant.file.type" value="file" />
-    <property name="java.vm.specification.version" value="1.0" />
+    <property name="java.vm.specification.version" value="1.7" />
     <property name="sun.cpu.endian" value="little" />
     <property name="sun.os.patch.level" value="unknown" />
     <property name="java.io.tmpdir" value="/var/folders/qk/ct_9nvms305fbytm7jd2t83c3911xp/T/" />
-    <property name="java.vendor.url.bug" value="http://bugreport.apple.com/" />
-    <property name="mrj.build" value="11M4406" />
+    <property name="java.vendor.url.bug" value="http://bugreport.sun.com/bugreport/" />
     <property name="os.arch" value="x86_64" />
-    <property name="java.awt.graphicsenv" value="apple.awt.CGraphicsEnvironment" />
-    <property name="java.ext.dirs" value="/Library/Java/Extensions:/System/Library/Java/Extensions:/System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Home/lib/ext" />
-    <property name="mrj.version" value="1070.1.6.0_45-451" />
+    <property name="java.awt.graphicsenv" value="sun.awt.CGraphicsEnvironment" />
+    <property name="java.ext.dirs" value="/Users/snasrallah/Library/Java/Extensions:/Library/Java/JavaVirtualMachines/jdk1.7.0_21.jdk/Contents/Home/jre/lib/ext:/Library/Java/Extensions:/Network/Library/Java/Extensions:/System/Library/Java/Extensions:/usr/lib/java" />
     <property name="user.dir" value="/Users/snasrallah/IdeaProjects/DiskSpaceInformer" />
     <property name="line.separator" value="&#xa;" />
     <property name="java.vm.name" value="Java HotSpot(TM) 64-Bit Server VM" />
     <property name="basedir" value="/Users/snasrallah/IdeaProjects/DiskSpaceInformer" />
-    <property name="ant.java.version" value="1.6" />
-    <property name="ant.core.lib" value="/Applications/IntelliJ IDEA 12.app/lib/ant/lib/ant.jar" />
+    <property name="ant.java.version" value="1.7" />
+    <property name="ant.core.lib" value="/usr/share/ant/lib/ant.jar" />
     <property name="file.encoding" value="UTF-8" />
-    <property name="java.specification.version" value="1.6" />
-    <property name="ant.project.invoked-targets" value="deploy" />
+    <property name="java.specification.version" value="1.7" />
+    <property name="ant.project.invoked-targets" value="dist" />
   </properties>
-  <testcase classname="dsi.DiskSpaceInformerTest" name="testCheckSpaceButtonWindow" time="9.222" />
-  <testcase classname="dsi.DiskSpaceInformerTest" name="testCheckTreeFolderWithOneMbFile" time="1.903" />
-  <testcase classname="dsi.FileSystemTreeModelTest" name="testGetRoot" time="0.0020" />
-  <testcase classname="dsi.HumanReadableFileSizeTest" name="testUnderOneKBShouldReadInBytes" time="0.0010" />
-  <testcase classname="dsi.HumanReadableFileSizeTest" name="humanReadableSizeSortShouldReturnLargestSizeFirst" time="0.0010" />
+  <testcase classname="dsi.DiskSpaceInformerTest" name="testCheckSpaceButtonWindow" time="2.185" />
+  <testcase classname="dsi.DiskSpaceInformerTest" name="testCheckTreeFolderWithOneMbFile" time="0.98" />
+  <testcase classname="dsi.FileSystemTreeModelTest" name="testGetRoot" time="0.002" />
+  <testcase classname="dsi.FileSystemVisitorTest" name="testVisitorWalkTreeIgnoresAPathFromConfig" time="0.037" />
+  <testcase classname="dsi.FileSystemVisitorTest" name="testAFileExists" time="0.032" />
+  <testcase classname="dsi.FileSystemVisitorTest" name="testShouldShowDepthLevelOfOne" time="0.032" />
+  <testcase classname="dsi.FileSystemVisitorTest" name="testVisitorWalkTree" time="0.033" />
+  <testcase classname="dsi.HumanReadableFileSizeTest" name="humanReadableSizeSortShouldReturnLargestSizeFirst" time="0.0" />
+  <testcase classname="dsi.HumanReadableFileSizeTest" name="testUnderOneKBShouldReadInBytes" time="0.002" />
   <system-out><![CDATA[Starting Application from: /Users/snasrallah/IdeaProjects/DiskSpaceInformer
 Starting Application from: /Users/snasrallah/IdeaProjects/DiskSpaceInformer
 ]]></system-out>
-  <system-err><![CDATA[Jun 15, 2013 11:43:07 PM dsi.DiskSpaceInformer <init>
+  <system-err><![CDATA[Aug 01, 2013 3:20:40 PM dsi.DiskSpaceInformer <init>
 INFO: path Ignored: /proc
-path Ignored: /dev
-path Ignored: /media
 
 
-Jun 15, 2013 11:43:09 PM dsi.DiskSpaceInformer <init>
+Aug 01, 2013 3:20:42 PM dsi.DiskSpaceInformer <init>
 INFO: path Ignored: /proc
-path Ignored: /dev
-path Ignored: /media
 
 
-Jun 15, 2013 11:43:10 PM dsi.FindFileAndFolderSizes doInBackground
-INFO: The scan for [/var/folders/qk/ct_9nvms305fbytm7jd2t83c3911xp/T/junit3075158466223946225/f1] took 62 milliseconds
+Aug 01, 2013 3:20:43 PM dsi.FindFileAndFolderSizes doInBackground
+INFO: The scan for [/var/folders/qk/ct_9nvms305fbytm7jd2t83c3911xp/T/junit3796683246940562605/f1] took 13 milliseconds
 ]]></system-err>
 </testsuite>

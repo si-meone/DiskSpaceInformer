@@ -1,6 +1,5 @@
 package dsi;
 
-
 import javax.swing.*;
 import javax.swing.tree.*;
 import java.awt.*;
@@ -14,11 +13,11 @@ import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
-
 public class DiskSpaceInformer extends JPanel
         implements ActionListener {
 
     private static Logger log;
+    private static JTextArea textArea;
     private final JButton stopButton;
     private JTree tree;
     private final JButton checkButton;
@@ -27,6 +26,8 @@ public class DiskSpaceInformer extends JPanel
     protected JProgressBar progressBar;
     private JTable table;
 
+    private static String version = "Disk Space Informer v0.1t";
+    static private final String newline = "\n";
     private final JComboBox drives;
 
     private String[] pathsToIgnore;
@@ -175,7 +176,7 @@ public class DiskSpaceInformer extends JPanel
     };
 
     private static void setupAndShowUI(File[] files, String path) {
-        JFrame frame = new JFrame(Config.appName + " " + Config.version);
+        JFrame frame = new JFrame(version);
         frame.setName("DiskSpaceInformer");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.add(new DiskSpaceInformer(files, path));

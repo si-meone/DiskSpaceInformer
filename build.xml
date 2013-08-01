@@ -6,13 +6,6 @@
     <property name="src" location="src"/>
     <property name="test"  location="test"/>
     <property name="build" location="build"/>
-    <property name="ant.build.javac.source" value="1.6"/>
-    <property name="ant.build.javac.target" value="1.6"/>
-
-    <path id="classpath-src">
-        <fileset dir="${src}/lib" includes="**/*.jar"/>
-        <pathelement location="${build}/src" />
-    </path>
 
     <path id="classpath-test">
         <fileset dir="${test}/lib" includes="**/*.jar"/>
@@ -30,7 +23,7 @@
     <target name="compile" depends="init"
             description="compile the source " >
         <!-- Compile the java code from ${src} into ${build} -->
-        <javac srcdir="${src}" destdir="${build}/src" classpathref="classpath-src"/>
+        <javac srcdir="${src}" destdir="${build}/src"/>
         <javac srcdir="${test}" destdir="${build}/test" classpathref="classpath-test"/>
     </target>
 
@@ -39,7 +32,6 @@
             <classpath>
                 <pathelement location="${build}/src"/>
                 <pathelement location="${build}/test"/>
-                <fileset dir="${src}/lib" includes="**/*.jar"/>
                 <fileset dir="${test}/lib" includes="**/*.jar"/>
                 <pathelement path="${java.class.path}"/>
             </classpath>
@@ -53,17 +45,13 @@
         </junit>
     </target>
 
-    <target name="copy_props_python" depends="clean, init, compile" description="copy property and python files" >
+    <target name="copy_props" depends="clean, init, compile" description="copy property files" >
     <copy todir="${build}/src">
         <fileset dir="${src}" includes="**/*.properties"/>
     </copy>
-       <copy todir="${build}/src">
-        <fileset dir="${src}" includes="**/*.py"/>
-    </copy>
-    <unzip src="${src}/lib/jython.jar" dest="${build}/src"/>
     </target>
 
-    <target name="dist" depends="clean, compile, copy_props_python, unit-tests"
+    <target name="dist" depends="clean, compile, copy_props, unit-tests"
             description="generate the distribution" >
         <!-- Create the distribution directory -->
         <mkdir dir="${build}/jar"/>
@@ -80,7 +68,7 @@
         </jar>
     </target>
 
-    <target name="deploy" depends="clean, compile, copy_props_python, unit-tests, dist"
+    <target name="deploy" depends="clean, compile, copy_props, unit-tests, dist"
             description="sign distribution" >
     <signjar destDir="jar"
              alias="key" keystore="keystore"
