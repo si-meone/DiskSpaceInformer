@@ -1,28 +1,28 @@
 Testsuite: dsi.TestSuite
-Tests run: 9, Failures: 0, Errors: 0, Time elapsed: 2.332 sec
+Tests run: 9, Failures: 0, Errors: 0, Time elapsed: 2.307 sec
 ------------- Standard Output ---------------
 Starting Application from: /Users/snasrallah/IdeaProjects/DiskSpaceInformer
 Starting Application from: /Users/snasrallah/IdeaProjects/DiskSpaceInformer
 ------------- ---------------- ---------------
 ------------- Standard Error -----------------
-Aug 01, 2013 3:30:55 PM dsi.DiskSpaceInformer <init>
+Aug 01, 2013 3:36:06 PM dsi.DiskSpaceInformer <init>
 INFO: path Ignored: /proc
 
 
-Aug 01, 2013 3:30:56 PM dsi.DiskSpaceInformer <init>
+Aug 01, 2013 3:36:06 PM dsi.DiskSpaceInformer <init>
 INFO: path Ignored: /proc
 
 
-Aug 01, 2013 3:30:56 PM dsi.FindFileAndFolderSizes doInBackground
-INFO: The scan for [/var/folders/qk/ct_9nvms305fbytm7jd2t83c3911xp/T/junit732090094688653461/f1] took 8 milliseconds
+Aug 01, 2013 3:36:07 PM dsi.FindFileAndFolderSizes doInBackground
+INFO: The scan for [/var/folders/qk/ct_9nvms305fbytm7jd2t83c3911xp/T/junit5647352478927711956/f1] took 8 milliseconds
 ------------- ---------------- ---------------
 
-Testcase: testCheckSpaceButtonWindow took 1.178 sec
-Testcase: testCheckTreeFolderWithOneMbFile took 0.98 sec
-Testcase: testGetRoot took 0.001 sec
-Testcase: testAFileExists took 0.033 sec
-Testcase: testVisitorWalkTreeIgnoresAPathFromConfig took 0.046 sec
-Testcase: testShouldShowDepthLevelOfOne took 0.029 sec
-Testcase: testVisitorWalkTree took 0.032 sec
-Testcase: humanReadableSizeSortShouldReturnLargestSizeFirst took 0 sec
-Testcase: testUnderOneKBShouldReadInBytes took 0 sec
+Testcase: testCheckSpaceButtonWindow took 1.187 sec
+Testcase: testCheckTreeFolderWithOneMbFile took 0.943 sec
+Testcase: testGetRoot took 0.002 sec
+Testcase: testVisitorWalkTreeIgnoresAPathFromConfig took 0.033 sec
+Testcase: testAFileExists took 0.043 sec
+Testcase: testShouldShowDepthLevelOfOne took 0.032 sec
+Testcase: testVisitorWalkTree took 0.035 sec
+Testcase: humanReadableSizeSortShouldReturnLargestSizeFirst took 0.001 sec
+Testcase: testUnderOneKBShouldReadInBytes took 0.001 sec
