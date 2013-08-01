@@ -5,13 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="cfa6e849-1f6e-4d69-93fd-422d027d1b83" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/dsi/Utils.py" afterPath="$PROJECT_DIR$/src/dsi/Utils.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="DiskSpaceInformer.iws" />
     <ignored path=".idea/workspace.xml" />
     <file path="/README.md" changelist="cfa6e849-1f6e-4d69-93fd-422d027d1b83" time="1370188860873" ignored="false" />
     <file path="/DirectorySize.java" changelist="cfa6e849-1f6e-4d69-93fd-422d027d1b83" time="1365344892917" ignored="false" />
-    <file path="/Dummy.txt" changelist="cfa6e849-1f6e-4d69-93fd-422d027d1b83" time="1373038266858" ignored="false" />
+    <file path="/Dummy.txt" changelist="cfa6e849-1f6e-4d69-93fd-422d027d1b83" time="1375366980132" ignored="false" />
     <file path="/DiskSpaceInformer.java" changelist="cfa6e849-1f6e-4d69-93fd-422d027d1b83" time="1371149137054" ignored="false" />
     <file path="/fragment.java" changelist="cfa6e849-1f6e-4d69-93fd-422d027d1b83" time="1371325498751" ignored="false" />
     <file path="/a.java" changelist="cfa6e849-1f6e-4d69-93fd-422d027d1b83" time="1365799760381" ignored="false" />
@@ -88,7 +88,6 @@
     <file path="/dsi.jnlp" changelist="cfa6e849-1f6e-4d69-93fd-422d027d1b83" time="1370212481518" ignored="false" />
     <file path="/build.xml" changelist="cfa6e849-1f6e-4d69-93fd-422d027d1b83" time="1370771408572" ignored="false" />
     <file path="/.gitignore" changelist="cfa6e849-1f6e-4d69-93fd-422d027d1b83" time="1370702465828" ignored="false" />
-    <file path="$PROJECT_DIR$/.idea/workspace.xml" changelist="cfa6e849-1f6e-4d69-93fd-422d027d1b83" time="1368982377213" ignored="false" />
     <file path="$PROJECT_DIR$/.idea/ant.xml" changelist="cfa6e849-1f6e-4d69-93fd-422d027d1b83" time="1368959081161" ignored="false" />
     <file path="/TreeNode.java" changelist="cfa6e849-1f6e-4d69-93fd-422d027d1b83" time="1368986037774" ignored="false" />
     <file path="/TextFormatter.java" changelist="cfa6e849-1f6e-4d69-93fd-422d027d1b83" time="1368994876069" ignored="false" />
@@ -141,10 +140,10 @@
     <SUITE FILE_PATH="coverage/DiskSpaceInformer$Main.coverage" NAME="Main Coverage Results" MODIFIED="1370102584540" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
       <FILTER>dsi.*</FILTER>
     </SUITE>
-    <SUITE FILE_PATH="coverage/DiskSpaceInformer$All_in_DiskSpaceInformer.coverage" NAME="All in DiskSpaceInformer Coverage Results" MODIFIED="1370784753300" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
     <SUITE FILE_PATH="coverage/DiskSpaceInformer$dsi_in_DiskSpaceInformer.coverage" NAME="dsi in DiskSpaceInformer Coverage Results" MODIFIED="1369085912436" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
       <FILTER>dsi.*</FILTER>
     </SUITE>
+    <SUITE FILE_PATH="coverage/DiskSpaceInformer$All_in_DiskSpaceInformer.coverage" NAME="All in DiskSpaceInformer Coverage Results" MODIFIED="1370784753300" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
   </component>
   <component name="CoverageViewManager">
     <option name="myAutoScrollToSource" value="true" />
@@ -157,6 +156,44 @@
     <disable_hints />
   </component>
   <component name="DebuggerManager">
+    <ui_properties default_suspend_policy="SuspendAll" default_condition_enabled="true" />
+    <method_breakpoints default_suspend_policy="SuspendAll" default_condition_enabled="true" />
+    <breakpoint_any default_suspend_policy="SuspendAll" default_condition_enabled="true">
+      <breakpoint>
+        <option name="NOTIFY_CAUGHT" value="true" />
+        <option name="NOTIFY_UNCAUGHT" value="true" />
+        <option name="ENABLED" value="false" />
+        <option name="LOG_ENABLED" value="false" />
+        <option name="LOG_EXPRESSION_ENABLED" value="false" />
+        <option name="REMOVE_AFTER_HIT" value="false" />
+        <option name="SUSPEND_POLICY" value="SuspendAll" />
+        <option name="SUSPEND" value="true" />
+        <option name="COUNT_FILTER_ENABLED" value="false" />
+        <option name="COUNT_FILTER" value="0" />
+        <option name="CONDITION_ENABLED" value="true" />
+        <option name="CLASS_FILTERS_ENABLED" value="false" />
+        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
+        <option name="CONDITION" value="" />
+        <option name="LOG_MESSAGE" value="" />
+      </breakpoint>
+      <breakpoint>
+        <option name="NOTIFY_CAUGHT" value="true" />
+        <option name="NOTIFY_UNCAUGHT" value="true" />
+        <option name="ENABLED" value="false" />
+        <option name="LOG_ENABLED" value="false" />
+        <option name="LOG_EXPRESSION_ENABLED" value="false" />
+        <option name="REMOVE_AFTER_HIT" value="false" />
+        <option name="SUSPEND_POLICY" value="SuspendAll" />
+        <option name="SUSPEND" value="true" />
+        <option name="COUNT_FILTER_ENABLED" value="false" />
+        <option name="COUNT_FILTER" value="0" />
+        <option name="CONDITION_ENABLED" value="true" />
+        <option name="CLASS_FILTERS_ENABLED" value="false" />
+        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
+        <option name="CONDITION" value="" />
+        <option name="LOG_MESSAGE" value="" />
+      </breakpoint>
+    </breakpoint_any>
     <line_breakpoints default_suspend_policy="SuspendAll" default_condition_enabled="true">
       <breakpoint url="file://$PROJECT_DIR$/test/dsi/DiskSpaceInformerTest.java" line="94" class="dsi.DiskSpaceInformerTest" package="dsi">
         <option name="ENABLED" value="true" />
@@ -249,44 +286,6 @@
         <option name="LOG_MESSAGE" value="" />
       </breakpoint>
     </line_breakpoints>
-    <ui_properties default_suspend_policy="SuspendAll" default_condition_enabled="true" />
-    <method_breakpoints default_suspend_policy="SuspendAll" default_condition_enabled="true" />
-    <breakpoint_any default_suspend_policy="SuspendAll" default_condition_enabled="true">
-      <breakpoint>
-        <option name="NOTIFY_CAUGHT" value="true" />
-        <option name="NOTIFY_UNCAUGHT" value="true" />
-        <option name="ENABLED" value="false" />
-        <option name="LOG_ENABLED" value="false" />
-        <option name="LOG_EXPRESSION_ENABLED" value="false" />
-        <option name="REMOVE_AFTER_HIT" value="false" />
-        <option name="SUSPEND_POLICY" value="SuspendAll" />
-        <option name="SUSPEND" value="true" />
-        <option name="COUNT_FILTER_ENABLED" value="false" />
-        <option name="COUNT_FILTER" value="0" />
-        <option name="CONDITION_ENABLED" value="true" />
-        <option name="CLASS_FILTERS_ENABLED" value="false" />
-        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
-        <option name="CONDITION" value="" />
-        <option name="LOG_MESSAGE" value="" />
-      </breakpoint>
-      <breakpoint>
-        <option name="NOTIFY_CAUGHT" value="true" />
-        <option name="NOTIFY_UNCAUGHT" value="true" />
-        <option name="ENABLED" value="false" />
-        <option name="LOG_ENABLED" value="false" />
-        <option name="LOG_EXPRESSION_ENABLED" value="false" />
-        <option name="REMOVE_AFTER_HIT" value="false" />
-        <option name="SUSPEND_POLICY" value="SuspendAll" />
-        <option name="SUSPEND" value="true" />
-        <option name="COUNT_FILTER_ENABLED" value="false" />
-        <option name="COUNT_FILTER" value="0" />
-        <option name="CONDITION_ENABLED" value="true" />
-        <option name="CLASS_FILTERS_ENABLED" value="false" />
-        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
-        <option name="CONDITION" value="" />
-        <option name="LOG_MESSAGE" value="" />
-      </breakpoint>
-    </breakpoint_any>
     <breakpoint_rules />
     <ui_properties />
   </component>
@@ -296,28 +295,10 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="Utils.py" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/dsi/Utils.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="75" column="44" selection-start="2509" selection-end="2509" vertical-scroll-proportion="0.16470589">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="FolderSize.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/dsi/FolderSize.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="13" column="8" selection-start="225" selection-end="225" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="FindFileAndFolderSizes.java" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="FindFileAndFolderSizes.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/dsi/FindFileAndFolderSizes.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="30" column="58" selection-start="756" selection-end="834" vertical-scroll-proportion="0.0">
+            <state line="30" column="58" selection-start="756" selection-end="834" vertical-scroll-proportion="0.024054984">
               <folding />
             </state>
           </provider>
@@ -614,7 +595,7 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="PackagesPane" />
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -671,23 +652,23 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="GenerateAntBuildDialog.generateIdeaHomeProperty" value="false" />
     <property name="project.structure.last.edited" value="Project" />
-    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth0" value="141" />
     <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary" value="JUnit4" />
-    <property name="OverrideImplement.combined" value="false" />
-    <property name="project.structure.proportion" value="0.15" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth0" value="141" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth1" value="150" />
+    <property name="project.structure.proportion" value="0.15" />
+    <property name="OverrideImplement.combined" value="false" />
     <property name="options.splitter.main.proportions" value="0.3" />
-    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth0" value="271" />
-    <property name="recentsLimit" value="5" />
-    <property name="MemberChooser.sorted" value="false" />
-    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder1" value="1" />
     <property name="GenerateAntBuildDialog.generateSingleFile" value="true" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder1" value="1" />
+    <property name="MemberChooser.sorted" value="false" />
+    <property name="recentsLimit" value="5" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth0" value="271" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder0" value="0" />
     <property name="GenerateAntBuildDialog.inclineRuntiemClasspath" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/src/lib/jython.old!/" />
@@ -700,28 +681,28 @@
     <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth1" value="271" />
     <property name="GenerateAntBuildDialog.enableUiFormCompile" value="false" />
     <property name="GoToClass.toSaveIncludeLibraries" value="false" />
-    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder2" value="2" />
     <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder2" value="2" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder3" value="3" />
-    <property name="MemberChooser.showClasses" value="true" />
     <property name="FullScreen" value="false" />
+    <property name="MemberChooser.showClasses" value="true" />
     <property name="GoToClass.includeLibraries" value="false" />
     <property name="options.splitter.details.proportions" value="0.2" />
-    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeOrder0" value="0" />
-    <property name="GoToFile.includeJavaFiles" value="false" />
     <property name="last_directory_selection" value="$PROJECT_DIR$/test" />
+    <property name="GoToFile.includeJavaFiles" value="false" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeOrder0" value="0" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_treeOrder3" value="3" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_treeOrder1" value="1" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_treeOrder2" value="2" />
-    <property name="options.lastSelected" value="preferences.pluginManager" />
     <property name="ChangesBrowser.SHOW_FLATTEN" value="false" />
-    <property name="project.structure.side.proportion" value="0.10460251" />
+    <property name="options.lastSelected" value="preferences.pluginManager" />
     <property name="GenerateAntBuildDialog.forceTargetJdk" value="false" />
+    <property name="project.structure.side.proportion" value="0.10460251" />
     <property name="MemberChooser.copyJavadoc" value="false" />
     <property name="com.intellij.testIntegration.createTest.CreateTestDialog.includeInheritedMembers" value="false" />
     <property name="GenerateAntBuildDialog.backupFiles" value="false" />
-    <property name="dynamic.classpath" value="false" />
     <property name="options.searchVisible" value="true" />
+    <property name="dynamic.classpath" value="false" />
   </component>
   <component name="PyConsoleOptionsProvider">
     <option name="myPythonConsoleState">
@@ -884,6 +865,14 @@
       <option name="PROGRAM_PARAMETERS" />
       <method />
     </configuration>
+    <configuration default="true" type="Remote" factoryName="Remote">
+      <option name="USE_SOCKET_TRANSPORT" value="true" />
+      <option name="SERVER_MODE" value="false" />
+      <option name="SHMEM_ADDRESS" value="javadebug" />
+      <option name="HOST" value="localhost" />
+      <option name="PORT" value="5005" />
+      <method />
+    </configuration>
     <configuration default="true" type="PythonConfigurationType" factoryName="Python">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -899,12 +888,17 @@
       <option name="PARAMETERS" value="" />
       <method />
     </configuration>
-    <configuration default="true" type="Remote" factoryName="Remote">
-      <option name="USE_SOCKET_TRANSPORT" value="true" />
-      <option name="SERVER_MODE" value="false" />
-      <option name="SHMEM_ADDRESS" value="javadebug" />
-      <option name="HOST" value="localhost" />
-      <option name="PORT" value="5005" />
+    <configuration default="true" type="Applet" factoryName="Applet">
+      <module name="" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="HTML_FILE_NAME" />
+      <option name="HTML_USED" value="false" />
+      <option name="WIDTH" value="400" />
+      <option name="HEIGHT" value="300" />
+      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
+      <option name="VM_PARAMETERS" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
       <method />
     </configuration>
     <configuration default="true" type="TestNG" factoryName="TestNG">
@@ -933,19 +927,6 @@
       <envs />
       <properties />
       <listeners />
-      <method />
-    </configuration>
-    <configuration default="true" type="Applet" factoryName="Applet">
-      <module name="" />
-      <option name="MAIN_CLASS_NAME" />
-      <option name="HTML_FILE_NAME" />
-      <option name="HTML_USED" value="false" />
-      <option name="WIDTH" value="400" />
-      <option name="HEIGHT" value="300" />
-      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
-      <option name="VM_PARAMETERS" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
       <method />
     </configuration>
     <configuration default="true" type="Application" factoryName="Application">
@@ -1230,7 +1211,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="22" width="1280" height="718" extended-state="0" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32674772" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="JetGradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -1367,21 +1348,18 @@
     </buildFile>
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/src/dsi/FindFileAndFolderSizes.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="30" column="58" selection-start="756" selection-end="834" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/dsi/DiskSpaceInformer.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="37" column="21" selection-start="1005" selection-end="1014" vertical-scroll-proportion="0.0">
           <folding />
         </state>
-      </provider>
-    </entry>
-    <entry file="jar://$PROJECT_DIR$/src/lib/jython.jar!/org/python/compiler/ProxyCodeHelpers.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="26" column="43" selection-start="987" selection-end="987" vertical-scroll-proportion="-5.32" />
-      </provider>
-    </entry>
-    <entry file="jar://$PROJECT_DIR$/src/lib/jython.jar!/org/python/core/PyObject.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="532" column="35" selection-start="26951" selection-end="26951" vertical-scroll-proportion="-5.32" />
       </provider>
     </entry>
     <entry file="jar:///System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Home/src.jar!/src/java/io/File.java">
@@ -1396,9 +1374,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/dsi/Config.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="43" column="18" selection-start="1500" selection-end="1500" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
+        <state line="43" column="18" selection-start="1500" selection-end="1500" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
     <entry file="jar:///System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Home/src.jar!/src/java/util/concurrent/ThreadFactory.java">
@@ -1416,16 +1392,9 @@
         <state line="430" column="21" selection-start="17672" selection-end="17672" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/build/src/Lib/decimal.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="2046" column="17" selection-start="73275" selection-end="73275" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/dsi/HumanReadableFileSize.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="35" column="41" selection-start="1066" selection-end="1066" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
+        <state line="35" column="41" selection-start="1066" selection-end="1066" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
     <entry file="jar:///System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Home/src.jar!/src/java/lang/Math.java">
@@ -1433,30 +1402,9 @@
         <state line="281" column="25" selection-start="10998" selection-end="10998" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/dsi/Utils.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="87" column="0" selection-start="2826" selection-end="2826" vertical-scroll-proportion="1.9529412">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/dsi/FindFileAndFolderSizes.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="30" column="58" selection-start="756" selection-end="834" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/dsi/FolderSize.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="13" column="8" selection-start="225" selection-end="225" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/dsi/Utils.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="75" column="44" selection-start="2509" selection-end="2509" vertical-scroll-proportion="0.16470589">
+        <state line="30" column="58" selection-start="756" selection-end="834" vertical-scroll-proportion="0.024054984">
           <folding />
         </state>
       </provider>
