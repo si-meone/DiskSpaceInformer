@@ -12,3 +12,5 @@ build/
 cachedir/
 result.*
 jar/DiskSpaceInformer.jar
+result.xml
+result.txt
