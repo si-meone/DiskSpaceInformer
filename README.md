@@ -12,8 +12,8 @@ run instructions further down - you can run it in two clicks
 
 To run
 
-ant deploy
-java -jar jar/DiskSpaceInformer.jar
+   ant deploy  
+   java -jar jar/DiskSpaceInformer.jar  
 
 - Download run sources in your IDE (I use intellij , should work in eclipse) and from project home run 
 java -classpath out/production/DiskSpaceInformer/ dsi.DiskSpaceInformer
