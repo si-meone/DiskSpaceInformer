@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite errors="0" failures="0" hostname="LM-LHR-00677099" name="dsi.TestSuite" tests="9" time="2.343" timestamp="2013-08-01T14:41:55">
+<testsuite errors="0" failures="0" hostname="LM-LHR-00677099" name="dsi.TestSuite" tests="9" time="4.134" timestamp="2013-08-02T19:24:39">
   <properties>
     <property name="java.vendor" value="Oracle Corporation" />
     <property name="sun.java.launcher" value="SUN_STANDARD" />
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers" />
     <property name="os.name" value="Mac OS X" />
     <property name="sun.boot.class.path" value="/Library/Java/JavaVirtualMachines/jdk1.7.0_21.jdk/Contents/Home/jre/lib/resources.jar:/Library/Java/JavaVirtualMachines/jdk1.7.0_21.jdk/Contents/Home/jre/lib/rt.jar:/Library/Java/JavaVirtualMachines/jdk1.7.0_21.jdk/Contents/Home/jre/lib/sunrsasign.jar:/Library/Java/JavaVirtualMachines/jdk1.7.0_21.jdk/Contents/Home/jre/lib/jsse.jar:/Library/Java/JavaVirtualMachines/jdk1.7.0_21.jdk/Contents/Home/jre/lib/jce.jar:/Library/Java/JavaVirtualMachines/jdk1.7.0_21.jdk/Contents/Home/jre/lib/charsets.jar:/Library/Java/JavaVirtualMachines/jdk1.7.0_21.jdk/Contents/Home/jre/lib/jfr.jar:/Library/Java/JavaVirtualMachines/jdk1.7.0_21.jdk/Contents/Home/jre/lib/JObjC.jar:/Library/Java/JavaVirtualMachines/jdk1.7.0_21.jdk/Contents/Home/jre/classes" />
-    <property name="TODAY" value="August 1 2013" />
+    <property name="TODAY" value="August 2 2013" />
     <property name="user.country.format" value="GB" />
     <property name="java.vm.specification.vendor" value="Oracle Corporation" />
     <property name="ant.home" value="/usr/share/ant" />
@@ -19,7 +19,7 @@
     <property name="sun.boot.library.path" value="/Library/Java/JavaVirtualMachines/jdk1.7.0_21.jdk/Contents/Home/jre/lib" />
     <property name="ant.project.default-target" value="dist" />
     <property name="ant.project.name" value="DiskSpaceInformer" />
-    <property name="DSTAMP" value="20130801" />
+    <property name="DSTAMP" value="20130802" />
     <property name="java.version" value="1.7.0_21" />
     <property name="user.timezone" value="" />
     <property name="sun.arch.data.model" value="64" />
@@ -53,7 +53,7 @@
     <property name="sun.java.command" value="org.apache.tools.ant.launch.Launcher -cp  deploy" />
     <property name="java.class.path" value="/usr/share/ant/lib/ant-launcher.jar:/usr/share/ant/lib/ant-antlr.jar:/usr/share/ant/lib/ant-jmf.jar:/usr/share/ant/lib/ant-junit.jar:/usr/share/ant/lib/ant-junit4.jar:/usr/share/ant/lib/ant-launcher.jar:/usr/share/ant/lib/ant-swing.jar:/usr/share/ant/lib/ant-testutil.jar:/usr/share/ant/lib/ant.jar:/Library/Java/JavaVirtualMachines/jdk1.7.0_21.jdk/Contents/Home/lib/tools.jar" />
     <property name="ant.version" value="Apache Ant(TM) version 1.8.2 compiled on June 16 2012" />
-    <property name="TSTAMP" value="1541" />
+    <property name="TSTAMP" value="2024" />
     <property name="java.vm.specification.name" value="Java Virtual Machine Specification" />
     <property name="ant.file.type" value="file" />
     <property name="java.vm.specification.version" value="1.7" />
@@ -74,27 +74,27 @@
     <property name="java.specification.version" value="1.7" />
     <property name="ant.project.invoked-targets" value="deploy" />
   </properties>
-  <testcase classname="dsi.DiskSpaceInformerTest" name="testCheckSpaceButtonWindow" time="1.213" />
-  <testcase classname="dsi.DiskSpaceInformerTest" name="testCheckTreeFolderWithOneMbFile" time="0.957" />
+  <testcase classname="dsi.DiskSpaceInformerTest" name="testCheckSpaceButtonWindow" time="1.956" />
+  <testcase classname="dsi.DiskSpaceInformerTest" name="testCheckTreeFolderWithOneMbFile" time="0.97" />
   <testcase classname="dsi.FileSystemTreeModelTest" name="testGetRoot" time="0.002" />
-  <testcase classname="dsi.FileSystemVisitorTest" name="testVisitorWalkTreeIgnoresAPathFromConfig" time="0.033" />
-  <testcase classname="dsi.FileSystemVisitorTest" name="testAFileExists" time="0.039" />
-  <testcase classname="dsi.FileSystemVisitorTest" name="testShouldShowDepthLevelOfOne" time="0.031" />
+  <testcase classname="dsi.FileSystemVisitorTest" name="testAFileExists" time="0.029" />
+  <testcase classname="dsi.FileSystemVisitorTest" name="testVisitorWalkTreeIgnoresAPathFromConfig" time="0.034" />
+  <testcase classname="dsi.FileSystemVisitorTest" name="testShouldShowDepthLevelOfOne" time="0.041" />
   <testcase classname="dsi.FileSystemVisitorTest" name="testVisitorWalkTree" time="0.034" />
   <testcase classname="dsi.HumanReadableFileSizeTest" name="humanReadableSizeSortShouldReturnLargestSizeFirst" time="0.0" />
-  <testcase classname="dsi.HumanReadableFileSizeTest" name="testUnderOneKBShouldReadInBytes" time="0.001" />
+  <testcase classname="dsi.HumanReadableFileSizeTest" name="testUnderOneKBShouldReadInBytes" time="0.0" />
   <system-out><![CDATA[Starting Application from: /Users/snasrallah/IdeaProjects/DiskSpaceInformer
 Starting Application from: /Users/snasrallah/IdeaProjects/DiskSpaceInformer
 ]]></system-out>
-  <system-err><![CDATA[Aug 01, 2013 3:41:55 PM dsi.DiskSpaceInformer <init>
+  <system-err><![CDATA[Aug 02, 2013 8:24:41 PM dsi.DiskSpaceInformer <init>
 INFO: path Ignored: /proc
 
 
-Aug 01, 2013 3:41:56 PM dsi.DiskSpaceInformer <init>
+Aug 02, 2013 8:24:42 PM dsi.DiskSpaceInformer <init>
 INFO: path Ignored: /proc
 
 
-Aug 01, 2013 3:41:57 PM dsi.FindFileAndFolderSizes doInBackground
-INFO: The scan for [/var/folders/qk/ct_9nvms305fbytm7jd2t83c3911xp/T/junit7585401406238000155/f1] took 8 milliseconds
+Aug 02, 2013 8:24:43 PM dsi.FindFileAndFolderSizes doInBackground
+INFO: The scan for [/var/folders/qk/ct_9nvms305fbytm7jd2t83c3911xp/T/junit8645973038130129753/f1] took 13 milliseconds
 ]]></system-err>
 </testsuite>
