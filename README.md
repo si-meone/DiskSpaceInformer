@@ -12,7 +12,7 @@ run instructions further down - you can run it in two clicks
 
 To run, two ways
    first way:
-   1. download the jar from ![Alt text](https://github.com/snasrallah/DiskSpaceInformer/blob/master/jar/DiskSpaceInformer.jar?raw=true "here" ) 
+   1. download the jar from [here][https://github.com/snasrallah/DiskSpaceInformer/blob/master/jar/DiskSpaceInformer.jar?raw=true] 
    2. then double click on the jar or from the command line java -jar DiskSpaceInformer.jar 
    
    second way:
