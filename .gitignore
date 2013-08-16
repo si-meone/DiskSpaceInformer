@@ -11,6 +11,5 @@ out/
 build/
 cachedir/
 result.*
-jar/
 result.xml
 result.txt
