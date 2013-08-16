@@ -10,8 +10,13 @@ run instructions further down - you can run it in two clicks
 ![Alt text](https://raw.github.com/snasrallah/DiskSpaceInformer/master/screenshot.png "Disk Space Informer")
 
 
-To run
-
+To run, two ways
+   first way:
+   1. download the jar from ![Alt text](https://github.com/snasrallah/DiskSpaceInformer/blob/master/jar/DiskSpaceInformer.jar?raw=true "here") 
+   2. then double click on the jar or from the command line java -jar DiskSpaceInformer.jar 
+   
+   second way:
+   2. download the source
    ant deploy  
    java -jar jar/DiskSpaceInformer.jar  
 
