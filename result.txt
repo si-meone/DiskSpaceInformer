@@ -1,28 +1,28 @@
 Testsuite: dsi.TestSuite
-Tests run: 9, Failures: 0, Errors: 0, Time elapsed: 4.134 sec
+Tests run: 9, Failures: 0, Errors: 0, Time elapsed: 3.112 sec
 ------------- Standard Output ---------------
 Starting Application from: /Users/snasrallah/IdeaProjects/DiskSpaceInformer
 Starting Application from: /Users/snasrallah/IdeaProjects/DiskSpaceInformer
 ------------- ---------------- ---------------
 ------------- Standard Error -----------------
-Aug 02, 2013 8:24:41 PM dsi.DiskSpaceInformer <init>
+Aug 16, 2013 9:05:43 AM dsi.DiskSpaceInformer <init>
 INFO: path Ignored: /proc
 
 
-Aug 02, 2013 8:24:42 PM dsi.DiskSpaceInformer <init>
+Aug 16, 2013 9:05:45 AM dsi.DiskSpaceInformer <init>
 INFO: path Ignored: /proc
 
 
-Aug 02, 2013 8:24:43 PM dsi.FindFileAndFolderSizes doInBackground
-INFO: The scan for [/var/folders/qk/ct_9nvms305fbytm7jd2t83c3911xp/T/junit8645973038130129753/f1] took 13 milliseconds
+Aug 16, 2013 9:05:45 AM dsi.FindFileAndFolderSizes doInBackground
+INFO: The scan for [/var/folders/qk/ct_9nvms305fbytm7jd2t83c3911xp/T/junit4089675486483017839/f1] took 12 milliseconds
 ------------- ---------------- ---------------
 
-Testcase: testCheckSpaceButtonWindow took 1.956 sec
-Testcase: testCheckTreeFolderWithOneMbFile took 0.97 sec
+Testcase: testCheckSpaceButtonWindow took 1.928 sec
+Testcase: testCheckTreeFolderWithOneMbFile took 0.976 sec
 Testcase: testGetRoot took 0.001 sec
-Testcase: testAFileExists took 0.028 sec
-Testcase: testVisitorWalkTreeIgnoresAPathFromConfig took 0.034 sec
-Testcase: testShouldShowDepthLevelOfOne took 0.041 sec
-Testcase: testVisitorWalkTree took 0.034 sec
+Testcase: testAFileExists took 0.033 sec
+Testcase: testVisitorWalkTreeIgnoresAPathFromConfig took 0.036 sec
+Testcase: testShouldShowDepthLevelOfOne took 0.042 sec
+Testcase: testVisitorWalkTree took 0.029 sec
 Testcase: humanReadableSizeSortShouldReturnLargestSizeFirst took 0 sec
 Testcase: testUnderOneKBShouldReadInBytes took 0 sec
