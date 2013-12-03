@@ -11,16 +11,17 @@ run instructions further down - you can run it in two clicks
 
 
 To run, two ways
-   first way - via jar:
-   1. download the jar from [https://github.com/snasrallah/DiskSpaceInformer/blob/master/jar/DiskSpaceInformer.jar?raw=true] 
-   2. then double click on the jar or from the command line java -jar DiskSpaceInformer.jar 
-   
-   second way build source:
-   1. download the source
-   ant deploy  
-   java -jar jar/DiskSpaceInformer.jar
 
-   third way via JNLP:
+First way - via jar:
+1. download the jar from [https://github.com/snasrallah/DiskSpaceInformer/blob/master/jar/DiskSpaceInformer.jar?raw=true] 
+2. then double click on the jar or from the command line java -jar DiskSpaceInformer.jar 
+   
+Second way build source:
+1. download the source
+ ant deploy  
+ java -jar jar/DiskSpaceInformer.jar
+
+Third way via JNLP:
    1. open browser and enter [https://github.com/snasrallah/DiskSpaceInformer/raw/master/jar/DiskSpaceInformer.jnlp]
    2. This will either launch immediately or download the JNLP file.
    3. Say ok to trust message or double click on downloaded JNLP file.
