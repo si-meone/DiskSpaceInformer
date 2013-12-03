@@ -21,7 +21,7 @@ To run, two ways
    java -jar jar/DiskSpaceInformer.jar
 
    third way via JNLP:
-   1. open browser and enter [https://github.com/snasrallah/DiskSpaceInformer/raw/master/jar/DiskspaceInformer.jnlp]
+   1. open browser and enter [https://github.com/snasrallah/DiskSpaceInformer/raw/master/jar/DiskSpaceInformer.jnlp]
    2. This will either launch immediately or download the JNLP file.
    3. Say ok to trust message or double click on downloaded JNLP file.
 
