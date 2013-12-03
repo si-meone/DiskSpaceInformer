@@ -1,0 +1,30 @@
+<jnlp spec="1.0+" codebase="https://github.com/snasrallah/DiskSpaceInformer/raw/master/jar" href="DiskSpaceInformer.jnlp">
+    <information>
+        <title>DiskSpaceInformer</title>
+        <vendor>simon</vendor>
+        <offline-allowed />
+        <update check="always" policy="always" />
+        <icon kind="shortcut" href="icon.png" width="32" height="34"/>
+        <icon kind="shortcut" href="icon.png" width="64" height="64"/>
+        <shortcut online="false" install="true">
+            <desktop/>
+            <menu submenu="Disk Space Informer"/>
+        </shortcut>
+    </information>
+
+    <resources>
+        <!-- Application Resources -->
+        <jar href="DiskSpaceInformer.jar" main="true" />
+        <j2se version="1.7+" java-vm-args="-Xmx64m -Xms32m" href="http://java.sun.com/products/autodl/j2se"/>
+    </resources>
+    <application-desc
+            name=">DiskSpaceInformer"
+            main-class="dsi.DiskSpaceInformer"
+            width="600"
+            height="800">
+    </application-desc>
+    <update check="background" />
+    <security>
+        <all-permissions/>
+    </security>
+</jnlp>

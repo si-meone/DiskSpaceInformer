@@ -1,7 +1,7 @@
 Disk Space Informer
 ================
 
-Find where all your disk space has gone - works on mac, linux and windows:
+Find out where all your disk space has gone - works on mac, linux and windows:
 
 prequisite is Java 1.7 (web browser plugin is useful) or above (uses nio2).
 
@@ -11,14 +11,20 @@ run instructions further down - you can run it in two clicks
 
 
 To run, two ways
-   first way:
+   first way - via jar:
    1. download the jar from [https://github.com/snasrallah/DiskSpaceInformer/blob/master/jar/DiskSpaceInformer.jar?raw=true] 
    2. then double click on the jar or from the command line java -jar DiskSpaceInformer.jar 
    
-   second way:
-   2. download the source
+   second way build source:
+   1. download the source
    ant deploy  
-   java -jar jar/DiskSpaceInformer.jar  
+   java -jar jar/DiskSpaceInformer.jar
+
+   third way via JNLP:
+   1. open browser and enter [https://github.com/snasrallah/DiskSpaceInformer/raw/master/jar/DiskspaceInformer.jnlp]
+   2. This will either launch immediately or download the JNLP file.
+   3. Say ok to trust message or double click on downloaded JNLP file.
+
 
 - Download run sources in your IDE (I use intellij , should work in eclipse) and from project home run 
 java -classpath out/production/DiskSpaceInformer/ dsi.DiskSpaceInformer
@@ -28,8 +34,8 @@ Note: out/production/DiskSpaceInformer may be different if you compile with anot
 Features:
 ==========
 - You can select one more tree items before clicking on check space.
-- There is a properties files to set more folders to ignore
-- There is logger that can be set to different levels
+- There is a properties files to set more folders to ignore (have a look at config.properties - usually in path)
+- There is logger that can be set to different levels.
 
 
 To Build
@@ -37,7 +43,9 @@ To Build
 Use ant and Java 1.7.0_21 was done on mac.
 my mac has ant 1.8.2
 
-*was also tested on lubuntu 12.10
+*Tested on lubuntu 12.10
+*Tested on Mac OS X 10.8.5 (12F45)
+*Tested on Windows XP latest SP
 
 New In Versions
 ===============
@@ -66,6 +74,10 @@ New In Versions
 0.1j - Added filter for size or alphabetically
 
 0.1s - Added table for output.
+
+0.1t - Added Jython.
+
+0.1u - removed Jython and added JNLP support
 
 BUGS
 ====
