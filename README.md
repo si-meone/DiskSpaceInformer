@@ -79,9 +79,9 @@ New In Versions
 
 0.1s - Added table for output.
 
-0.1t - Added Jython.
+0.1t - Converted to Jython - and branched that version 
 
-0.1u - removed Jython and added JNLP support
+0.1u - Back to pure Java on main branch and added JNLP support.
 
 BUGS
 ====
